@@ -24,13 +24,22 @@ const FadeIn = props => {
 const Score = ({results, ...props}) => {
 
     const [percentageCorrect, setPercentageCorrect] = useState(0);
+    const [categoriesWentThrough, setCategoriesWentThrough] = useState([]);
 
     useEffect(() => {
         setPercentageCorrect(
             (props.firstTry / props.totalQuestions) * 100
         );
-    }, []);
 
+        const categories = props.allQuestions.map(question => {
+            return question.category;
+        });
+
+        var uniq = [...new Set(categories)];
+
+        setCategoriesWentThrough(uniq);
+
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -49,6 +58,13 @@ const Score = ({results, ...props}) => {
                     attempts: {results.wrongAnswers.length}</Text></View>
                 <View style={styles.textContainer}><Text style={styles.titles}>Correct
                     attempts: {results.correctAnswers.length}</Text></View>
+
+                <View style={styles.textContainer}>
+                    <Text style={[styles.titles, {marginBottom: 10}]}>Categories used:</Text>
+                    {categoriesWentThrough.map(category => {
+                        return <Text style={styles.titles} key={category}>{category}</Text>;
+                    })}
+                </View>
 
 
                 <TouchableOpacity style={styles.buttonContainer}>

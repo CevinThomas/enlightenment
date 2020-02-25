@@ -33,6 +33,7 @@ const QuestionView: React.FC<props> = (props) => {
         correctAnswers: [],
         firstTryCorrect: 0
     });
+    const [categoriesWithCorrectAnswers, setCategoriesWithCorrectAnswers] = useState([]);
 
     useEffect(() => {
         setAnsweredCorrectly(false);
@@ -110,9 +111,31 @@ const QuestionView: React.FC<props> = (props) => {
                                     } else {
                                         if (tempWrongAnswers.length === 0) {
                                             setFirstTryCorrect(firstTryCorrect + 1);
+
+                                            let doesExist = false;
+                                            categoriesWithCorrectAnswers.forEach(category => {
+                                                if (category.name === props.question.category) return doesExist = true;
+                                            });
+
+                                            const category = props.question.category;
+                                            let stateCategories = [...categoriesWithCorrectAnswers];
+                                            if (doesExist === false) {
+                                                const freshCategoryWithCounter = {
+                                                    name: category,
+                                                    firstTry: 1
+                                                };
+                                                stateCategories.push(freshCategoryWithCounter);
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            } else {
+                                                stateCategories.forEach(category => {
+                                                    if (category.name === props.question.category) {
+                                                        category.firstTry++;
+                                                    }
+                                                });
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            }
                                         }
                                     }
-
                                     checkIfAnswerIsCorrect(option, optionToChoose);
                                 }
                                 }/></View>;
