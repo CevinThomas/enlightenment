@@ -25,20 +25,18 @@ const Score = ({results, ...props}) => {
 
     const [percentageCorrect, setPercentageCorrect] = useState(0);
     const [categoriesWentThrough, setCategoriesWentThrough] = useState([]);
+    const [questionsFormatted, setQuestionsFormatted] = useState([]);
 
     useEffect(() => {
         setPercentageCorrect(
             (props.firstTry / props.totalQuestions) * 100
         );
 
-        const categories = props.allQuestions.map(question => {
-            return question.category;
-        });
-
-        var uniq = [...new Set(categories)];
-
-        setCategoriesWentThrough(uniq);
-
+        const questionsAssoc = props.allQuestions.reduce((acc, c) => {
+            const {category} = c;
+            acc[category] = (acc[category] || 0) + 1;
+            return acc;
+        }, {});
     }, []);
 
     return (
@@ -61,8 +59,11 @@ const Score = ({results, ...props}) => {
 
                 <View style={styles.textContainer}>
                     <Text style={[styles.titles, {marginBottom: 10}]}>Categories used:</Text>
-                    {categoriesWentThrough.map(category => {
-                        return <Text style={styles.titles} key={category}>{category}</Text>;
+                    {props.categoryAnswers.map(category => {
+                        return <View key={category.name}>
+                            <Text style={styles.titles}>{category.name} Scored: {category.firstTry} out
+                                of {category.totalQuestions}</Text>
+                        </View>;
                     })}
                 </View>
 

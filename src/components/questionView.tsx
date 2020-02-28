@@ -109,20 +109,23 @@ const QuestionView: React.FC<props> = (props) => {
                                         updatedTempWrongAnswers.push(optionToChoose.choice);
                                         setTempWrongAnswers(updatedTempWrongAnswers);
                                     } else {
+
+                                        let doesExist = false;
+                                        categoriesWithCorrectAnswers.forEach(category => {
+                                            if (category.name === props.question.category) return doesExist = true;
+                                        });
+
+                                        const category = props.question.category;
+                                        let stateCategories = [...categoriesWithCorrectAnswers];
+
                                         if (tempWrongAnswers.length === 0) {
                                             setFirstTryCorrect(firstTryCorrect + 1);
 
-                                            let doesExist = false;
-                                            categoriesWithCorrectAnswers.forEach(category => {
-                                                if (category.name === props.question.category) return doesExist = true;
-                                            });
-
-                                            const category = props.question.category;
-                                            let stateCategories = [...categoriesWithCorrectAnswers];
                                             if (doesExist === false) {
                                                 const freshCategoryWithCounter = {
                                                     name: category,
-                                                    firstTry: 1
+                                                    firstTry: 1,
+                                                    totalQuestions: 1
                                                 };
                                                 stateCategories.push(freshCategoryWithCounter);
                                                 setCategoriesWithCorrectAnswers(stateCategories);
@@ -130,6 +133,24 @@ const QuestionView: React.FC<props> = (props) => {
                                                 stateCategories.forEach(category => {
                                                     if (category.name === props.question.category) {
                                                         category.firstTry++;
+                                                        category.totalQuestions++;
+                                                    }
+                                                });
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            }
+                                        } else {
+                                            if (doesExist === false) {
+                                                const freshCategoryCounter = {
+                                                    name: category,
+                                                    firstTry: 0,
+                                                    totalQuestions: 1
+                                                };
+                                                stateCategories.push(freshCategoryCounter);
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            } else {
+                                                stateCategories.forEach(category => {
+                                                    if (category.name === props.question.category) {
+                                                        category.totalQuestions++;
                                                     }
                                                 });
                                                 setCategoriesWithCorrectAnswers(stateCategories);
@@ -153,6 +174,7 @@ const QuestionView: React.FC<props> = (props) => {
                                                                       onPress={() => props.displayNextQuestion(null, correctChoice)}/></View>
                             : null}</> :
                     <Score
+                        categoryAnswers={categoriesWithCorrectAnswers}
                         id={props.id}
                         allQuestions={props.allQuestions} firstTry={firstTryCorrect}
                         totalQuestions={props.totalQuestions}
