@@ -63,17 +63,17 @@ const initialQuestions = [
                 explanation: "The incoming links to your website or webpage are referred to as Backlink. It is also called as an inbound link."
             },
             {
-                choice: "Option 2",
+                choice: "Option 26",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 3",
+                choice: "Option 34",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 4",
+                choice: "Option 47",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             }
@@ -89,17 +89,17 @@ const initialQuestions = [
                 explanation: "Search engine stores keywords in the database, and when a search is done, it will come up with the best possible match."
             },
             {
-                choice: "Option 2",
+                choice: "Option 24",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 3",
+                choice: "Option 32",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 4",
+                choice: "Option 41",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
 

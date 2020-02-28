@@ -89,7 +89,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlign: "center",
         borderRadius: 10,
-        height: 50
+        height: 50,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     }
 });
 
