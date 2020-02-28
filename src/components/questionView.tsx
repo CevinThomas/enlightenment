@@ -35,9 +35,6 @@ const QuestionView: React.FC<props> = (props) => {
     });
     const [categoriesWithCorrectAnswers, setCategoriesWithCorrectAnswers] = useState([]);
 
-    const [frontAnimatedStyle, setFrontAnimatedStyle] = useState();
-    const [backAnimatedStyle, setBackAnimatedStyle] = useState();
-    const [animatedValue, setAnimatedValue] = useState();
 
     const [addWhatCardToFlip, setAddWhatCardToFlip] = useState([]);
 
@@ -46,22 +43,6 @@ const QuestionView: React.FC<props> = (props) => {
         setIncorrectChoice([]);
         setTempWrongAnswers([]);
     }, [props.question]);
-
-    useEffect(() => {
-
-
-    }, []);
-
-    function flipCard(option) {
-        let updatedArray = [...addWhatCardToFlip];
-        if (updatedArray.includes(option.choice)) {
-            return;
-        }
-
-        updatedArray.push(option.choice);
-        setAddWhatCardToFlip(updatedArray);
-
-    }
 
     function checkIfAnswerIsCorrect(event, choice) {
         if (choice.isCorrect === true) {
@@ -190,71 +171,7 @@ const QuestionView: React.FC<props> = (props) => {
                                 }/></View>;
 
                         })}
-                        <Text>THIS IS FLIP CARD SECTION TESTING</Text>
-                        {props.question.options.map(optionToChoose => {
 
-                            return <TouchableOpacity
-                                key={optionToChoose.choice}
-                                onPress={() => {
-                                    flipCard(optionToChoose);
-                                    const animatedValue = new Animated.Value(0);
-                                    const frontInterpolate = animatedValue.interpolate({
-                                        inputRange: [0, 180],
-                                        outputRange: ["0deg", "180deg"],
-                                    });
-
-                                    const backInterpolate = animatedValue.interpolate({
-                                        inputRange: [0, 180],
-                                        outputRange: ["180deg", "360deg"],
-                                    });
-
-                                    const front = {
-                                        transform: [
-                                            {rotateY: frontInterpolate}
-                                        ]
-                                    };
-
-                                    setFrontAnimatedStyle({
-                                        transform: [
-                                            {rotateY: frontInterpolate}
-                                        ]
-                                    });
-
-                                    setBackAnimatedStyle({
-                                        transform: [
-                                            {rotateY: backInterpolate}
-                                        ]
-                                    });
-                                    Animated.timing(animatedValue, {
-                                        toValue: 180,
-                                        duration: 800
-                                    }).start();
-                                }}>
-                                <View>
-
-                                    {addWhatCardToFlip.includes(optionToChoose.choice)
-                                        ?
-                                        <View>
-                                            <Animated.View
-                                                style={[flipStyles.flipCard, frontAnimatedStyle]}>
-                                                <Text>{optionToChoose.choice}</Text>
-                                            </Animated.View>
-                                            <Animated.View
-                                                style={[flipStyles.flipCard, flipStyles.flipCardBack, backAnimatedStyle
-                                                ]}>
-                                                <Text>{optionToChoose.explanation}</Text>
-                                            </Animated.View>
-                                        </View>
-                                        :
-                                        <View>
-                                            <View style={flipStyles.flipCard}>
-                                                <Text>{optionToChoose.choice}</Text>
-                                            </View>
-                                        </View>}
-
-                                </View>
-                            </TouchableOpacity>;
-                        })}
                         {answeredCorrectly ?
                             <View><Text style={styles.congratulationsMessage}>Congratulations! {correctChoice[0]} is
                                 Correct!</Text><Text
