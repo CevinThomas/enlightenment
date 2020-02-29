@@ -1,42 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Animated, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import ModalRemoveQuestionsTest from "./ModalRemoveQuestionsTest";
 import Modal from "./Modal";
+import FadeIn from "./fadeIn";
 
-const FadeIn = props => {
-    const [fadeAnim] = useState(new Animated.Value(0));
-
-    useEffect(() => {
-        Animated.timing(
-            fadeAnim,
-            {
-                toValue: 1,
-                duration: 1000
-            }
-        ).start();
-    }, []);
-
-    return (
-        <Animated.View style={{opacity: fadeAnim}}>{props.children}</Animated.View>
-    );
-};
 
 const Score = ({results, ...props}) => {
 
     const [percentageCorrect, setPercentageCorrect] = useState(0);
-    const [categoriesWentThrough, setCategoriesWentThrough] = useState([]);
-    const [questionsFormatted, setQuestionsFormatted] = useState([]);
 
     useEffect(() => {
         setPercentageCorrect(
             (props.firstTry / props.totalQuestions) * 100
         );
-
-        const questionsAssoc = props.allQuestions.reduce((acc, c) => {
-            const {category} = c;
-            acc[category] = (acc[category] || 0) + 1;
-            return acc;
-        }, {});
     }, []);
 
     return (
@@ -46,24 +22,37 @@ const Score = ({results, ...props}) => {
                     <Text style={styles.mainheading}>Well done! This is how you did!</Text>
                 </View>
 
-                <View style={styles.textContainer}><Text style={styles.titles}>Total amount of
-                    questions: {props.totalQuestions}</Text></View>
-                <View style={styles.textContainer}><Text style={styles.titles}>First
-                    Try Correct: {props.firstTry}</Text></View>
-                <View style={styles.textContainer}><Text
-                    style={styles.titles}>Percentage: {percentageCorrect}%</Text></View>
-                <View style={styles.textContainer}><Text style={styles.titles}>Wrong
-                    attempts: {results.wrongAnswers.length}</Text></View>
-                <View style={styles.textContainer}><Text style={styles.titles}>Correct
-                    attempts: {results.correctAnswers.length}</Text></View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.titles}>Total amount of questions: {props.totalQuestions}</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text style={styles.titles}>First Try Correct: {props.firstTry}</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text
+                        style={styles.titles}>Percentage: {percentageCorrect}%</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text style={styles.titles}>Wrong attempts: {results.wrongAnswers.length}</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text style={styles.titles}>Correct attempts: {results.correctAnswers.length}</Text>
+                </View>
 
                 <View style={styles.textContainer}>
                     <Text style={[styles.titles, {marginBottom: 10}]}>Categories used:</Text>
+
                     {props.categoryAnswers.map(category => {
-                        return <View key={category.name}>
-                            <Text style={styles.titles}>{category.name} Scored: {category.firstTry} out
-                                of {category.totalQuestions}</Text>
-                        </View>;
+                        return (
+                            <View key={category.name}>
+                                <Text style={styles.titles}>{category.name} Scored: {category.firstTry} out
+                                    of {category.totalQuestions}</Text>
+                            </View>
+                        );
                     })}
                 </View>
 
@@ -71,7 +60,8 @@ const Score = ({results, ...props}) => {
                 <TouchableOpacity style={styles.buttonContainer}>
                     <Text style={{color: "white", textAlign: "center"}}
                           onPress={() => props.navigation.navigate("Home")}>Do it
-                        again!</Text>
+                        again!
+                    </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity>

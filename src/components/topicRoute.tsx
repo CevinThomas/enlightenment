@@ -10,7 +10,7 @@ const TopicRoute = (props) => {
     const [numberOfQuestions, setNumberOfQuestions] = useState(0);
     const [savedQuestions, setSavedQuestions] = useState([]);
 
-    function shuffle(array) {
+    function shuffle(array: any) {
         array.sort(() => Math.random() - 0.5);
     }
 
@@ -31,10 +31,15 @@ const TopicRoute = (props) => {
         load();
     }, []);
 
-    function displayCorrectQuestion(event, choice: object): void {
+    function displayCorrectQuestion(): void {
         if (counterForQuestions === numberOfQuestions) {
             return setDispalyScoreBoard(true);
         }
+
+        return checkLengthOfQuestionsLeft();
+    }
+
+    function checkLengthOfQuestionsLeft() {
         if (savedQuestions.length !== 0) {
 
             setCurrentQuestion(savedQuestions[counterForQuestions]);
@@ -48,7 +53,9 @@ const TopicRoute = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>{props.route.params.name}</Text>
+
             <View>{currentQuestion !== undefined ?
+
                 <QuestionView
                     id={props.route.params.id}
                     allQuestions={savedQuestions.length !== 0 ? savedQuestions : props.route.params.questions.initialQuestions}
@@ -56,12 +63,17 @@ const TopicRoute = (props) => {
                     totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.initialQuestions.length}
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={displayCorrectQuestion}
-                    question={currentQuestion}/> : null}</View>
+                    question={currentQuestion}
+                /> : null}
+
+            </View>
+
             {counterForQuestions === 0 ?
-                <TouchableOpacity onPress={displayCorrectQuestion} style={styles.startedButtonContainer}><Text
-                    style={styles.getStarted}
-                >Let's Get
-                    Started!</Text></TouchableOpacity>
+
+                <TouchableOpacity onPress={displayCorrectQuestion} style={styles.startedButtonContainer}>
+                    <Text style={styles.getStarted}>Let's Get Started!</Text>
+                </TouchableOpacity>
+
                 : null}
 
         </View>

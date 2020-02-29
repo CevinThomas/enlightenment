@@ -26,29 +26,12 @@ const ButtonList = (props) => {
         <View style={styles.container}>
             <View style={styles.innerContainer}>
                 <ImageBackground source={require("../../assets/images/turquoise-1540436_1280.png")}
-                                 style={{
-                                     width: "100%",
-                                     height: "100%",
-                                     borderRadius: 10,
-                                     shadowOffset: {width: 0, height: 0},
-                                     shadowColor: "#000",
-                                     elevation: 100,
-                                     shadowRadius: 5,
-                                     shadowOpacity: 0.1
-                                 }}>
+                                 style={styles.backgroundImageStyling}>
+
                     <Text onPress={(event) => f(event, props.boxTitle.toLowerCase())}
-                          style={{
-                              color: "white",
-                              textAlign: "center",
-                              paddingTop: 5,
-                              width: "100%",
-                              height: "100%",
-                              lineHeight: 140,
-                              fontSize: 26,
-                              zIndex: 9999
-                          }}>{props.boxTitle}</Text>
-
-
+                          style={styles.boxTitle}>{props.boxTitle}
+                    </Text>
+                    
                 </ImageBackground>
             </View>
         </View>
@@ -56,6 +39,26 @@ const ButtonList = (props) => {
 };
 
 const styles = StyleSheet.create({
+    boxTitle: {
+        color: "white",
+        textAlign: "center",
+        paddingTop: 5,
+        width: "100%",
+        height: "100%",
+        lineHeight: 140,
+        fontSize: 26,
+        zIndex: 9999
+    },
+    backgroundImageStyling: {
+        width: "100%",
+        height: "100%",
+        borderRadius: 10,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
+    },
     container: {
         margin: 20,
         backgroundColor: "white",

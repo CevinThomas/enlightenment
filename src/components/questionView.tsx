@@ -1,24 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Animated, Button, StyleSheet, Text, View} from "react-native";
+import {Button, StyleSheet, Text, View} from "react-native";
 import Score from "./Score";
-
-const FadeIn = props => {
-    const [fadeAnim] = useState(new Animated.Value(0));
-
-    useEffect(() => {
-        Animated.timing(
-            fadeAnim,
-            {
-                toValue: 1,
-                duration: 1000
-            }
-        ).start();
-    }, []);
-
-    return (
-        <Animated.View style={{opacity: fadeAnim}}>{props.children}</Animated.View>
-    );
-};
+import FadeIn from "./fadeIn";
 
 const QuestionView: React.FC<props> = (props) => {
 
@@ -34,9 +17,6 @@ const QuestionView: React.FC<props> = (props) => {
         firstTryCorrect: 0
     });
     const [categoriesWithCorrectAnswers, setCategoriesWithCorrectAnswers] = useState([]);
-
-
-    const [addWhatCardToFlip, setAddWhatCardToFlip] = useState([]);
 
     useEffect(() => {
         setAnsweredCorrectly(false);
@@ -84,6 +64,62 @@ const QuestionView: React.FC<props> = (props) => {
         }
     }
 
+    function checkAndCreateCategoryObject(optionToChoose) {
+        if (optionToChoose.isCorrect !== true) {
+            let updatedTempWrongAnswers = [...tempWrongAnswers];
+            updatedTempWrongAnswers.push(optionToChoose.choice);
+            setTempWrongAnswers(updatedTempWrongAnswers);
+        } else {
+
+            let doesExist = false;
+            categoriesWithCorrectAnswers.forEach(category => {
+                if (category.name === props.question.category) return doesExist = true;
+            });
+
+            const category = props.question.category;
+            let stateCategories = [...categoriesWithCorrectAnswers];
+
+            if (tempWrongAnswers.length === 0) {
+                setFirstTryCorrect(firstTryCorrect + 1);
+
+                if (doesExist === false) {
+                    const freshCategoryWithCounter = {
+                        name: category,
+                        firstTry: 1,
+                        totalQuestions: 1
+                    };
+                    stateCategories.push(freshCategoryWithCounter);
+                    setCategoriesWithCorrectAnswers(stateCategories);
+                } else {
+                    stateCategories.forEach(category => {
+                        if (category.name === props.question.category) {
+                            category.firstTry++;
+                            category.totalQuestions++;
+                        }
+                    });
+                    setCategoriesWithCorrectAnswers(stateCategories);
+                }
+            } else {
+                if (doesExist === false) {
+                    const freshCategoryCounter = {
+                        name: category,
+                        firstTry: 0,
+                        totalQuestions: 1
+                    };
+                    stateCategories.push(freshCategoryCounter);
+                    setCategoriesWithCorrectAnswers(stateCategories);
+                } else {
+                    stateCategories.forEach(category => {
+                        if (category.name === props.question.category) {
+                            category.totalQuestions++;
+                        }
+                    });
+                    setCategoriesWithCorrectAnswers(stateCategories);
+                }
+            }
+        }
+    }
+
     return (
         <View style={styles.container}>
             <FadeIn>
@@ -92,97 +128,43 @@ const QuestionView: React.FC<props> = (props) => {
                 {props.scoreBoard !== true ? <><Text style={styles.questionHeading}>{props.question.question}</Text>
                         {props.question.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
-                                         style={{
-                                             backgroundColor: correctChoice.includes(optionToChoose.choice) ? "green" : null || wrongAnswer.includes(optionToChoose.choice) ? "red" : "white",
-                                             borderRadius: 10,
-                                             width: 250,
-                                             marginLeft: "auto",
-                                             marginRight: "auto",
-                                             padding: 5,
-                                             marginTop: 10,
-                                             marginBottom: 10,
-                                             shadowOffset: {width: 0, height: 0},
-                                             shadowColor: "#000",
-                                             elevation: 100,
-                                             shadowRadius: 5,
-                                             shadowOpacity: 0.1
-                                         }}><Button
-                                color={correctChoice.includes(optionToChoose.choice) ? "white" : "white" && wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
-                                disabled={answeredCorrectly && !correctChoice.includes(optionToChoose.choice)}
-                                key={optionToChoose.choice}
-                                title={correctChoice.includes(optionToChoose.choice) ? "Correct!" : optionToChoose.choice}
-                                onPress={correctChoice.includes(optionToChoose.choice) ? null : (option) => {
+                                         style={[styles.viewContainer, {backgroundColor: correctChoice.includes(optionToChoose.choice) ? "green" : null || wrongAnswer.includes(optionToChoose.choice) ? "red" : "white"}]}>
 
-                                    if (optionToChoose.isCorrect !== true) {
-                                        let updatedTempWrongAnswers = [...tempWrongAnswers];
-                                        updatedTempWrongAnswers.push(optionToChoose.choice);
-                                        setTempWrongAnswers(updatedTempWrongAnswers);
-                                    } else {
-
-                                        let doesExist = false;
-                                        categoriesWithCorrectAnswers.forEach(category => {
-                                            if (category.name === props.question.category) return doesExist = true;
-                                        });
-
-                                        const category = props.question.category;
-                                        let stateCategories = [...categoriesWithCorrectAnswers];
-
-                                        if (tempWrongAnswers.length === 0) {
-                                            setFirstTryCorrect(firstTryCorrect + 1);
-
-                                            if (doesExist === false) {
-                                                const freshCategoryWithCounter = {
-                                                    name: category,
-                                                    firstTry: 1,
-                                                    totalQuestions: 1
-                                                };
-                                                stateCategories.push(freshCategoryWithCounter);
-                                                setCategoriesWithCorrectAnswers(stateCategories);
-                                            } else {
-                                                stateCategories.forEach(category => {
-                                                    if (category.name === props.question.category) {
-                                                        category.firstTry++;
-                                                        category.totalQuestions++;
-                                                    }
-                                                });
-                                                setCategoriesWithCorrectAnswers(stateCategories);
-                                            }
-                                        } else {
-                                            if (doesExist === false) {
-                                                const freshCategoryCounter = {
-                                                    name: category,
-                                                    firstTry: 0,
-                                                    totalQuestions: 1
-                                                };
-                                                stateCategories.push(freshCategoryCounter);
-                                                setCategoriesWithCorrectAnswers(stateCategories);
-                                            } else {
-                                                stateCategories.forEach(category => {
-                                                    if (category.name === props.question.category) {
-                                                        category.totalQuestions++;
-                                                    }
-                                                });
-                                                setCategoriesWithCorrectAnswers(stateCategories);
-                                            }
-                                        }
-                                    }
-                                    checkIfAnswerIsCorrect(option, optionToChoose);
-                                }
-                                }/></View>;
-
+                                <Button
+                                    color={correctChoice.includes(optionToChoose.choice) ? "white" : "white" && wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
+                                    disabled={answeredCorrectly && !correctChoice.includes(optionToChoose.choice)}
+                                    title={correctChoice.includes(optionToChoose.choice) ? "Correct!" : optionToChoose.choice}
+                                    onPress={correctChoice.includes(optionToChoose.choice) ? null : (option) => {
+                                        checkAndCreateCategoryObject(optionToChoose);
+                                        checkIfAnswerIsCorrect(option, optionToChoose);
+                                    }}/>
+                            </View>;
                         })}
 
                         {answeredCorrectly ?
-                            <View><Text style={styles.congratulationsMessage}>Congratulations! {correctChoice[0]} is
-                                Correct!</Text><Text
-                                style={styles.congratulationsMessage}>{correctChoice[1]}</Text></View> : incorrectChoice.map(choice => {
-                                return <View key={choice.choice}><Text
-                                    style={styles.errorMessage}>[{choice.choice}]: {choice.explanation}</Text></View>;
+                            <View>
+                                <Text
+                                    style={styles.congratulationsMessage}>{correctChoice[1]}
+                                </Text>
+                            </View>
+                            : incorrectChoice.map(choice => {
+                                return (
+                                    <View key={choice.choice}>
+                                        <Text
+                                            style={styles.errorMessage}>[{choice.choice}]: {choice.explanation}
+                                        </Text>
+                                    </View>
+                                );
                             })}
+
                         {answeredCorrectly ?
-                            <View style={styles.nextQuestion}><Button color={"white"} title={"Next Question!"}
-                                                                      onPress={() => props.displayNextQuestion(null, correctChoice)}/></View>
+                            <View style={styles.nextQuestion}>
+                                <Button color={"white"} title={"Next Question!"}
+                                        onPress={() => props.displayNextQuestion(null, correctChoice)}
+                                />
+                            </View>
                             : null}</> :
+                    
                     <Score
                         categoryAnswers={categoriesWithCorrectAnswers}
                         id={props.id}
@@ -197,25 +179,21 @@ const QuestionView: React.FC<props> = (props) => {
     );
 };
 
-const flipStyles = StyleSheet.create({
-    flipCard: {
-        width: 200,
-        height: 100,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "red",
-        backfaceVisibility: "hidden",
-        borderRadius: 10,
-        margin: 10,
-    },
-    flipCardBack: {
-        backgroundColor: "blue",
-        position: "absolute",
-        top: 0
-    }
-});
-
 const styles = StyleSheet.create({
+    viewContainer: {
+        borderRadius: 10,
+        width: 250,
+        marginLeft: "auto",
+        marginRight: "auto",
+        padding: 5,
+        marginTop: 10,
+        marginBottom: 10,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
+    },
     container: {
         padding: 20
     },
