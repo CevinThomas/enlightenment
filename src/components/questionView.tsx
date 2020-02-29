@@ -33,6 +33,10 @@ const QuestionView: React.FC<props> = (props) => {
         correctAnswers: [],
         firstTryCorrect: 0
     });
+    const [categoriesWithCorrectAnswers, setCategoriesWithCorrectAnswers] = useState([]);
+
+
+    const [addWhatCardToFlip, setAddWhatCardToFlip] = useState([]);
 
     useEffect(() => {
         setAnsweredCorrectly(false);
@@ -94,8 +98,14 @@ const QuestionView: React.FC<props> = (props) => {
                                              width: 250,
                                              marginLeft: "auto",
                                              marginRight: "auto",
+                                             padding: 5,
                                              marginTop: 10,
-                                             marginBottom: 10
+                                             marginBottom: 10,
+                                             shadowOffset: {width: 0, height: 0},
+                                             shadowColor: "#000",
+                                             elevation: 100,
+                                             shadowRadius: 5,
+                                             shadowOpacity: 0.1
                                          }}><Button
                                 color={correctChoice.includes(optionToChoose.choice) ? "white" : "white" && wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
                                 disabled={answeredCorrectly && !correctChoice.includes(optionToChoose.choice)}
@@ -108,16 +118,60 @@ const QuestionView: React.FC<props> = (props) => {
                                         updatedTempWrongAnswers.push(optionToChoose.choice);
                                         setTempWrongAnswers(updatedTempWrongAnswers);
                                     } else {
+
+                                        let doesExist = false;
+                                        categoriesWithCorrectAnswers.forEach(category => {
+                                            if (category.name === props.question.category) return doesExist = true;
+                                        });
+
+                                        const category = props.question.category;
+                                        let stateCategories = [...categoriesWithCorrectAnswers];
+
                                         if (tempWrongAnswers.length === 0) {
                                             setFirstTryCorrect(firstTryCorrect + 1);
+
+                                            if (doesExist === false) {
+                                                const freshCategoryWithCounter = {
+                                                    name: category,
+                                                    firstTry: 1,
+                                                    totalQuestions: 1
+                                                };
+                                                stateCategories.push(freshCategoryWithCounter);
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            } else {
+                                                stateCategories.forEach(category => {
+                                                    if (category.name === props.question.category) {
+                                                        category.firstTry++;
+                                                        category.totalQuestions++;
+                                                    }
+                                                });
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            }
+                                        } else {
+                                            if (doesExist === false) {
+                                                const freshCategoryCounter = {
+                                                    name: category,
+                                                    firstTry: 0,
+                                                    totalQuestions: 1
+                                                };
+                                                stateCategories.push(freshCategoryCounter);
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            } else {
+                                                stateCategories.forEach(category => {
+                                                    if (category.name === props.question.category) {
+                                                        category.totalQuestions++;
+                                                    }
+                                                });
+                                                setCategoriesWithCorrectAnswers(stateCategories);
+                                            }
                                         }
                                     }
-
                                     checkIfAnswerIsCorrect(option, optionToChoose);
                                 }
                                 }/></View>;
 
                         })}
+
                         {answeredCorrectly ?
                             <View><Text style={styles.congratulationsMessage}>Congratulations! {correctChoice[0]} is
                                 Correct!</Text><Text
@@ -130,6 +184,7 @@ const QuestionView: React.FC<props> = (props) => {
                                                                       onPress={() => props.displayNextQuestion(null, correctChoice)}/></View>
                             : null}</> :
                     <Score
+                        categoryAnswers={categoriesWithCorrectAnswers}
                         id={props.id}
                         allQuestions={props.allQuestions} firstTry={firstTryCorrect}
                         totalQuestions={props.totalQuestions}
@@ -141,6 +196,24 @@ const QuestionView: React.FC<props> = (props) => {
 
     );
 };
+
+const flipStyles = StyleSheet.create({
+    flipCard: {
+        width: 200,
+        height: 100,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "red",
+        backfaceVisibility: "hidden",
+        borderRadius: 10,
+        margin: 10,
+    },
+    flipCardBack: {
+        backgroundColor: "blue",
+        position: "absolute",
+        top: 0
+    }
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -182,7 +255,12 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         borderRadius: 10,
         color: "white",
-        marginTop: 20
+        marginTop: 20,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     }
 });
 

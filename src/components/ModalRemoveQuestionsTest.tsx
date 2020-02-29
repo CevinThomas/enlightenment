@@ -84,6 +84,11 @@ const styles = StyleSheet.create({
     removeQuestionContainer: {
         borderRadius: 10,
         marginBottom: 15,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     },
     removeHeading: {
         color: "green",
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
     },
     removeQuestion: {
         fontSize: 12,
-        padding: 10
+        padding: 10,
     },
     mainButtonContainer: {
         display: "flex",

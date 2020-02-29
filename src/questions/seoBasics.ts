@@ -1,11 +1,14 @@
+import {SeoCategories} from "../enums/seo";
+
 const initialQuestions = [
     {
         question: "What is Pogo Sticking?",
+        category: SeoCategories.analytics,
         options: [
             {
                 choice: "The act of visiting a website, then quickly leaving it",
                 isCorrect: true,
-                explanation: "This is incorrect due to ..."
+                explanation: "This is incorrect due to ...",
             },
             {
                 choice: "An SEO Tool",
@@ -26,6 +29,7 @@ const initialQuestions = [
     },
     {
         question: "What tool can you use to track SEO of a website?",
+        category: SeoCategories.analytics,
         options: [
             {
                 choice: "SEO Spider",
@@ -51,6 +55,7 @@ const initialQuestions = [
     },
     {
         question: "What do you mean by Backlink?",
+        category: SeoCategories.analytics,
         options: [
             {
                 choice: "Incoming Links",
@@ -58,17 +63,17 @@ const initialQuestions = [
                 explanation: "The incoming links to your website or webpage are referred to as Backlink. It is also called as an inbound link."
             },
             {
-                choice: "Option 2",
+                choice: "Option 26",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 3",
+                choice: "Option 34",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 4",
+                choice: "Option 47",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             }
@@ -76,6 +81,7 @@ const initialQuestions = [
     },
     {
         question: "What is the main purpose of using keyword in SEO?",
+        category: SeoCategories.tools,
         options: [
             {
                 choice: "Keywords are used by search engines to populate the subjects over the internet",
@@ -83,17 +89,17 @@ const initialQuestions = [
                 explanation: "Search engine stores keywords in the database, and when a search is done, it will come up with the best possible match."
             },
             {
-                choice: "Option 2",
+                choice: "Option 24",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 3",
+                choice: "Option 32",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
             },
             {
-                choice: "Option 4",
+                choice: "Option 41",
                 isCorrect: false,
                 explanation: "This is incorrect due to ..."
 
@@ -102,6 +108,7 @@ const initialQuestions = [
     },
     {
         question: "What is keyword stemming?",
+        category: SeoCategories.tools,
         options: [
             {
                 choice: "The process of finding out new keywords",

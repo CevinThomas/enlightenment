@@ -15,8 +15,10 @@ const Home = ({navigation}) => {
             </View>
 
             <View style={styles.buttonContainer}>
-                <FlatList keyExtractor={(item, index) => index.toString()} data={["SEO", "JavaScript"]}
-                          renderItem={({item}) => <ButtonList key={item} navigation={navigation} boxTitle={item}/>}/>
+                <FlatList keyExtractor={(item, index) => index.toString()}
+                          data={["SEO", "JavaScript", "TestOne", "TestTwo", "TestThree", "TestFour"]}
+                          renderItem={({item}) => <ButtonList key={item} navigation={navigation}
+                                                              boxTitle={item}/>}/>
             </View>
         </View>
     );
@@ -27,7 +29,12 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 20,
         padding: 30,
-        marginTop: 20
+        marginTop: 20,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     },
     container: {
         flex: 1,
@@ -38,13 +45,14 @@ const styles = StyleSheet.create({
     secondaryText: {
         color: "green",
         fontSize: 14,
-        lineHeight: 25,
+        lineHeight: 25
     },
     buttonContainer: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        flex: 1
     },
 
     mainHeading: {
