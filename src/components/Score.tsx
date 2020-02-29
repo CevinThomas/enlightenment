@@ -88,7 +88,12 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         marginTop: 15,
         padding: 15,
-        borderRadius: 10
+        borderRadius: 10,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
 
     },
     container: {
@@ -106,15 +111,18 @@ const styles = StyleSheet.create({
     },
     titles: {
         color: "green",
-
-
     },
     buttonContainer: {
         marginTop: 20,
         backgroundColor: "green",
         borderRadius: 10,
         padding: 10,
-        textAlign: "center"
+        textAlign: "center",
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     }
 });
 

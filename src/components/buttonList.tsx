@@ -26,7 +26,16 @@ const ButtonList = (props) => {
         <View style={styles.container}>
             <View style={styles.innerContainer}>
                 <ImageBackground source={require("../../assets/images/turquoise-1540436_1280.png")}
-                                 style={{width: "100%", height: "100%", borderRadius: 10}}>
+                                 style={{
+                                     width: "100%",
+                                     height: "100%",
+                                     borderRadius: 10,
+                                     shadowOffset: {width: 0, height: 0},
+                                     shadowColor: "#000",
+                                     elevation: 100,
+                                     shadowRadius: 5,
+                                     shadowOpacity: 0.1
+                                 }}>
                     <Text onPress={(event) => f(event, props.boxTitle.toLowerCase())}
                           style={{
                               color: "white",

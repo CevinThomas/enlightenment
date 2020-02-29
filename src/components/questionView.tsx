@@ -35,6 +35,9 @@ const QuestionView: React.FC<props> = (props) => {
     });
     const [categoriesWithCorrectAnswers, setCategoriesWithCorrectAnswers] = useState([]);
 
+
+    const [addWhatCardToFlip, setAddWhatCardToFlip] = useState([]);
+
     useEffect(() => {
         setAnsweredCorrectly(false);
         setIncorrectChoice([]);
@@ -95,8 +98,14 @@ const QuestionView: React.FC<props> = (props) => {
                                              width: 250,
                                              marginLeft: "auto",
                                              marginRight: "auto",
+                                             padding: 5,
                                              marginTop: 10,
-                                             marginBottom: 10
+                                             marginBottom: 10,
+                                             shadowOffset: {width: 0, height: 0},
+                                             shadowColor: "#000",
+                                             elevation: 100,
+                                             shadowRadius: 5,
+                                             shadowOpacity: 0.1
                                          }}><Button
                                 color={correctChoice.includes(optionToChoose.choice) ? "white" : "white" && wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
                                 disabled={answeredCorrectly && !correctChoice.includes(optionToChoose.choice)}
@@ -162,6 +171,7 @@ const QuestionView: React.FC<props> = (props) => {
                                 }/></View>;
 
                         })}
+
                         {answeredCorrectly ?
                             <View><Text style={styles.congratulationsMessage}>Congratulations! {correctChoice[0]} is
                                 Correct!</Text><Text
@@ -186,6 +196,24 @@ const QuestionView: React.FC<props> = (props) => {
 
     );
 };
+
+const flipStyles = StyleSheet.create({
+    flipCard: {
+        width: 200,
+        height: 100,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "red",
+        backfaceVisibility: "hidden",
+        borderRadius: 10,
+        margin: 10,
+    },
+    flipCardBack: {
+        backgroundColor: "blue",
+        position: "absolute",
+        top: 0
+    }
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -227,7 +255,12 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         borderRadius: 10,
         color: "white",
-        marginTop: 20
+        marginTop: 20,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     }
 });
 
