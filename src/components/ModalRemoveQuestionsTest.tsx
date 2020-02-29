@@ -45,7 +45,7 @@ class ModalRemoveQuestionsTest extends Component {
             await AsyncStorage.setItem(this.props.id.toString(), "");
             this.props.navigation.navigate("Home");
         } catch (e) {
-
+            console.log(e);
         }
     }
 
@@ -54,6 +54,7 @@ class ModalRemoveQuestionsTest extends Component {
             <View style={styles.container}>
                 <View style={styles.removeContainer}>
                     <Text style={styles.removeHeading}>What Questions do you want to remove?</Text>
+
                     {this.props.allQuestions.map(question => {
                         return <TouchableOpacity
                             key={question.question}
@@ -61,17 +62,22 @@ class ModalRemoveQuestionsTest extends Component {
                             style={[styles.removeQuestion, {
                                 color: this.state.removedQuestions.includes(question.question) ? "white" : "green",
                             }]}
-                            onPress={this.state.removedQuestions.includes(question.question) ? (event) => this.recallQuestion(event, question.question) : (event) => this.removeQuestion(event, question.question)}>{question.question}</Text></TouchableOpacity>;
+                            onPress={this.state.removedQuestions.includes(question.question) ? (event) => this.recallQuestion(event, question.question) : (event) => this.removeQuestion(event, question.question)}>{question.question}</Text>
+                        </TouchableOpacity>;
                     })}
                 </View>
+
                 <View>
                     <View style={styles.mainButtonContainer}>
+
                         <TouchableOpacity style={styles.buttonContainerTwo} onPress={this.updateQuestions.bind(this)}>
                             <Text style={{color: "white"}}>Update Questions</Text>
                         </TouchableOpacity>
+
                         <TouchableOpacity style={styles.buttonContainerTwo} onPress={this.resetQuestions.bind(this)}>
                             <Text style={{color: "white"}}>Reset Questions</Text>
                         </TouchableOpacity>
+                        
                     </View>
                 </View>
             </View>

@@ -24,99 +24,121 @@ const QuestionView: React.FC<props> = (props) => {
         setTempWrongAnswers([]);
     }, [props.question]);
 
+    function correctAnswer(event, choice) {
+        let correctArray = [choice.choice, choice.explanation];
+        setCorrectChoice(correctArray);
+        setAnsweredCorrectly(true);
+        let correct = [...results.correctAnswers];
+
+        if (!correct.includes(choice.choice)) {
+            correct.push(choice.choice);
+            setResults({
+                ...results,
+                correctAnswers: correct
+            });
+        }
+    }
+
+    function wrongAnswerExec(event, choice) {
+        let wrong = [...results.wrongAnswers];
+        if (!wrong.includes(choice.choice)) {
+            wrong.push(choice.choice);
+            setResults({
+                ...results,
+                wrongAnswers: wrong
+            });
+        }
+
+        let updatedWrongAnswers = [...wrongAnswer];
+        updatedWrongAnswers.push(choice.choice);
+        setWrongAnswer(updatedWrongAnswers);
+        let updatedIncorrectChoices = [...incorrectChoice];
+        const toAdd = updatedIncorrectChoices.every(obj => {
+            return obj.choice !== choice.choice;
+        });
+
+        if (toAdd !== false) {
+            updatedIncorrectChoices.push({choice: choice.choice, explanation: choice.explanation});
+            setIncorrectChoice(updatedIncorrectChoices);
+        }
+    }
+
+    function createNewTempWrongAnswers(optionToChoose) {
+        let updatedTempWrongAnswers = [...tempWrongAnswers];
+        updatedTempWrongAnswers.push(optionToChoose.choice);
+        setTempWrongAnswers(updatedTempWrongAnswers);
+    }
+
     function checkIfAnswerIsCorrect(event, choice) {
         if (choice.isCorrect === true) {
-            let correctArray = [choice.choice, choice.explanation];
-            setCorrectChoice(correctArray);
-            setAnsweredCorrectly(true);
-            let correct = [...results.correctAnswers];
-            if (!correct.includes(choice.choice)) {
-                correct.push(choice.choice);
-                setResults({
-                    ...results,
-                    correctAnswers: correct
-                });
-            }
-
+            correctAnswer(event, choice);
         } else {
-            let wrong = [...results.wrongAnswers];
-            if (!wrong.includes(choice.choice)) {
-                wrong.push(choice.choice);
-                setResults({
-                    ...results,
-                    wrongAnswers: wrong
-                });
-            }
+            wrongAnswerExec(event, choice);
+        }
+    }
 
-            let updatedWrongAnswers = [...wrongAnswer];
-            updatedWrongAnswers.push(choice.choice);
-            setWrongAnswer(updatedWrongAnswers);
-            let updatedIncorrectChoices = [...incorrectChoice];
-            const toAdd = updatedIncorrectChoices.every(obj => {
-                return obj.choice !== choice.choice;
+    function firstTryCorrectExec(stateCategories, category, doesExist) {
+        setFirstTryCorrect(firstTryCorrect + 1);
+
+        if (doesExist === false) {
+            const freshCategoryWithCounter = {
+                name: category,
+                firstTry: 1,
+                totalQuestions: 1
+            };
+            stateCategories.push(freshCategoryWithCounter);
+            setCategoriesWithCorrectAnswers(stateCategories);
+        } else {
+            stateCategories.forEach(category => {
+                if (category.name === props.question.category) {
+                    category.firstTry++;
+                    category.totalQuestions++;
+                }
             });
+            setCategoriesWithCorrectAnswers(stateCategories);
+        }
+    }
 
-            if (toAdd !== false) {
-                updatedIncorrectChoices.push({choice: choice.choice, explanation: choice.explanation});
-                setIncorrectChoice(updatedIncorrectChoices);
-            }
+    function notFirstTryCorrect(doesExist, category, stateCategories) {
+        if (doesExist === false) {
+            const freshCategoryCounter = {
+                name: category,
+                firstTry: 0,
+                totalQuestions: 1
+            };
+            stateCategories.push(freshCategoryCounter);
+            setCategoriesWithCorrectAnswers(stateCategories);
+        } else {
+            stateCategories.forEach(category => {
+                if (category.name === props.question.category) {
+                    category.totalQuestions++;
+                }
+            });
+            setCategoriesWithCorrectAnswers(stateCategories);
+        }
+    }
 
+    function checkAndCreateExists() {
+        let doesExist = false;
+        categoriesWithCorrectAnswers.forEach(category => {
+            if (category.name === props.question.category) return doesExist = true;
+        });
+
+        const category = props.question.category;
+        let stateCategories = [...categoriesWithCorrectAnswers];
+
+        if (tempWrongAnswers.length === 0) {
+            firstTryCorrectExec(stateCategories, category, doesExist);
+        } else {
+            notFirstTryCorrect(doesExist, category, stateCategories);
         }
     }
 
     function checkAndCreateCategoryObject(optionToChoose) {
         if (optionToChoose.isCorrect !== true) {
-            let updatedTempWrongAnswers = [...tempWrongAnswers];
-            updatedTempWrongAnswers.push(optionToChoose.choice);
-            setTempWrongAnswers(updatedTempWrongAnswers);
+            createNewTempWrongAnswers(optionToChoose);
         } else {
-
-            let doesExist = false;
-            categoriesWithCorrectAnswers.forEach(category => {
-                if (category.name === props.question.category) return doesExist = true;
-            });
-
-            const category = props.question.category;
-            let stateCategories = [...categoriesWithCorrectAnswers];
-
-            if (tempWrongAnswers.length === 0) {
-                setFirstTryCorrect(firstTryCorrect + 1);
-
-                if (doesExist === false) {
-                    const freshCategoryWithCounter = {
-                        name: category,
-                        firstTry: 1,
-                        totalQuestions: 1
-                    };
-                    stateCategories.push(freshCategoryWithCounter);
-                    setCategoriesWithCorrectAnswers(stateCategories);
-                } else {
-                    stateCategories.forEach(category => {
-                        if (category.name === props.question.category) {
-                            category.firstTry++;
-                            category.totalQuestions++;
-                        }
-                    });
-                    setCategoriesWithCorrectAnswers(stateCategories);
-                }
-            } else {
-                if (doesExist === false) {
-                    const freshCategoryCounter = {
-                        name: category,
-                        firstTry: 0,
-                        totalQuestions: 1
-                    };
-                    stateCategories.push(freshCategoryCounter);
-                    setCategoriesWithCorrectAnswers(stateCategories);
-                } else {
-                    stateCategories.forEach(category => {
-                        if (category.name === props.question.category) {
-                            category.totalQuestions++;
-                        }
-                    });
-                    setCategoriesWithCorrectAnswers(stateCategories);
-                }
-            }
+            checkAndCreateExists();
         }
     }
 
@@ -164,7 +186,7 @@ const QuestionView: React.FC<props> = (props) => {
                                 />
                             </View>
                             : null}</> :
-                    
+
                     <Score
                         categoryAnswers={categoriesWithCorrectAnswers}
                         id={props.id}
