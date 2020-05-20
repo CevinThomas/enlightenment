@@ -24,11 +24,16 @@ const Score = ({results, ...props}) => {
                 </View>
 
                 <View style={styles.textContainer}>
+
                     <Text style={styles.titles}>Total amount of questions: {props.totalQuestions}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
-                    <Text style={styles.titles}>First Try Correct: {props.firstTry}</Text>
+                    <Text style={styles.titles}>Correct attempts: {results.correctAnswers.length}</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text style={styles.titles}>Wrong attempts: {results.wrongAnswers.length}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
@@ -37,20 +42,12 @@ const Score = ({results, ...props}) => {
                 </View>
 
                 <View style={styles.textContainer}>
-                    <Text style={styles.titles}>Wrong attempts: {results.wrongAnswers.length}</Text>
-                </View>
-
-                <View style={styles.textContainer}>
-                    <Text style={styles.titles}>Correct attempts: {results.correctAnswers.length}</Text>
-                </View>
-
-                <View style={styles.textContainer}>
                     <Text style={[styles.titles, {marginBottom: 10}]}>Categories used:</Text>
 
                     {props.categoryAnswers.map(category => {
                         return (
                             <View key={category.name}>
-                                <Text style={styles.titles}>{category.name} Scored: {category.firstTry} out
+                                <Text style={styles.titles}>{category.name} Scored: {category.timesCorrect} out
                                     of {category.totalQuestions}</Text>
                             </View>
                         );

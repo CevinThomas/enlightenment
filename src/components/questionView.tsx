@@ -86,42 +86,36 @@ const QuestionView: React.FC = (props) => {
     function correctAnswer(event, choice) {
         let guessedChoiceInformation = [choice.choice, choice.explanation];
         let previousCorrectAnswers = [...questionsData.results.correctAnswers];
-        let previousStateCategories = [questionsData.results.stateWithCategories];
+        let previousStateCategories = [...questionsData.results.stateWithCategories];
+        let previousCategories = [...questionsData.categories];
         previousCorrectAnswers.push(choice.choice);
 
-        setCategoryAlreadyExists(false);
-        questionsData.categories.forEach(category => {
-            if (category.name === props.question.category) return setCategoryAlreadyExists(true);
-        });
-
         const category = props.question.category;
-        if (categoryAlreadyExists === false) {
-            setCurrentCategory(category)
-        }
 
-        if (categoryAlreadyExists === false) {
+        if (questionsData.categories.includes(category)) {
+            questionsData.results.stateWithCategories.forEach(item => {
+                console.log(category)
+                if (item.name === category) {
+                    item.timesCorrect++;
+                    item.totalQuestions++;
+                }
+            });
+        } else {
+            previousCategories.push(category);
             const freshCategoryWithCounter = {
-                name: currentCategory,
+                name: category,
                 timesCorrect: 1,
                 totalQuestions: 1,
             }
 
             previousStateCategories.push(freshCategoryWithCounter);
-
-        } else {
-            questionsData.results.stateWithCategories.forEach(category => {
-                if (category.name === currentCategory) {
-                    category.timesCorrect++;
-                    category.totalQuestions++;
-                }
-            });
         }
-
 
         setQuestionsData({
             ...questionsData,
             guessChoice: guessedChoiceInformation,
             rightAnswerGuessed: true,
+            categories: previousCategories,
             results: {
                 ...questionsData.results,
                 correctAnswers: previousCorrectAnswers,
@@ -129,6 +123,9 @@ const QuestionView: React.FC = (props) => {
                 stateWithCategories: previousStateCategories
             }
         })
+
+        console.log(questionsData.categories);
+        console.log(questionsData.results.stateWithCategories);
 
         setTimeout(() => {
             props.displayNextQuestion(null, questionsData.guessChoice)
@@ -189,7 +186,7 @@ const QuestionView: React.FC = (props) => {
                         categoryAnswers={questionsData.results.stateWithCategories}
 
                         id={props.id}
-                        allQuestions={props.allQuestions} firstTry={firstTryCorrect}
+                        allQuestions={props.allQuestions} firstTry={questionsData.results.timesCorrect}
                         totalQuestions={props.totalQuestions}
                         navigation={props.navigation}
                         results={questionsData.results}/>}
