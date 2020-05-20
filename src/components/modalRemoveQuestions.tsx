@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
-class ModalRemoveQuestionsTest extends Component {
+class ModalRemoveQuestions extends Component {
 
     state = {
         modalVisible: false,
@@ -77,14 +77,14 @@ class ModalRemoveQuestionsTest extends Component {
                         <TouchableOpacity style={styles.buttonContainerTwo} onPress={this.resetQuestions.bind(this)}>
                             <Text style={{color: "white"}}>Reset Questions</Text>
                         </TouchableOpacity>
-                        
+
                     </View>
                 </View>
             </View>
         );
     }
 
-};
+}
 
 const styles = StyleSheet.create({
     removeQuestionContainer: {
@@ -149,4 +149,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModalRemoveQuestionsTest;
+export default ModalRemoveQuestions;

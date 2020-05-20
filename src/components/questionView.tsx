@@ -1,144 +1,145 @@
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from "react-native";
-import Score from "./Score";
+import Score from "./score";
 import FadeIn from "./fadeIn";
 
-const QuestionView: React.FC<props> = (props) => {
+const QuestionView: React.FC = (props) => {
 
-    const [correctChoice, setCorrectChoice] = useState([]);
-    const [incorrectChoice, setIncorrectChoice] = useState([]);
-    const [wrongAnswer, setWrongAnswer] = useState([]);
-    const [answeredCorrectly, setAnsweredCorrectly] = useState(false);
-    const [firstTryCorrect, setFirstTryCorrect] = useState(0);
-    const [tempWrongAnswers, setTempWrongAnswers] = useState([]);
-    const [results, setResults] = useState({
-        wrongAnswers: [],
-        correctAnswers: [],
-        firstTryCorrect: 0
+    const [questionsData, setQuestionsData] = useState<any>({
+        rightAnswer: {},
+        rightAnswerGuessed: false,
+        wrongAnswerGuessed: false,
+        guessChoice: [],
+        categories: [],
+        results: {
+            wrongAnswersWithExplanation: [],
+            wrongAnswers: [],
+            correctAnswers: [],
+            timesCorrect: 0,
+            stateWithCategories: [],
+        }
     });
-    const [categoriesWithCorrectAnswers, setCategoriesWithCorrectAnswers] = useState([]);
+    const [categoryAlreadyExists, setCategoryAlreadyExists] = useState<boolean>(false);
+    const [currentCategory, setCurrentCategory] = useState<string>("");
+    const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
 
     useEffect(() => {
-        setAnsweredCorrectly(false);
-        setIncorrectChoice([]);
-        setTempWrongAnswers([]);
+        const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
+        setDisplayCorrectAnswer(false);
+
+        setQuestionsData({
+            ...questionsData,
+            rightAnswer: correctAnswer,
+            rightAnswerGuessed: false,
+            wrongAnswerGuessed: false
+        })
     }, [props.question]);
 
-    function correctAnswer(event, choice) {
-        let correctArray = [choice.choice, choice.explanation];
-        setCorrectChoice(correctArray);
-        setAnsweredCorrectly(true);
-        let correct = [...results.correctAnswers];
+    function wrongAnswer(event, choice) {
 
-        if (!correct.includes(choice.choice)) {
-            correct.push(choice.choice);
-            setResults({
-                ...results,
-                correctAnswers: correct
-            });
-        }
-    }
+        let updatedWrongAnswers = [...questionsData.results.wrongAnswers];
+        let previousStateCategories = [questionsData.results.stateWithCategories];
+        updatedWrongAnswers.push({choice: choice.choice, explanation: choice.explanation});
 
-    function wrongAnswerExec(event, choice) {
-        let wrong = [...results.wrongAnswers];
-        if (!wrong.includes(choice.choice)) {
-            wrong.push(choice.choice);
-            setResults({
-                ...results,
-                wrongAnswers: wrong
-            });
-        }
-
-        let updatedWrongAnswers = [...wrongAnswer];
-        updatedWrongAnswers.push(choice.choice);
-        setWrongAnswer(updatedWrongAnswers);
-        let updatedIncorrectChoices = [...incorrectChoice];
-        const toAdd = updatedIncorrectChoices.every(obj => {
-            return obj.choice !== choice.choice;
+        setCategoryAlreadyExists(false);
+        questionsData.categories.forEach(category => {
+            if (category.name === props.question.category) return setCategoryAlreadyExists(true);
         });
 
-        if (toAdd !== false) {
-            updatedIncorrectChoices.push({choice: choice.choice, explanation: choice.explanation});
-            setIncorrectChoice(updatedIncorrectChoices);
+        const category = props.question.category;
+        if (categoryAlreadyExists === false) {
+            setCurrentCategory(category)
         }
+
+        if (categoryAlreadyExists === false) {
+            const freshCategoryCounter = {
+                name: currentCategory,
+                firstTry: 0,
+                totalQuestions: 1
+            };
+
+            previousStateCategories.push(freshCategoryCounter);
+
+        } else {
+            previousStateCategories.forEach(category => {
+                if (category.name === props.question.category) {
+                    category.totalQuestions++;
+                }
+            });
+        }
+
+        setQuestionsData({
+            ...questionsData,
+            wrongAnswerGuessed: true,
+            results: {
+                ...questionsData.results,
+                wrongAnswersWithExplanation: updatedWrongAnswers,
+                wrongAnswers: [choice.choice],
+                stateWithCategories: previousStateCategories
+            }
+        })
+
+        setDisplayCorrectAnswer(true);
+
     }
 
-    function createNewTempWrongAnswers(optionToChoose) {
-        let updatedTempWrongAnswers = [...tempWrongAnswers];
-        updatedTempWrongAnswers.push(optionToChoose.choice);
-        setTempWrongAnswers(updatedTempWrongAnswers);
+    function correctAnswer(event, choice) {
+        let guessedChoiceInformation = [choice.choice, choice.explanation];
+        let previousCorrectAnswers = [...questionsData.results.correctAnswers];
+        let previousStateCategories = [questionsData.results.stateWithCategories];
+        previousCorrectAnswers.push(choice.choice);
+
+        setCategoryAlreadyExists(false);
+        questionsData.categories.forEach(category => {
+            if (category.name === props.question.category) return setCategoryAlreadyExists(true);
+        });
+
+        const category = props.question.category;
+        if (categoryAlreadyExists === false) {
+            setCurrentCategory(category)
+        }
+
+        if (categoryAlreadyExists === false) {
+            const freshCategoryWithCounter = {
+                name: currentCategory,
+                timesCorrect: 1,
+                totalQuestions: 1,
+            }
+
+            previousStateCategories.push(freshCategoryWithCounter);
+
+        } else {
+            questionsData.results.stateWithCategories.forEach(category => {
+                if (category.name === currentCategory) {
+                    category.timesCorrect++;
+                    category.totalQuestions++;
+                }
+            });
+        }
+
+
+        setQuestionsData({
+            ...questionsData,
+            guessChoice: guessedChoiceInformation,
+            rightAnswerGuessed: true,
+            results: {
+                ...questionsData.results,
+                correctAnswers: previousCorrectAnswers,
+                timesCorrect: questionsData.results.timesCorrect + 1,
+                stateWithCategories: previousStateCategories
+            }
+        })
+
+        setTimeout(() => {
+            props.displayNextQuestion(null, questionsData.guessChoice)
+        }, 1000)
     }
 
     function checkIfAnswerIsCorrect(event, choice) {
         if (choice.isCorrect === true) {
             correctAnswer(event, choice);
         } else {
-            wrongAnswerExec(event, choice);
-        }
-    }
-
-    function firstTryCorrectExec(stateCategories, category, doesExist) {
-        setFirstTryCorrect(firstTryCorrect + 1);
-
-        if (doesExist === false) {
-            const freshCategoryWithCounter = {
-                name: category,
-                firstTry: 1,
-                totalQuestions: 1
-            };
-            stateCategories.push(freshCategoryWithCounter);
-            setCategoriesWithCorrectAnswers(stateCategories);
-        } else {
-            stateCategories.forEach(category => {
-                if (category.name === props.question.category) {
-                    category.firstTry++;
-                    category.totalQuestions++;
-                }
-            });
-            setCategoriesWithCorrectAnswers(stateCategories);
-        }
-    }
-
-    function notFirstTryCorrect(doesExist, category, stateCategories) {
-        if (doesExist === false) {
-            const freshCategoryCounter = {
-                name: category,
-                firstTry: 0,
-                totalQuestions: 1
-            };
-            stateCategories.push(freshCategoryCounter);
-            setCategoriesWithCorrectAnswers(stateCategories);
-        } else {
-            stateCategories.forEach(category => {
-                if (category.name === props.question.category) {
-                    category.totalQuestions++;
-                }
-            });
-            setCategoriesWithCorrectAnswers(stateCategories);
-        }
-    }
-
-    function checkAndCreateExists() {
-        let doesExist = false;
-        categoriesWithCorrectAnswers.forEach(category => {
-            if (category.name === props.question.category) return doesExist = true;
-        });
-
-        const category = props.question.category;
-        let stateCategories = [...categoriesWithCorrectAnswers];
-
-        if (tempWrongAnswers.length === 0) {
-            firstTryCorrectExec(stateCategories, category, doesExist);
-        } else {
-            notFirstTryCorrect(doesExist, category, stateCategories);
-        }
-    }
-
-    function checkAndCreateCategoryObject(optionToChoose) {
-        if (optionToChoose.isCorrect !== true) {
-            createNewTempWrongAnswers(optionToChoose);
-        } else {
-            checkAndCreateExists();
+            wrongAnswer(event, choice);
         }
     }
 
@@ -150,50 +151,48 @@ const QuestionView: React.FC<props> = (props) => {
                 {props.scoreBoard !== true ? <><Text style={styles.questionHeading}>{props.question.question}</Text>
                         {props.question.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
-                                         style={[styles.viewContainer, {backgroundColor: correctChoice.includes(optionToChoose.choice) ? "green" : null || wrongAnswer.includes(optionToChoose.choice) ? "red" : "white"}]}>
+                                         style={
+                                             [
+                                                 styles.viewContainer,
+                                                 {
+                                                     backgroundColor:
+                                                         displayCorrectAnswer === true && questionsData.rightAnswer.choice === optionToChoose.choice ? "green" :
+                                                             questionsData.results.wrongAnswers.includes(optionToChoose.choice) ? "red" :
+                                                                 questionsData.guessChoice.includes(optionToChoose.choice) ? "green" : "white"
+                                                 },
+                                             ]}>
 
                                 <Button
-                                    color={correctChoice.includes(optionToChoose.choice) ? "white" : "white" && wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
-                                    disabled={answeredCorrectly && !correctChoice.includes(optionToChoose.choice)}
-                                    title={correctChoice.includes(optionToChoose.choice) ? "Correct!" : optionToChoose.choice}
-                                    onPress={correctChoice.includes(optionToChoose.choice) ? null : (option) => {
-                                        checkAndCreateCategoryObject(optionToChoose);
+                                    color={questionsData.guessChoice.includes(optionToChoose.choice) ? "white" : "white" && questionsData.results.wrongAnswers.includes(optionToChoose.choice) ? "white" : "green"}
+                                    disabled={questionsData.rightAnswerGuessed && !questionsData.guessChoice.includes(optionToChoose.choice) || questionsData.wrongAnswerGuessed}
+                                    title={optionToChoose.choice}
+                                    onPress={questionsData.guessChoice.includes(optionToChoose.choice) ? null : (option) => {
                                         checkIfAnswerIsCorrect(option, optionToChoose);
                                     }}/>
                             </View>;
                         })}
 
-                        {answeredCorrectly ?
-                            <View>
-                                <Text
-                                    style={styles.congratulationsMessage}>{correctChoice[1]}
-                                </Text>
-                            </View>
-                            : incorrectChoice.map(choice => {
-                                return (
-                                    <View key={choice.choice}>
-                                        <Text
-                                            style={styles.errorMessage}>[{choice.choice}]: {choice.explanation}
-                                        </Text>
-                                    </View>
-                                );
-                            })}
-
-                        {answeredCorrectly ?
-                            <View style={styles.nextQuestion}>
-                                <Button color={"white"} title={"Next Question!"}
-                                        onPress={() => props.displayNextQuestion(null, correctChoice)}
-                                />
-                            </View>
+                        {questionsData.wrongAnswerGuessed ?
+                            <React.Fragment>
+                                <View>
+                                    {<Text style={styles.errorMessage}>{questionsData.rightAnswer.explanation}</Text>}
+                                </View>
+                                <View style={styles.nextQuestion}>
+                                    <Button color={"white"} title={"Next Question!"}
+                                            onPress={() => props.displayNextQuestion(null, questionsData.guessChoice)}
+                                    />
+                                </View>
+                            </React.Fragment>
                             : null}</> :
 
                     <Score
-                        categoryAnswers={categoriesWithCorrectAnswers}
+                        categoryAnswers={questionsData.results.stateWithCategories}
+
                         id={props.id}
                         allQuestions={props.allQuestions} firstTry={firstTryCorrect}
                         totalQuestions={props.totalQuestions}
                         navigation={props.navigation}
-                        results={results}/>}
+                        results={questionsData.results}/>}
 
             </FadeIn>
         </View>

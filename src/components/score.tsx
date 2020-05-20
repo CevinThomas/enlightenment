@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import ModalRemoveQuestionsTest from "./ModalRemoveQuestionsTest";
-import Modal from "./Modal";
+import ModalRemoveQuestions from "./modalRemoveQuestions";
+import Modal from "./modal";
 import FadeIn from "./fadeIn";
 
 
@@ -10,6 +10,7 @@ const Score = ({results, ...props}) => {
     const [percentageCorrect, setPercentageCorrect] = useState(0);
 
     useEffect(() => {
+        console.log(results);
         setPercentageCorrect(
             (props.firstTry / props.totalQuestions) * 100
         );
@@ -65,7 +66,7 @@ const Score = ({results, ...props}) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity>
-                    <Modal children={<ModalRemoveQuestionsTest {...props} />}/>
+                    <Modal children={<ModalRemoveQuestions {...props} />}/>
                 </TouchableOpacity>
 
             </FadeIn>

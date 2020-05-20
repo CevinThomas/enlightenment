@@ -4,11 +4,12 @@ import QuestionView from "./questionView";
 
 const TopicRoute = (props) => {
 
-    const [counterForQuestions, setCounterForQuestions] = useState(0);
+    const [counterForQuestions, setCounterForQuestions] = useState<number>(0);
     const [currentQuestion, setCurrentQuestion] = useState();
-    const [dispalyScoreBoard, setDispalyScoreBoard] = useState(false);
-    const [numberOfQuestions, setNumberOfQuestions] = useState(0);
-    const [savedQuestions, setSavedQuestions] = useState([]);
+    const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
+    const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
+    const [savedQuestions, setSavedQuestions] = useState<[]>([]);
+    const [questionsAreShowing, setQuestionsAreShowing] = useState<boolean>(false);
 
     function shuffle(array: any) {
         array.sort(() => Math.random() - 0.5);
@@ -50,9 +51,14 @@ const TopicRoute = (props) => {
         }
     }
 
+    function questionsAreBeingShownHandler(beingShown: boolean): void {
+        setQuestionsAreShowing(beingShown);
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>{props.route.params.name}</Text>
+            {questionsAreShowing !== true ? <Text style={styles.heading}>{props.route.params.name}</Text> : null}
+
 
             <View>{currentQuestion !== undefined ?
 
@@ -70,7 +76,11 @@ const TopicRoute = (props) => {
 
             {counterForQuestions === 0 ?
 
-                <TouchableOpacity onPress={displayCorrectQuestion} style={styles.startedButtonContainer}>
+                <TouchableOpacity onPress={() => {
+                    questionsAreBeingShownHandler(true);
+                displayCorrectQuestion()
+                }
+                } style={styles.startedButtonContainer}>
                     <Text style={styles.getStarted}>Let's Get Started!</Text>
                 </TouchableOpacity>
 
