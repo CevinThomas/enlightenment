@@ -13,6 +13,7 @@ const QuestionView: React.FC = (props) => {
         rightAnswerGuessed: false,
         wrongAnswerGuessed: false,
         guessChoice: [],
+        guesses: [],
         categories: [],
         results: {
             wrongAnswersWithExplanation: [],
@@ -43,12 +44,19 @@ const QuestionView: React.FC = (props) => {
 
     function wrongAnswer(event, choice) {
 
+        updateQuestionProperty(event, choice);
+
+        let previousGuesses = [...questionsData.guesses];
         let updatedWrongAnswers = [...questionsData.results.wrongAnswers];
         let previousStateCategories = [...questionsData.results.stateWithCategories];
         let previousCategories = [...questionsData.categories];
         updatedWrongAnswers.push({choice: choice.choice, explanation: choice.explanation});
 
         const category = props.question.category;
+
+        if (!previousGuesses.includes(choice.choice)) {
+            previousGuesses.push(choice.choice);
+        }
 
         if (questionsData.categories.includes(category)) {
             questionsData.results.stateWithCategories.forEach(item => {
@@ -71,6 +79,7 @@ const QuestionView: React.FC = (props) => {
             ...questionsData,
             wrongAnswerGuessed: true,
             categories: previousCategories,
+            guesses: previousGuesses,
             results: {
                 ...questionsData.results,
                 wrongAnswersWithExplanation: updatedWrongAnswers,
@@ -173,13 +182,19 @@ const QuestionView: React.FC = (props) => {
                                                      backgroundColor:
                                                          displayCorrectAnswer === true && questionsData.rightAnswer.choice === optionToChoose.choice ? "green" :
                                                              questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
-                                                                 questionsData.guessChoice.includes(optionToChoose.choice) ? "green" : "white"
+                                                                 questionsData.guessChoice.includes(optionToChoose.choice) ? "green" :
+                                                                     questionsData.rightAnswer.choice === optionToChoose.choice && questionsData.currentQuestion.answered === Answered.yes ? "green" :
+                                                                         questionsData.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === Answered.yes ? "red" : "white"
                                                  },
                                              ]}>
 
                                 <Button
-                                    color={questionsData.guessChoice.includes(optionToChoose.choice) ? "white" : "white" && questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
-                                    disabled={questionsData.rightAnswerGuessed && !questionsData.guessChoice.includes(optionToChoose.choice) || questionsData.wrongAnswerGuessed}
+                                    color={questionsData.guessChoice.includes(optionToChoose.choice) ? "white" : "white" &&
+                                    questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
+                                    disabled={questionsData.rightAnswerGuessed && !
+                                                questionsData.guessChoice.includes(optionToChoose.choice) ||
+                                                questionsData.wrongAnswerGuessed ||
+                                                questionsData.currentQuestion.answered === Answered.yes}
                                     title={optionToChoose.choice}
                                     onPress={questionsData.guessChoice.includes(optionToChoose.choice) ? null : (option) => {
                                         checkIfAnswerIsCorrect(option, optionToChoose);
@@ -188,7 +203,7 @@ const QuestionView: React.FC = (props) => {
                         }) : null}
 
                         {props.counter > 1 ?  <Button title={"View Previous Question"} onPress={props.viewPreviousQuestion}/> : null}
-
+                        {props.counter >= 1 ?  <Button title={"View Next Question"} onPress={props.viewNextQuestion}/> : null}
 
                         {questionsData.wrongAnswerGuessed ?
                             <React.Fragment>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import QuestionView from "./questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
+import {Answered} from "../enums/answered";
 
 const TopicRoute = (props) => {
 
@@ -27,7 +28,6 @@ const TopicRoute = (props) => {
 
             shuffle(props.route.params.questions.initialQuestions);
             props.route.params.questions.initialQuestions.forEach(question => shuffle(question.options));
-            console.log(props.route.params.questions.initialQuestions);
         }
         load();
     }, []);
@@ -54,6 +54,18 @@ const TopicRoute = (props) => {
         setCurrentQuestion(props.route.params.questions.initialQuestions[updatedCounter - 1]);
     }
 
+    function viewNextQuestion(nextQuestion: any): void {
+        if (savedQuestions.length !== 0) {
+
+            setCurrentQuestion(nextQuestion);
+            setCounterForQuestions(counterForQuestions + 1);
+            return;
+        }
+
+        setCounterForQuestions(counterForQuestions + 1);
+        setCurrentQuestion(nextQuestion);
+    }
+
     function checkLengthOfQuestionsLeft(): void {
         if (savedQuestions.length !== 0) {
 
@@ -64,6 +76,37 @@ const TopicRoute = (props) => {
 
         setCurrentQuestion(props.route.params.questions.initialQuestions[counterForQuestions]);
         setCounterForQuestions(counterForQuestions + 1);
+    }
+
+    function isNextQuestionAnswered(): boolean | void  {
+        let secondNextQuestion;
+        const isLastQuestionComing = props.route.params.questions.initialQuestions.length - counterForQuestions;
+        const questionIndex = counterForQuestions;
+        const nextQuestion = props.route.params.questions.initialQuestions[questionIndex];
+
+        if (isLastQuestionComing > 1) {
+            secondNextQuestion = props.route.params.questions.initialQuestions[questionIndex + 1];
+        }
+
+
+            if (currentQuestion.answered === Answered.yes && isLastQuestionComing === 1) {
+                return viewNextQuestion(nextQuestion);
+            }
+
+            if (currentQuestion.answered === Answered.no) {
+                return false;
+            }
+
+            if (nextQuestion.answered === Answered.no && secondNextQuestion.answered === Answered.no) {
+                viewNextQuestion(nextQuestion);
+            }
+
+            if (nextQuestion.answered === Answered.no ) {
+                return false;
+            }
+
+            viewNextQuestion(nextQuestion);
+
     }
 
     function questionsAreBeingShownHandler(beingShown: boolean): void {
@@ -85,6 +128,7 @@ const TopicRoute = (props) => {
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={displayCorrectQuestion}
                     viewPreviousQuestion={viewPreviousQuestions}
+                    viewNextQuestion={isNextQuestionAnswered}
                     question={currentQuestion}
                 /> : null}
 

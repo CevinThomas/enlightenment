@@ -16,3 +16,4 @@ export function resetQuestions(allQuestions: []): void {
         })
     }
 }
+
