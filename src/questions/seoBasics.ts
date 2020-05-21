@@ -1,9 +1,11 @@
 import {SeoCategories} from "../enums/seo";
+import {Answered} from "../enums/answered";
 
 const initialQuestions = [
     {
         question: "What is Pogo Sticking?",
         category: SeoCategories.analytics,
+        answered: Answered.no,
         options: [
             {
                 choice: "The act of visiting a website, then quickly leaving it",
@@ -30,6 +32,7 @@ const initialQuestions = [
     {
         question: "What tool can you use to track SEO of a website?",
         category: SeoCategories.analytics,
+        answered: Answered.no,
         options: [
             {
                 choice: "SEO Spider",
@@ -56,6 +59,7 @@ const initialQuestions = [
     {
         question: "What do you mean by Backlink?",
         category: SeoCategories.analytics,
+        answered: Answered.no,
         options: [
             {
                 choice: "Incoming Links",
@@ -82,6 +86,7 @@ const initialQuestions = [
     {
         question: "What is the main purpose of using keyword in SEO?",
         category: SeoCategories.tools,
+        answered: Answered.no,
         options: [
             {
                 choice: "Keywords are used by search engines to populate the subjects over the internet",
@@ -109,6 +114,7 @@ const initialQuestions = [
     {
         question: "What is keyword stemming?",
         category: SeoCategories.tools,
+        answered: Answered.no,
         options: [
             {
                 choice: "The process of finding out new keywords",

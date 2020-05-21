@@ -1,6 +1,11 @@
+import {Answered} from "../enums/answered";
+import {JavascriptCategories} from "../enums/javascriptCategories";
+
 const initialQuestions = [
     {
         question: "How do you declare a variable?",
+        category: JavascriptCategories.Language,
+        answered: Answered.no,
         options: [
             {
                 choice: "Let, Const or Var =",
@@ -26,6 +31,8 @@ const initialQuestions = [
     },
     {
         question: "What is an Array?",
+        category: JavascriptCategories.Tech,
+        answered: Answered.no,
         options: [
             {
                 choice: "An object containing multiple values",
@@ -51,6 +58,8 @@ const initialQuestions = [
     },
     {
         question: "What Object do you target in order to target DOM Nodes in the browser?",
+        answered: Answered.no,
+        category: JavascriptCategories.Tools,
         options: [
             {
                 choice: "Document",
@@ -76,6 +85,8 @@ const initialQuestions = [
     },
     {
         question: "How do you write a Class?",
+        category: JavascriptCategories.Language,
+        answered: Answered.no,
         options: [
             {
                 choice: "Class X {}",
@@ -102,6 +113,8 @@ const initialQuestions = [
     },
     {
         question: "What is [] + []?",
+        category: JavascriptCategories.Tech,
+        answered: Answered.no,
         options: [
             {
                 choice: "Object",

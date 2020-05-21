@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import QuestionView from "./questionView";
+import {shuffle} from "../utils/functions";
 
 const TopicRoute = (props) => {
 
@@ -10,10 +11,6 @@ const TopicRoute = (props) => {
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
     const [savedQuestions, setSavedQuestions] = useState<[]>([]);
     const [questionsAreShowing, setQuestionsAreShowing] = useState<boolean>(false);
-
-    function shuffle(array: any) {
-        array.sort(() => Math.random() - 0.5);
-    }
 
     useEffect(() => {
         async function load() {
@@ -40,15 +37,16 @@ const TopicRoute = (props) => {
         return checkLengthOfQuestionsLeft();
     }
 
-    function checkLengthOfQuestionsLeft() {
+    function checkLengthOfQuestionsLeft(): void {
         if (savedQuestions.length !== 0) {
 
             setCurrentQuestion(savedQuestions[counterForQuestions]);
             setCounterForQuestions(counterForQuestions + 1);
-        } else {
-            setCurrentQuestion(props.route.params.questions.initialQuestions[counterForQuestions]);
-            setCounterForQuestions(counterForQuestions + 1);
+            return;
         }
+
+        setCurrentQuestion(props.route.params.questions.initialQuestions[counterForQuestions]);
+        setCounterForQuestions(counterForQuestions + 1);
     }
 
     function questionsAreBeingShownHandler(beingShown: boolean): void {
@@ -96,10 +94,6 @@ const styles = StyleSheet.create({
     },
     container: {
         padding: 20,
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        alignContent: "center"
     },
     heading: {
         margin: 20,

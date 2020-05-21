@@ -55,9 +55,8 @@ const Score = ({results, ...props}) => {
                 </View>
 
 
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={{color: "white", textAlign: "center"}}
-                          onPress={() => props.navigation.navigate("Home")}>Do it
+                <TouchableOpacity onPress={() => props.navigation.navigate("Home")} style={styles.buttonContainer}>
+                    <Text style={{color: "white", textAlign: "center"}}>Do it
                         again!
                     </Text>
                 </TouchableOpacity>

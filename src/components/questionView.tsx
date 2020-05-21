@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1
     },
     container: {
-        padding: 20
+        padding: 20,
     },
     counter: {
         paddingBottom: 5,
