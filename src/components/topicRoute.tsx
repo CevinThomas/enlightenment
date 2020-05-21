@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import QuestionView from "./questionView";
-import {shuffle} from "../utils/functions";
+import {resetQuestions, shuffle} from "../utils/functions";
 
 const TopicRoute = (props) => {
 
@@ -14,18 +14,21 @@ const TopicRoute = (props) => {
 
     useEffect(() => {
         async function load() {
+            resetQuestions(props.route.params.questions.initialQuestions);
             const value: string = await AsyncStorage.getItem(props.route.params.id.toString());
 
             if (value !== null) {
-                setNumberOfQuestions(JSON.parse(value).length);
                 setSavedQuestions(JSON.parse(value));
+                setNumberOfQuestions(JSON.parse(value).length);
             } else {
+                setSavedQuestions([]);
                 setNumberOfQuestions(props.route.params.questions.initialQuestions.length);
             }
+
             shuffle(props.route.params.questions.initialQuestions);
             props.route.params.questions.initialQuestions.forEach(question => shuffle(question.options));
+            console.log(props.route.params.questions.initialQuestions);
         }
-
         load();
     }, []);
 
@@ -35,6 +38,20 @@ const TopicRoute = (props) => {
         }
 
         return checkLengthOfQuestionsLeft();
+    }
+
+    function viewPreviousQuestions(): void {
+        let counter = counterForQuestions;
+        if (savedQuestions.length !== 0) {
+
+            setCurrentQuestion(savedQuestions[counterForQuestions]);
+            setCounterForQuestions(counterForQuestions - 1);
+            return;
+        }
+
+        let updatedCounter = counter - 1;
+        setCounterForQuestions(counterForQuestions - 1);
+        setCurrentQuestion(props.route.params.questions.initialQuestions[updatedCounter - 1]);
     }
 
     function checkLengthOfQuestionsLeft(): void {
@@ -50,7 +67,7 @@ const TopicRoute = (props) => {
     }
 
     function questionsAreBeingShownHandler(beingShown: boolean): void {
-        setQuestionsAreShowing(beingShown);
+       setQuestionsAreShowing(beingShown)
     }
 
     return (
@@ -67,6 +84,7 @@ const TopicRoute = (props) => {
                     totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.initialQuestions.length}
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={displayCorrectQuestion}
+                    viewPreviousQuestion={viewPreviousQuestions}
                     question={currentQuestion}
                 /> : null}
 

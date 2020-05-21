@@ -1,4 +1,4 @@
 export enum Answered {
-    yes,
-    no
+    no,
+    yes
 }

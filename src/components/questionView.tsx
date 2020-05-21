@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from "react-native";
 import Score from "./score";
 import FadeIn from "./fadeIn";
+import {Answered} from "../enums/answered";
 
 const QuestionView: React.FC = (props) => {
 
     const [questionsData, setQuestionsData] = useState<any>({
+        allQuestions: [],
+        currentQuestion: {},
         rightAnswer: {},
         rightAnswerGuessed: false,
         wrongAnswerGuessed: false,
@@ -24,10 +27,14 @@ const QuestionView: React.FC = (props) => {
 
     useEffect(() => {
         const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
+        const allQuestions = [...props.allQuestions];
+        const currentQuestion = props.question;
         setDisplayCorrectAnswer(false);
 
         setQuestionsData({
             ...questionsData,
+            currentQuestion: currentQuestion,
+            allQuestions: allQuestions,
             rightAnswer: correctAnswer,
             rightAnswerGuessed: false,
             wrongAnswerGuessed: false
@@ -43,8 +50,6 @@ const QuestionView: React.FC = (props) => {
 
         const category = props.question.category;
 
-        console.log("CATEGORY", category);
-        console.log("STATE CATEGORIES", questionsData.categories);
         if (questionsData.categories.includes(category)) {
             questionsData.results.stateWithCategories.forEach(item => {
                 if (item.name === category) {
@@ -52,7 +57,6 @@ const QuestionView: React.FC = (props) => {
                 }
             });
         } else {
-            console.log("CREATING FRESH OBJECT");
             previousCategories.push(category);
             const freshCategoryCounter = {
                 name: category,
@@ -81,6 +85,9 @@ const QuestionView: React.FC = (props) => {
     }
 
     function correctAnswer(event, choice) {
+
+        updateQuestionProperty(event, choice);
+
         let guessedChoiceInformation = [choice.choice, choice.explanation];
         let previousCorrectAnswers = [...questionsData.results.correctAnswers];
         let previousStateCategories = [...questionsData.results.stateWithCategories];
@@ -125,6 +132,22 @@ const QuestionView: React.FC = (props) => {
         }, 1000)
     }
 
+    function updateQuestionProperty(event: any, choice: any): void {
+        const allQuestions = [...questionsData.allQuestions];
+        const currentQuestionToUpdate = allQuestions.find(option => option.question === questionsData.currentQuestion.question);
+
+        currentQuestionToUpdate.answered = Answered.yes;
+        currentQuestionToUpdate.options.forEach(option => option.choice === choice.choice ? choice.chosen = Answered.yes : null);
+
+        allQuestions.forEach(question => question.question === currentQuestionToUpdate.question ? question = currentQuestionToUpdate : null);
+
+        setQuestionsData({
+            ...questionsData,
+            rightAnswerGuessed: true,
+            allQuestions: allQuestions
+        })
+    }
+
     function checkIfAnswerIsCorrect(event, choice) {
         if (choice.isCorrect === true) {
             correctAnswer(event, choice);
@@ -141,7 +164,7 @@ const QuestionView: React.FC = (props) => {
                 </View>
                 {props.scoreBoard !== true ? <>
                         <Text style={styles.questionHeading}>{props.question.question}</Text>
-                        {props.question.options.map(optionToChoose => {
+                        {props.question.options !== undefined ? props.question.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
                                          style={
                                              [
@@ -162,7 +185,10 @@ const QuestionView: React.FC = (props) => {
                                         checkIfAnswerIsCorrect(option, optionToChoose);
                                     }}/>
                             </View>;
-                        })}
+                        }) : null}
+
+                        {props.counter > 1 ?  <Button title={"View Previous Question"} onPress={props.viewPreviousQuestion}/> : null}
+
 
                         {questionsData.wrongAnswerGuessed ?
                             <React.Fragment>
