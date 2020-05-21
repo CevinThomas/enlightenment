@@ -14,13 +14,12 @@ const QuestionView: React.FC = (props) => {
         results: {
             wrongAnswersWithExplanation: [],
             wrongAnswers: [],
+            wrongAnswer: [],
             correctAnswers: [],
             timesCorrect: 0,
             stateWithCategories: [],
         }
     });
-    const [categoryAlreadyExists, setCategoryAlreadyExists] = useState<boolean>(false);
-    const [currentCategory, setCurrentCategory] = useState<string>("");
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
 
     useEffect(() => {
@@ -38,43 +37,41 @@ const QuestionView: React.FC = (props) => {
     function wrongAnswer(event, choice) {
 
         let updatedWrongAnswers = [...questionsData.results.wrongAnswers];
-        let previousStateCategories = [questionsData.results.stateWithCategories];
+        let previousStateCategories = [...questionsData.results.stateWithCategories];
+        let previousCategories = [...questionsData.categories];
         updatedWrongAnswers.push({choice: choice.choice, explanation: choice.explanation});
 
-        setCategoryAlreadyExists(false);
-        questionsData.categories.forEach(category => {
-            if (category.name === props.question.category) return setCategoryAlreadyExists(true);
-        });
-
         const category = props.question.category;
-        if (categoryAlreadyExists === false) {
-            setCurrentCategory(category)
-        }
 
-        if (categoryAlreadyExists === false) {
+        console.log("CATEGORY", category);
+        console.log("STATE CATEGORIES", questionsData.categories);
+        if (questionsData.categories.includes(category)) {
+            questionsData.results.stateWithCategories.forEach(item => {
+                if (item.name === category) {
+                    item.totalQuestions++;
+                }
+            });
+        } else {
+            console.log("CREATING FRESH OBJECT");
+            previousCategories.push(category);
             const freshCategoryCounter = {
-                name: currentCategory,
-                firstTry: 0,
+                name: category,
+                timesCorrect: 0,
                 totalQuestions: 1
             };
 
             previousStateCategories.push(freshCategoryCounter);
-
-        } else {
-            previousStateCategories.forEach(category => {
-                if (category.name === props.question.category) {
-                    category.totalQuestions++;
-                }
-            });
         }
 
         setQuestionsData({
             ...questionsData,
             wrongAnswerGuessed: true,
+            categories: previousCategories,
             results: {
                 ...questionsData.results,
                 wrongAnswersWithExplanation: updatedWrongAnswers,
-                wrongAnswers: [choice.choice],
+                wrongAnswers: updatedWrongAnswers,
+                wrongAnswer: [choice.choice],
                 stateWithCategories: previousStateCategories
             }
         })
@@ -94,7 +91,6 @@ const QuestionView: React.FC = (props) => {
 
         if (questionsData.categories.includes(category)) {
             questionsData.results.stateWithCategories.forEach(item => {
-                console.log(category)
                 if (item.name === category) {
                     item.timesCorrect++;
                     item.totalQuestions++;
@@ -124,9 +120,6 @@ const QuestionView: React.FC = (props) => {
             }
         })
 
-        console.log(questionsData.categories);
-        console.log(questionsData.results.stateWithCategories);
-
         setTimeout(() => {
             props.displayNextQuestion(null, questionsData.guessChoice)
         }, 1000)
@@ -143,9 +136,11 @@ const QuestionView: React.FC = (props) => {
     return (
         <View style={styles.container}>
             <FadeIn>
-                <View style={styles.counterContainer}><Text
-                    style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text></View>
-                {props.scoreBoard !== true ? <><Text style={styles.questionHeading}>{props.question.question}</Text>
+                <View style={styles.counterContainer}>
+                    <Text style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
+                </View>
+                {props.scoreBoard !== true ? <>
+                        <Text style={styles.questionHeading}>{props.question.question}</Text>
                         {props.question.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
                                          style={
@@ -154,13 +149,13 @@ const QuestionView: React.FC = (props) => {
                                                  {
                                                      backgroundColor:
                                                          displayCorrectAnswer === true && questionsData.rightAnswer.choice === optionToChoose.choice ? "green" :
-                                                             questionsData.results.wrongAnswers.includes(optionToChoose.choice) ? "red" :
+                                                             questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
                                                                  questionsData.guessChoice.includes(optionToChoose.choice) ? "green" : "white"
                                                  },
                                              ]}>
 
                                 <Button
-                                    color={questionsData.guessChoice.includes(optionToChoose.choice) ? "white" : "white" && questionsData.results.wrongAnswers.includes(optionToChoose.choice) ? "white" : "green"}
+                                    color={questionsData.guessChoice.includes(optionToChoose.choice) ? "white" : "white" && questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
                                     disabled={questionsData.rightAnswerGuessed && !questionsData.guessChoice.includes(optionToChoose.choice) || questionsData.wrongAnswerGuessed}
                                     title={optionToChoose.choice}
                                     onPress={questionsData.guessChoice.includes(optionToChoose.choice) ? null : (option) => {

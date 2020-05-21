@@ -95,7 +95,11 @@ const styles = StyleSheet.create({
         color: "green",
     },
     container: {
-        padding: 20
+        padding: 20,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center"
     },
     heading: {
         margin: 20,
