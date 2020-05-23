@@ -175,10 +175,10 @@ const QuestionView: React.FC = (props) => {
         }
     }
 
-    const {height} = Dimensions.get('window');
+    const {height, width} = Dimensions.get('window');
 
     return (
-        <GestureRecognizer style={{height: height}} onSwipeLeft={(state) => props.viewNextQuestion()} onSwipeRight={(state) => props.counter > 1 ? props.viewPreviousQuestion() : null}>
+        <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={(state) => props.viewNextQuestion()} onSwipeRight={(state) => props.counter > 1 ? props.viewPreviousQuestion() : null}>
         <View style={styles.container}>
             <FadeIn>
                 <View style={styles.counterContainer}>
@@ -238,8 +238,8 @@ const QuestionView: React.FC = (props) => {
                         results={questionsData.results}/>}
 
                 {questionsData.wrongAnswerGuessed ? null : <View style={styles.prevAndNextContainer}>
-                    {props.counter > 1 ? <View style={[styles.viewContainer, styles.prevAndNext,  {backgroundColor: "white"}, {width: isViewable === false ? "100%" : "40%"}]}><Button color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View>  : null}
-                    {isViewable === true ?  <View style={[styles.viewContainer, styles.prevAndNext, {backgroundColor: "white"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button color={"black"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
+                    {props.counter > 1 ? <View style={[ styles.prevAndNext,  {backgroundColor: "white"}, {width: isViewable === false ? "100%" : "40%"}]}><Button color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View>  : null}
+                    {isViewable === true ?  <View style={[ styles.prevAndNext, {backgroundColor: "white"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button color={"black"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
                 </View>}
 
 
@@ -256,17 +256,10 @@ const styles = StyleSheet.create({
       display: "flex",
         flexDirection: "row",
         marginTop: 50,
+        width: 250,
+        marginLeft: "auto",
+        marginRight: "auto",
         justifyContent: "center",
-        alignItems: "center"
-    },
-    prevAndNext: {
-      width: "40%",
-    },
-    prev: {
-
-    },
-    next: {
-
     },
     viewContainer: {
         borderRadius: 10,
@@ -282,8 +275,19 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         shadowOpacity: 0.1
     },
+    prevAndNext: {
+        width: "100%",
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1,
+        borderRadius: 10,
+        padding: 2,
+        margin: 10
+    },
     container: {
-        padding: 20,
+        padding: 40,
     },
     counter: {
         paddingBottom: 5,

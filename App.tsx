@@ -21,7 +21,8 @@ export default function App() {
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: "green",
                     headerTitle: "",
-                    gestureEnabled: false
+                    gestureEnabled: false,
+                    headerBackTitle: "Home"
                 }}/>
             </Stack.Navigator>
         </NavigationContainer>

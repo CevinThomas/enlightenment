@@ -198,9 +198,6 @@ const styles = StyleSheet.create({
     getStarted: {
         color: "green",
     },
-    container: {
-        padding: 20,
-    },
     heading: {
         margin: 20,
         color: "green",
