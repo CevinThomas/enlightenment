@@ -178,7 +178,7 @@ const QuestionView: React.FC = (props) => {
     const {height} = Dimensions.get('window');
 
     return (
-        <GestureRecognizer style={{height: height}} onSwipeLeft={(state) => props.viewNextQuestion()} onSwipeRight={(state) => props.viewPreviousQuestion()}>
+        <GestureRecognizer style={{height: height}} onSwipeLeft={(state) => props.viewNextQuestion()} onSwipeRight={(state) => props.counter > 1 ? props.viewPreviousQuestion() : null}>
         <View style={styles.container}>
             <FadeIn>
                 <View style={styles.counterContainer}>
