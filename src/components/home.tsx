@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
 
             <View style={styles.buttonContainer}>
                 <FlatList keyExtractor={(item, index) => index.toString()}
-                          data={["SEO", "JavaScript", "TestOne", "TestTwo", "TestThree", "TestFour"]}
+                          data={["SEO", "JavaScript", "TestOne", "Python"]}
                           renderItem={({item}) => <ButtonList key={item} navigation={navigation}
                                                               boxTitle={item}/>}/>
             </View>

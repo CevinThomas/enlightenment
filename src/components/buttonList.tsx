@@ -2,7 +2,7 @@ import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from "react-native";
 import JavascriptBasics from "../questions/javascriptBasics";
 import SeoBasics from "../questions/seoBasics";
-
+import PythonCategories from "../questions/categoriesQuestions"
 const ButtonList = (props) => {
 
     function f(e, buttonId) {
@@ -19,6 +19,13 @@ const ButtonList = (props) => {
                     name: "Welcome to the JavaScript Course!",
                     questions: JavascriptBasics, id: "js"
                 });
+                break;
+            case "python":
+                props.navigation.navigate("Subjects", {
+                    name: "Welcome to the Python Course!",
+                    categories: PythonCategories,
+                    id: "sub"
+                })
         }
     }
 
@@ -31,7 +38,7 @@ const ButtonList = (props) => {
                     <Text onPress={(event) => f(event, props.boxTitle.toLowerCase())}
                           style={styles.boxTitle}>{props.boxTitle}
                     </Text>
-                    
+
                 </ImageBackground>
             </View>
         </View>
