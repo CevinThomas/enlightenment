@@ -8,6 +8,7 @@ const QuestionView: React.FC = (props) => {
 
     const [questionsData, setQuestionsData] = useState<any>({
         allQuestions: [],
+        isNextQuestionViewable: false,
         currentQuestion: {},
         rightAnswer: {},
         rightAnswerGuessed: false,
@@ -25,8 +26,11 @@ const QuestionView: React.FC = (props) => {
         }
     });
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
+    const [isViewable, setIsViewable] = useState(false);
 
     useEffect(() => {
+        const isViewable = props.isNextQuestionViewable();
+        setIsViewable(isViewable);
         const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
         const allQuestions = [...props.allQuestions];
         const currentQuestion = props.question;
@@ -37,6 +41,7 @@ const QuestionView: React.FC = (props) => {
             currentQuestion: currentQuestion,
             allQuestions: allQuestions,
             rightAnswer: correctAnswer,
+            isNextQuestionViewable: isViewable,
             rightAnswerGuessed: false,
             wrongAnswerGuessed: false
         })
@@ -202,9 +207,6 @@ const QuestionView: React.FC = (props) => {
                             </View>;
                         }) : null}
 
-                        {props.counter > 1 ?  <Button title={"View Previous Question"} onPress={props.viewPreviousQuestion}/> : null}
-                        {props.counter >= 1 ?  <Button title={"View Next Question"} onPress={props.viewNextQuestion}/> : null}
-
                         {questionsData.wrongAnswerGuessed ?
                             <React.Fragment>
                                 <View>
@@ -227,6 +229,13 @@ const QuestionView: React.FC = (props) => {
                         navigation={props.navigation}
                         results={questionsData.results}/>}
 
+                {questionsData.wrongAnswerGuessed ? null : <View style={styles.prevAndNextContainer}>
+                    {props.counter > 1 ? <View style={[styles.viewContainer, styles.prevAndNext,  {backgroundColor: "white"}, {width: isViewable === false ? "100%" : "40%"}]}><Button color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View>  : null}
+                    {isViewable === true ?  <View style={[styles.viewContainer, styles.prevAndNext, {backgroundColor: "white"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button color={"black"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
+                </View>}
+
+
+
             </FadeIn>
         </View>
 
@@ -234,6 +243,22 @@ const QuestionView: React.FC = (props) => {
 };
 
 const styles = StyleSheet.create({
+    prevAndNextContainer: {
+      display: "flex",
+        flexDirection: "row",
+        marginTop: 50,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    prevAndNext: {
+      width: "40%",
+    },
+    prev: {
+
+    },
+    next: {
+
+    },
     viewContainer: {
         borderRadius: 10,
         width: 250,

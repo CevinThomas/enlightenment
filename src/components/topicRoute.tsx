@@ -114,7 +114,42 @@ const TopicRoute = (props) => {
             }
 
             viewNextQuestion(nextQuestion);
+    }
 
+    function canWeViewNextQuestion(): boolean {
+        let secondNextQuestion, isLastQuestionComing, questionIndex, nextQuestion;
+        questionIndex = counterForQuestions;
+        if (savedQuestions.length !== 0) {
+
+            isLastQuestionComing = savedQuestions.length - counterForQuestions;
+            nextQuestion = savedQuestions[questionIndex];
+        } else {
+            isLastQuestionComing = props.route.params.questions.initialQuestions.length - counterForQuestions;
+            nextQuestion = props.route.params.questions.initialQuestions[questionIndex];
+        }
+
+        if (isLastQuestionComing > 1) {
+            secondNextQuestion = props.route.params.questions.initialQuestions[questionIndex + 1];
+        }
+
+
+        if (currentQuestion.answered === Answered.yes && isLastQuestionComing === 1) {
+            return true;
+        }
+
+        if (currentQuestion.answered === Answered.no) {
+            return false;
+        }
+
+        if (nextQuestion.answered === Answered.no && secondNextQuestion.answered === Answered.no) {
+            return true;
+        }
+
+        if (nextQuestion.answered === Answered.no ) {
+            return false;
+        }
+
+        return true;
     }
 
     function questionsAreBeingShownHandler(beingShown: boolean): void {
@@ -137,6 +172,7 @@ const TopicRoute = (props) => {
                     displayNextQuestion={displayCorrectQuestion}
                     viewPreviousQuestion={viewPreviousQuestions}
                     viewNextQuestion={isNextQuestionAnswered}
+                    isNextQuestionViewable={canWeViewNextQuestion}
                     question={currentQuestion}
                 /> : null}
 
