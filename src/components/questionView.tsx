@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Button, StyleSheet, Text, View} from "react-native";
+import {Button, Dimensions, StyleSheet, Text, View} from "react-native";
 import Score from "./score";
 import FadeIn from "./fadeIn";
 import {Answered} from "../enums/answered";
+import GestureRecognizer, {swipeDirections} from "react-native-swipe-gestures"
 
 const QuestionView: React.FC = (props) => {
 
@@ -98,6 +99,10 @@ const QuestionView: React.FC = (props) => {
 
     }
 
+    function onSwipeRight(gestureState) {
+        console.log("HELLO");
+    }
+
     function correctAnswer(event, choice) {
 
         updateQuestionProperty(event, choice);
@@ -170,7 +175,10 @@ const QuestionView: React.FC = (props) => {
         }
     }
 
+    const {height} = Dimensions.get('window');
+
     return (
+        <GestureRecognizer style={{height: height}} onSwipeLeft={(state) => props.viewNextQuestion()} onSwipeRight={(state) => props.viewPreviousQuestion()}>
         <View style={styles.container}>
             <FadeIn>
                 <View style={styles.counterContainer}>
@@ -238,6 +246,7 @@ const QuestionView: React.FC = (props) => {
 
             </FadeIn>
         </View>
+        </GestureRecognizer>
 
     );
 };

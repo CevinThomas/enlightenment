@@ -20,7 +20,8 @@ export default function App() {
                 <Stack.Screen name={"Questions"} component={TopicRoute} options={{
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: "green",
-                    headerTitle: ""
+                    headerTitle: "",
+                    gestureEnabled: false
                 }}/>
             </Stack.Navigator>
         </NavigationContainer>
