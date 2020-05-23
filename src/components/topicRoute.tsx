@@ -15,17 +15,19 @@ const TopicRoute = (props) => {
 
     useEffect(() => {
         async function load() {
-            resetQuestions(props.route.params.questions.initialQuestions);
             const value: string = await AsyncStorage.getItem(props.route.params.id.toString());
 
             if (value !== null) {
-                setSavedQuestions(JSON.parse(value));
+                const questionsReset = resetQuestions(JSON.parse(value));
+                shuffle(questionsReset);
+                setSavedQuestions(questionsReset);
                 setNumberOfQuestions(JSON.parse(value).length);
             } else {
                 setSavedQuestions([]);
                 setNumberOfQuestions(props.route.params.questions.initialQuestions.length);
             }
 
+            resetQuestions(props.route.params.questions.initialQuestions);
             shuffle(props.route.params.questions.initialQuestions);
             props.route.params.questions.initialQuestions.forEach(question => shuffle(question.options));
         }
@@ -42,14 +44,14 @@ const TopicRoute = (props) => {
 
     function viewPreviousQuestions(): void {
         let counter = counterForQuestions;
+        let updatedCounter = counter - 1;
         if (savedQuestions.length !== 0) {
 
-            setCurrentQuestion(savedQuestions[counterForQuestions]);
+            setCurrentQuestion(savedQuestions[updatedCounter - 1]);
             setCounterForQuestions(counterForQuestions - 1);
             return;
         }
 
-        let updatedCounter = counter - 1;
         setCounterForQuestions(counterForQuestions - 1);
         setCurrentQuestion(props.route.params.questions.initialQuestions[updatedCounter - 1]);
     }
@@ -79,10 +81,16 @@ const TopicRoute = (props) => {
     }
 
     function isNextQuestionAnswered(): boolean | void  {
-        let secondNextQuestion;
-        const isLastQuestionComing = props.route.params.questions.initialQuestions.length - counterForQuestions;
-        const questionIndex = counterForQuestions;
-        const nextQuestion = props.route.params.questions.initialQuestions[questionIndex];
+        let secondNextQuestion, isLastQuestionComing, questionIndex, nextQuestion;
+        questionIndex = counterForQuestions;
+        if (savedQuestions.length !== 0) {
+
+            isLastQuestionComing = savedQuestions.length - counterForQuestions;
+            nextQuestion = savedQuestions[questionIndex];
+        } else {
+            isLastQuestionComing = props.route.params.questions.initialQuestions.length - counterForQuestions;
+            nextQuestion = props.route.params.questions.initialQuestions[questionIndex];
+        }
 
         if (isLastQuestionComing > 1) {
             secondNextQuestion = props.route.params.questions.initialQuestions[questionIndex + 1];

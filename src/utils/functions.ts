@@ -5,15 +5,20 @@ export function shuffle(array: any) {
 }
 
 // TODO: Ask Stack Overflow if there is a better way of approaching this (Do not want double loop)
-export function resetQuestions(allQuestions: []): void {
+export function resetQuestions(allQuestions: []): [] {
     const toReset = allQuestions.find(question => question.answered !== Answered.no);
     if (toReset !== undefined) {
         allQuestions.forEach(question => {
             if (question.answered === Answered.yes) {
                 question.answered = Answered.no
-                return question.options.forEach(option => option.chosen === Answered.yes ? option.chosen = Answered.no : null)
+                return question.options.forEach(option => {
+                    if (option.chosen === Answered.yes) {
+                        option.chosen = Answered.no;
+                    }
+                })
             }
         })
+        return allQuestions;
     }
 }
 
