@@ -1,13 +1,13 @@
-import {JavascriptCategories} from "../enums/javascriptCategories";
-import {Answered} from "../enums/answered";
+import {ProgrammingCategories} from "../enums/programmingCategories";
+import {IsAnswered} from "../enums/isAnswered";
 
-const javascript = {
+const pythonQuestions = {
     variables: {
         questions: [
             {
                 question: "How do you declare a variable?",
-                category: JavascriptCategories.Language,
-                answered: Answered.no,
+                category: ProgrammingCategories.Language,
+                answered: IsAnswered.no,
                 options: [
                     {
                         choice: "Let, Const or Var =",
@@ -40,4 +40,4 @@ const javascript = {
 
 
 
-export default javascript
+export default pythonQuestions

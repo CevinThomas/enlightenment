@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Dimensions, StyleSheet, Text, View} from "react-native";
 import Score from "./score";
 import FadeIn from "./fadeIn";
-import {Answered} from "../enums/answered";
+import {IsAnswered} from "../enums/isAnswered";
 import GestureRecognizer, {swipeDirections} from "react-native-swipe-gestures"
 
 const QuestionView: React.FC = (props) => {
@@ -155,8 +155,8 @@ const QuestionView: React.FC = (props) => {
         const allQuestions = [...questionsData.allQuestions];
         const currentQuestionToUpdate = allQuestions.find(option => option.question === questionsData.currentQuestion.question);
 
-        currentQuestionToUpdate.answered = Answered.yes;
-        currentQuestionToUpdate.options.forEach(option => option.choice === choice.choice ? choice.chosen = Answered.yes : null);
+        currentQuestionToUpdate.answered = IsAnswered.yes;
+        currentQuestionToUpdate.options.forEach(option => option.choice === choice.choice ? choice.chosen = IsAnswered.yes : null);
 
         allQuestions.forEach(question => question.question === currentQuestionToUpdate.question ? question = currentQuestionToUpdate : null);
 
@@ -196,8 +196,8 @@ const QuestionView: React.FC = (props) => {
                                                          displayCorrectAnswer === true && questionsData.rightAnswer.choice === optionToChoose.choice ? "green" :
                                                              questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
                                                                  questionsData.guessChoice.includes(optionToChoose.choice) ? "green" :
-                                                                     questionsData.rightAnswer.choice === optionToChoose.choice && questionsData.currentQuestion.answered === Answered.yes ? "green" :
-                                                                         questionsData.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === Answered.yes ? "red" : "white"
+                                                                     questionsData.rightAnswer.choice === optionToChoose.choice && questionsData.currentQuestion.answered === IsAnswered.yes ? "green" :
+                                                                         questionsData.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === IsAnswered.yes ? "red" : "white"
                                                  },
                                              ]}>
 
@@ -207,7 +207,7 @@ const QuestionView: React.FC = (props) => {
                                     disabled={questionsData.rightAnswerGuessed && !
                                                 questionsData.guessChoice.includes(optionToChoose.choice) ||
                                                 questionsData.wrongAnswerGuessed ||
-                                                questionsData.currentQuestion.answered === Answered.yes}
+                                                questionsData.currentQuestion.answered === IsAnswered.yes}
                                     title={optionToChoose.choice}
                                     onPress={questionsData.guessChoice.includes(optionToChoose.choice) ? null : (option) => {
                                         checkIfAnswerIsCorrect(option, optionToChoose);

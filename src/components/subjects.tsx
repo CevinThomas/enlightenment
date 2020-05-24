@@ -7,26 +7,27 @@ const Subjects = (props) => {
     const [allSubjects, setAllSubjects] = useState<string[]>([]);
 
     useEffect(() => {
-        if (props.route.params.categories.length !== 0) {
-
             // TODO: Rename arrayQ
             const arrayQ = Object.keys(props.route.params.categories);
-            setAllSubjects(arrayQ);
-        }
-        const arrayQ = Object.keys(props.route.params.categories);
+            const subjectsWithCapitalFirst = arrayQ.map(subjectString => capitalizeFirstLetter(subjectString));
+            setAllSubjects(subjectsWithCapitalFirst);
     }, [])
 
     function navigateToProperQuestions(subject: string): void {
 
         // TODO: Filter the correct subjects questions before sending to the questions screen.
 
-        const questionsToUse = props.route.params.categories[subject].questions;
+        const questionsToUse = props.route.params.categories[subject.toLowerCase()].questions;
 
         props.navigation.navigate("Questions", {
-            name: props.route.params.name,
+            name: subject,
             questions: questionsToUse,
             id: "seo"
         });
+    }
+
+    function capitalizeFirstLetter(nameOfCategory: string) {
+        return nameOfCategory.charAt(0).toUpperCase() + nameOfCategory.slice(1);
     }
 
     return (

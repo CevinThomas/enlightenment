@@ -1,23 +1,24 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from "react-native";
-import JavascriptBasics from "../questions/javascriptBasics";
-import SeoBasics from "../questions/seoBasics";
-import PythonCategories from "../questions/categoriesQuestions"
+import JavascriptQuestions from "../questions/javascriptQuestions";
+import PythonCategories from "../questions/pythonQuestions"
+import SeoQuestions from "../questions/seoQuestions";
 const ButtonList = (props) => {
 
     function f(e, buttonId) {
         switch (buttonId) {
             case "seo":
-                props.navigation.navigate("Questions", {
+                props.navigation.navigate("Subjects", {
                     name: "Welcome to the SEO Course!",
-                    questions: SeoBasics,
+                    categories: SeoQuestions,
                     id: "seo"
                 });
                 break;
             case "javascript":
-                props.navigation.navigate("Questions", {
+                props.navigation.navigate("Subjects", {
                     name: "Welcome to the JavaScript Course!",
-                    questions: JavascriptBasics, id: "js"
+                    categories: JavascriptQuestions,
+                    id: "js"
                 });
                 break;
             case "python":

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import QuestionView from "./questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
-import {Answered} from "../enums/answered";
+import {IsAnswered} from "../enums/isAnswered";
 
 const TopicRoute = (props) => {
 
@@ -97,19 +97,19 @@ const TopicRoute = (props) => {
         }
 
 
-            if (currentQuestion.answered === Answered.yes && isLastQuestionComing === 1) {
+            if (currentQuestion.answered === IsAnswered.yes && isLastQuestionComing === 1) {
                 return viewNextQuestion(nextQuestion);
             }
 
-            if (currentQuestion.answered === Answered.no) {
+            if (currentQuestion.answered === IsAnswered.no) {
                 return false;
             }
 
-            if (nextQuestion.answered === Answered.no && secondNextQuestion.answered === Answered.no) {
+            if (nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
                 viewNextQuestion(nextQuestion);
             }
 
-            if (nextQuestion.answered === Answered.no ) {
+            if (nextQuestion.answered === IsAnswered.no ) {
                 return false;
             }
 
@@ -133,19 +133,19 @@ const TopicRoute = (props) => {
         }
 
 
-        if (currentQuestion.answered === Answered.yes && isLastQuestionComing === 1) {
+        if (currentQuestion.answered === IsAnswered.yes && isLastQuestionComing === 1) {
             return true;
         }
 
-        if (currentQuestion.answered === Answered.no) {
+        if (currentQuestion.answered === IsAnswered.no) {
             return false;
         }
 
-        if (nextQuestion.answered === Answered.no && secondNextQuestion.answered === Answered.no) {
+        if (nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
             return true;
         }
 
-        if (nextQuestion.answered === Answered.no ) {
+        if (nextQuestion.answered === IsAnswered.no ) {
             return false;
         }
 
@@ -158,7 +158,7 @@ const TopicRoute = (props) => {
 
     return (
         <View style={styles.container}>
-            {questionsAreShowing !== true ? <Text style={styles.heading}>{props.route.params.name}</Text> : null}
+            {questionsAreShowing !== true ? <Text style={styles.heading}>Welcome to the {props.route.params.name} quiz!</Text> : null}
 
 
             <View>{currentQuestion !== undefined ?

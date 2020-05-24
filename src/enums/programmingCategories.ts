@@ -1,4 +1,4 @@
-export enum JavascriptCategories {
+export enum ProgrammingCategories {
     Tools,
     Tech,
     Language
