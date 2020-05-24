@@ -20,11 +20,11 @@ const Subjects = (props) => {
 
         // TODO: Filter the correct subjects questions before sending to the questions screen.
 
-        console.log(props.route.params.categories[subject].questions);
+        const questionsToUse = props.route.params.categories[subject].questions;
 
         props.navigation.navigate("Questions", {
             name: props.route.params.name,
-            questions: SeoBasics,
+            questions: questionsToUse,
             id: "seo"
         });
     }

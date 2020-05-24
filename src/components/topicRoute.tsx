@@ -24,12 +24,12 @@ const TopicRoute = (props) => {
                 setNumberOfQuestions(JSON.parse(value).length);
             } else {
                 setSavedQuestions([]);
-                setNumberOfQuestions(props.route.params.questions.initialQuestions.length);
+                setNumberOfQuestions(props.route.params.questions.length);
             }
 
-            resetQuestions(props.route.params.questions.initialQuestions);
-            shuffle(props.route.params.questions.initialQuestions);
-            props.route.params.questions.initialQuestions.forEach(question => shuffle(question.options));
+            resetQuestions(props.route.params.questions);
+            shuffle(props.route.params.questions);
+            props.route.params.questions.forEach(question => shuffle(question.options));
         }
         load();
     }, []);
@@ -53,7 +53,7 @@ const TopicRoute = (props) => {
         }
 
         setCounterForQuestions(counterForQuestions - 1);
-        setCurrentQuestion(props.route.params.questions.initialQuestions[updatedCounter - 1]);
+        setCurrentQuestion(props.route.params.questions[updatedCounter - 1]);
     }
 
     function viewNextQuestion(nextQuestion: any): void {
@@ -76,7 +76,7 @@ const TopicRoute = (props) => {
             return;
         }
 
-        setCurrentQuestion(props.route.params.questions.initialQuestions[counterForQuestions]);
+        setCurrentQuestion(props.route.params.questions[counterForQuestions]);
         setCounterForQuestions(counterForQuestions + 1);
     }
 
@@ -88,12 +88,12 @@ const TopicRoute = (props) => {
             isLastQuestionComing = savedQuestions.length - counterForQuestions;
             nextQuestion = savedQuestions[questionIndex];
         } else {
-            isLastQuestionComing = props.route.params.questions.initialQuestions.length - counterForQuestions;
-            nextQuestion = props.route.params.questions.initialQuestions[questionIndex];
+            isLastQuestionComing = props.route.params.questions.length - counterForQuestions;
+            nextQuestion = props.route.params.questions[questionIndex];
         }
 
         if (isLastQuestionComing > 1) {
-            secondNextQuestion = props.route.params.questions.initialQuestions[questionIndex + 1];
+            secondNextQuestion = props.route.params.questions[questionIndex + 1];
         }
 
 
@@ -124,12 +124,12 @@ const TopicRoute = (props) => {
             isLastQuestionComing = savedQuestions.length - counterForQuestions;
             nextQuestion = savedQuestions[questionIndex];
         } else {
-            isLastQuestionComing = props.route.params.questions.initialQuestions.length - counterForQuestions;
-            nextQuestion = props.route.params.questions.initialQuestions[questionIndex];
+            isLastQuestionComing = props.route.params.questions.length - counterForQuestions;
+            nextQuestion = props.route.params.questions[questionIndex];
         }
 
         if (isLastQuestionComing > 1) {
-            secondNextQuestion = props.route.params.questions.initialQuestions[questionIndex + 1];
+            secondNextQuestion = props.route.params.questions[questionIndex + 1];
         }
 
 
@@ -165,9 +165,9 @@ const TopicRoute = (props) => {
 
                 <QuestionView
                     id={props.route.params.id}
-                    allQuestions={savedQuestions.length !== 0 ? savedQuestions : props.route.params.questions.initialQuestions}
+                    allQuestions={savedQuestions.length !== 0 ? savedQuestions : props.route.params.questions}
                     counter={counterForQuestions}
-                    totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.initialQuestions.length}
+                    totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.length}
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={displayCorrectQuestion}
                     viewPreviousQuestion={viewPreviousQuestions}
