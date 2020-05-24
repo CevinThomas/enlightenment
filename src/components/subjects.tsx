@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from "react-native";
+import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from "react-native";
 import SeoBasics from "../questions/seoBasics";
 
 const Subjects = (props) => {
@@ -31,11 +31,11 @@ const Subjects = (props) => {
     }
 
     return (
-        <View>
-            <View>
+        <View style={styles.outerContainer}>
+            <View style={styles.innerContainer}>
                 {allSubjects.length !== 0 ? allSubjects.map(subject => {
-                    return  <TouchableOpacity onPress={() => navigateToProperQuestions(subject)}>
-                        <Text>{subject}</Text>
+                    return  <TouchableOpacity style={styles.buttonContainer} onPress={() => navigateToProperQuestions(subject)}>
+                        <Text style={styles.text}>{subject}</Text>
                     </TouchableOpacity>
                 }) : null}
 
@@ -43,5 +43,37 @@ const Subjects = (props) => {
         </View>
     );
 };
+
+const {height, width} = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+    outerContainer: {
+        height: height,
+    },
+    innerContainer: {
+        width: width,
+        flexDirection: "column",
+        justifyContent: "space-around"
+    },
+    buttonContainer: {
+        backgroundColor: "white",
+        width: width,
+        padding: 20,
+        marginTop: 20,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1,
+        borderRadius: 10,
+        width: width * 0.8,
+        marginLeft: "auto",
+        marginRight: "auto"
+    },
+    text: {
+        textAlign: "center",
+        color: "green"
+    }
+})
 
 export default Subjects;

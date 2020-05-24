@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {AsyncStorage, Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import QuestionView from "./questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
 import {IsAnswered} from "../enums/isAnswered";
@@ -194,6 +194,8 @@ const TopicRoute = (props) => {
     );
 };
 
+const {width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     getStarted: {
         color: "green",
@@ -217,7 +219,10 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        width: width * 0.8,
+        marginLeft: "auto",
+        marginRight: "auto"
     }
 });
 

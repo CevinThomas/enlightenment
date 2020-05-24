@@ -23,13 +23,13 @@ export default function App() {
                     headerTintColor: "green",
                     headerTitle: "",
                     gestureEnabled: false,
-                    headerBackTitle: "Home"
+                    headerBackTitle: "Categories"
                 }}/>
                 <Stack.Screen name={"Subjects"} component={Subjects} options={{
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: "green",
                     headerTitle: "",
-                    headerBackTitle: "Categories"
+                    headerBackTitle: "Start"
                 }}/>
             </Stack.Navigator>
         </NavigationContainer>
