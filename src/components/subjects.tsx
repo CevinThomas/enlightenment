@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from "react-native";
-import SeoBasics from "../questions/seoBasics";
-
+import GlobalStyles from "../utils/globalStyles"
 const Subjects = (props) => {
 
     const [allSubjects, setAllSubjects] = useState<string[]>([]);
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: "center",
-        color: "green"
+        color: GlobalStyles.darkColor
     }
 })
 

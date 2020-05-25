@@ -3,6 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import ModalRemoveQuestions from "./modalRemoveQuestions";
 import Modal from "./modal";
 import FadeIn from "./fadeIn";
+import GlobalStyles from "../utils/globalStyles"
 
 
 const Score = ({results, ...props}) => {
@@ -56,7 +57,7 @@ const Score = ({results, ...props}) => {
 
 
                 <TouchableOpacity onPress={() => props.navigation.navigate("Home")} style={styles.buttonContainer}>
-                    <Text style={{color: "white", textAlign: "center"}}>Do it
+                    <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Do it
                         again!
                     </Text>
                 </TouchableOpacity>
@@ -88,20 +89,20 @@ const styles = StyleSheet.create({
     },
     headingContainer: {
         borderBottomWidth: 1,
-        borderBottomColor: "green"
+        borderBottomColor: GlobalStyles.darkColor
     },
     mainheading: {
         fontSize: 18,
-        color: "green",
+        color: GlobalStyles.darkColor,
         textAlign: "center",
         marginBottom: 20
     },
     titles: {
-        color: "green",
+        color: GlobalStyles.darkColor,
     },
     buttonContainer: {
         marginTop: 20,
-        backgroundColor: "green",
+        backgroundColor: GlobalStyles.lightColor,
         borderRadius: 10,
         padding: 10,
         textAlign: "center",

@@ -11,22 +11,19 @@ const TopicRoute = (props) => {
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
     const [savedQuestions, setSavedQuestions] = useState<[]>([]);
-    const [questionsAreShowing, setQuestionsAreShowing] = useState<boolean>(false);
+    const [displayQuestions, setDisplayQuestions] = useState(false);
 
     useEffect(() => {
         async function load() {
             const value: string = await AsyncStorage.getItem(props.route.params.id.toString());
-            let counter: number, numberOfQuestions: number;
 
             if (value !== null) {
                 const questionsReset = resetQuestions(JSON.parse(value));
                 shuffle(questionsReset);
                 setSavedQuestions(questionsReset);
-                numberOfQuestions = JSON.parse(value).length;
                 setNumberOfQuestions(JSON.parse(value).length);
             } else {
                 setSavedQuestions([]);
-                numberOfQuestions = props.route.params.questions.length;
                 setNumberOfQuestions(props.route.params.questions.length);
             }
 
@@ -43,6 +40,15 @@ const TopicRoute = (props) => {
         setCounterForQuestions(counterForQuestions + 1);
     }
 
+    function displayCorrectQuestion(): void {
+
+        if (counterForQuestions === numberOfQuestions) {
+            return setDispalyScoreBoard(true);
+        }
+
+        return checkLengthOfQuestionsLeft();
+    }
+
     function checkLengthOfQuestionsLeft(): void {
         if (savedQuestions.length !== 0) {
 
@@ -53,14 +59,6 @@ const TopicRoute = (props) => {
 
         setCurrentQuestion(props.route.params.questions[counterForQuestions]);
         setCounterForQuestions(counterForQuestions + 1);
-    }
-
-    function displayCorrectQuestion(): void {
-        if (counterForQuestions === numberOfQuestions) {
-            return setDispalyScoreBoard(true);
-        }
-
-        return checkLengthOfQuestionsLeft();
     }
 
     function viewPreviousQuestions(): void {
@@ -87,18 +85,6 @@ const TopicRoute = (props) => {
 
         setCounterForQuestions(counterForQuestions + 1);
         setCurrentQuestion(nextQuestion);
-    }
-
-    function checkLengthOfQuestionsLeft(): void {
-        if (savedQuestions.length !== 0) {
-
-            setCurrentQuestion(savedQuestions[counterForQuestions]);
-            setCounterForQuestions(counterForQuestions + 1);
-            return;
-        }
-
-        setCurrentQuestion(props.route.params.questions[counterForQuestions]);
-        setCounterForQuestions(counterForQuestions + 1);
     }
 
     function isNextQuestionAnswered(): boolean | void  {
@@ -176,7 +162,7 @@ const TopicRoute = (props) => {
     return (
         <View style={styles.container}>
 
-            <View>{currentQuestion !== undefined ?
+              <View>{currentQuestion !== undefined ?
 
                 <QuestionView
                     id={props.route.params.id}

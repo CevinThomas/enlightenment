@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import GlobalStyles from "../utils/globalStyles"
 
 class ModalRemoveQuestions extends Component {
 
@@ -60,7 +61,7 @@ class ModalRemoveQuestions extends Component {
                             key={question.question}
                             style={[styles.removeQuestionContainer, {backgroundColor: this.state.removedQuestions.includes(question.question) ? "red" : "white"}]}><Text
                             style={[styles.removeQuestion, {
-                                color: this.state.removedQuestions.includes(question.question) ? "white" : "green",
+                                color: this.state.removedQuestions.includes(question.question) ? "white" :  GlobalStyles.darkColor,
                             }]}
                             onPress={this.state.removedQuestions.includes(question.question) ? (event) => this.recallQuestion(event, question.question) : (event) => this.removeQuestion(event, question.question)}>{question.question}</Text>
                         </TouchableOpacity>;
@@ -71,11 +72,11 @@ class ModalRemoveQuestions extends Component {
                     <View style={styles.mainButtonContainer}>
 
                         <TouchableOpacity style={styles.buttonContainerTwo} onPress={this.updateQuestions.bind(this)}>
-                            <Text style={{color: "white"}}>Update Questions</Text>
+                            <Text style={{color:  GlobalStyles.darkColor}}>Update Questions</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.buttonContainerTwo} onPress={this.resetQuestions.bind(this)}>
-                            <Text style={{color: "white"}}>Reset Questions</Text>
+                            <Text style={{color:  GlobalStyles.darkColor}}>Reset Questions</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -91,13 +92,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 15,
         shadowOffset: {width: 0, height: 0},
-        shadowColor: "#000",
+        shadowColor:  GlobalStyles.darkColor,
         elevation: 100,
         shadowRadius: 5,
         shadowOpacity: 0.1
     },
     removeHeading: {
-        color: "green",
+        color: GlobalStyles.darkColor,
         textAlign: "center",
         marginBottom: 30,
     },
@@ -121,9 +122,9 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: 0,
-        backgroundColor: "green",
+        backgroundColor: GlobalStyles.lightColor,
         borderRadius: 10,
-        color: "white",
+        color:  GlobalStyles.darkColor,
         padding: 10,
         textAlign: "center"
     },
@@ -136,16 +137,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 50
+        marginTop: 50,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     },
     buttonContainerTwo: {
         marginTop: 10,
         marginBottom: 20,
-        backgroundColor: "green",
+        backgroundColor: GlobalStyles.lightColor,
         borderRadius: 10,
         margin: 5,
-        color: "white",
+        color: GlobalStyles.darkColor,
         padding: 10,
+
     },
 });
 

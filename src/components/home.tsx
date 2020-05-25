@@ -1,6 +1,7 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import ButtonList from "./buttonList";
+import GlobalStyles from "../utils/globalStyles"
 
 const Home = ({navigation}) => {
 
@@ -24,10 +25,11 @@ const Home = ({navigation}) => {
     );
 };
 
+const {width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     secondaryContainer: {
         backgroundColor: "white",
-        borderRadius: 20,
         padding: 30,
         marginTop: 20,
         shadowOffset: {width: 0, height: 0},
@@ -41,9 +43,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
         alignItems: 'center',
         paddingTop: 30,
+        width: width * 0.9,
+        marginLeft: "auto",
+        marginRight: "auto"
     },
     secondaryText: {
-        color: "green",
+        color: GlobalStyles.darkColor,
         fontSize: 14,
         lineHeight: 25
     },
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
 
     mainHeading: {
         fontSize: 25,
-        color: "green"
+        color: GlobalStyles.darkColor
     }
 });
 

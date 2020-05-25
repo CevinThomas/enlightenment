@@ -4,6 +4,7 @@ import Score from "./score";
 import FadeIn from "./fadeIn";
 import {IsAnswered} from "../enums/isAnswered";
 import GestureRecognizer, {swipeDirections} from "react-native-swipe-gestures"
+import GlobalStyles from "../utils/globalStyles"
 
 const QuestionView: React.FC = (props) => {
 
@@ -97,10 +98,6 @@ const QuestionView: React.FC = (props) => {
 
         setDisplayCorrectAnswer(true);
 
-    }
-
-    function onSwipeRight(gestureState) {
-        console.log("HELLO");
     }
 
     function correctAnswer(event, choice) {
@@ -203,7 +200,7 @@ const QuestionView: React.FC = (props) => {
 
                                 <Button
                                     color={questionsData.guessChoice.includes(optionToChoose.choice) ? "white" : "white" &&
-                                    questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "white" : "green"}
+                                    questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "white" : GlobalStyles.darkColor}
                                     disabled={questionsData.rightAnswerGuessed && !
                                                 questionsData.guessChoice.includes(optionToChoose.choice) ||
                                                 questionsData.wrongAnswerGuessed ||
@@ -221,7 +218,7 @@ const QuestionView: React.FC = (props) => {
                                     {<Text style={styles.errorMessage}>{questionsData.rightAnswer.explanation}</Text>}
                                 </View>
                                 <View style={styles.nextQuestion}>
-                                    <Button color={"white"} title={"Next Question!"}
+                                    <Button color={GlobalStyles.darkColor} title={"Next Question!"}
                                             onPress={() => props.displayNextQuestion(null, questionsData.guessChoice)}
                                     />
                                 </View>
@@ -294,7 +291,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         fontSize: 12,
         textAlign: "center",
-        color: "black"
+        color: GlobalStyles.darkColor
     },
     buttonContainer: {
         backgroundColor: "blue",
@@ -306,7 +303,7 @@ const styles = StyleSheet.create({
         borderBottomColor: "lightgrey",
     },
     questionHeading: {
-        color: "green",
+        color: GlobalStyles.darkColor,
         fontSize: 24,
         textAlign: "center",
         paddingBottom: 10,
@@ -315,7 +312,7 @@ const styles = StyleSheet.create({
     errorMessage: {
         textAlign: "center",
         paddingTop: 10,
-        color: "red"
+        color: GlobalStyles.darkColor
     },
     correctMessage: {},
     congratulationsMessage: {
@@ -324,9 +321,9 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     nextQuestion: {
-        backgroundColor: "green",
+        backgroundColor: "white",
         borderRadius: 10,
-        color: "white",
+        color: GlobalStyles.darkColor,
         marginTop: 20,
         shadowOffset: {width: 0, height: 0},
         shadowColor: "#000",

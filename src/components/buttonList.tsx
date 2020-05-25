@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
     },
     container: {
-        margin: 20,
+        marginTop: 20,
         backgroundColor: "white",
         color: "white",
         flexDirection: "row",
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         alignItems: "center",
         display: "flex",
-        borderRadius: 10,
+        borderRadius: 20,
     }
 });
 
