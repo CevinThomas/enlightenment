@@ -34,7 +34,7 @@ const Subjects = (props) => {
         <View style={styles.outerContainer}>
             <View style={styles.innerContainer}>
                 {allSubjects.length !== 0 ? allSubjects.map(subject => {
-                    return  <TouchableOpacity style={styles.buttonContainer} onPress={() => navigateToProperQuestions(subject)}>
+                    return  <TouchableOpacity key={subject} style={styles.buttonContainer} onPress={() => navigateToProperQuestions(subject)}>
                         <Text style={styles.text}>{subject}</Text>
                     </TouchableOpacity>
                 }) : null}

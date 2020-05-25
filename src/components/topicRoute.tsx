@@ -16,23 +16,44 @@ const TopicRoute = (props) => {
     useEffect(() => {
         async function load() {
             const value: string = await AsyncStorage.getItem(props.route.params.id.toString());
+            let counter: number, numberOfQuestions: number;
 
             if (value !== null) {
                 const questionsReset = resetQuestions(JSON.parse(value));
                 shuffle(questionsReset);
                 setSavedQuestions(questionsReset);
+                numberOfQuestions = JSON.parse(value).length;
                 setNumberOfQuestions(JSON.parse(value).length);
             } else {
                 setSavedQuestions([]);
+                numberOfQuestions = props.route.params.questions.length;
                 setNumberOfQuestions(props.route.params.questions.length);
             }
 
             resetQuestions(props.route.params.questions);
             shuffle(props.route.params.questions);
             props.route.params.questions.forEach(question => shuffle(question.options));
+            displayFirstQuestion();
         }
         load();
     }, []);
+
+    function displayFirstQuestion(): void {
+        setCurrentQuestion(props.route.params.questions[0]);
+        setCounterForQuestions(counterForQuestions + 1);
+    }
+
+    function checkLengthOfQuestionsLeft(): void {
+        if (savedQuestions.length !== 0) {
+
+            setCurrentQuestion(savedQuestions[counterForQuestions]);
+            setCounterForQuestions(counterForQuestions + 1);
+            return;
+        }
+
+        setCurrentQuestion(props.route.params.questions[counterForQuestions]);
+        setCounterForQuestions(counterForQuestions + 1);
+    }
 
     function displayCorrectQuestion(): void {
         if (counterForQuestions === numberOfQuestions) {
@@ -152,14 +173,8 @@ const TopicRoute = (props) => {
         return true;
     }
 
-    function questionsAreBeingShownHandler(beingShown: boolean): void {
-       setQuestionsAreShowing(beingShown)
-    }
-
     return (
         <View style={styles.container}>
-            {questionsAreShowing !== true ? <Text style={styles.heading}>Welcome to the {props.route.params.name} quiz!</Text> : null}
-
 
             <View>{currentQuestion !== undefined ?
 
@@ -177,18 +192,6 @@ const TopicRoute = (props) => {
                 /> : null}
 
             </View>
-
-            {counterForQuestions === 0 ?
-
-                <TouchableOpacity onPress={() => {
-                    questionsAreBeingShownHandler(true);
-                displayCorrectQuestion()
-                }
-                } style={styles.startedButtonContainer}>
-                    <Text style={styles.getStarted}>Let's Get Started!</Text>
-                </TouchableOpacity>
-
-                : null}
 
         </View>
     );

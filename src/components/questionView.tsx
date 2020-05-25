@@ -181,11 +181,11 @@ const QuestionView: React.FC = (props) => {
         <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={(state) => props.viewNextQuestion()} onSwipeRight={(state) => props.counter > 1 ? props.viewPreviousQuestion() : null}>
         <View style={styles.container}>
             <FadeIn>
-                <View style={styles.counterContainer}>
-                    <Text style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
-                </View>
                 {props.scoreBoard !== true ? <>
-                        <Text style={styles.questionHeading}>{props.question.question}</Text>
+                        <View style={styles.counterContainer}>
+                            <Text style={styles.questionHeading}>{props.question.question}</Text>
+                        </View>
+                        <Text style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
                         {props.question.options !== undefined ? props.question.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
                                          style={
@@ -291,8 +291,10 @@ const styles = StyleSheet.create({
     },
     counter: {
         paddingBottom: 5,
+        paddingTop: 15,
+        fontSize: 12,
         textAlign: "center",
-        color: "green"
+        color: "black"
     },
     buttonContainer: {
         backgroundColor: "blue",
@@ -305,9 +307,9 @@ const styles = StyleSheet.create({
     },
     questionHeading: {
         color: "green",
-        fontSize: 16,
+        fontSize: 24,
         textAlign: "center",
-        paddingBottom: 20,
+        paddingBottom: 10,
         marginTop: 20
     },
     errorMessage: {
