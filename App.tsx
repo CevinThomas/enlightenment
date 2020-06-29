@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Home from "./src/components/home";
 import "react-native-gesture-handler";
 import {NavigationContainer} from "@react-navigation/native";
@@ -7,8 +7,26 @@ import TopicRoute from "./src/components/topicRoute";
 import Subjects from "./src/components/subjects";
 import GlobalStyles from "./src/utils/globalStyles"
 const Stack = createStackNavigator();
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
 export default function App() {
+
+    const [fontLoaded, setFontLoaded] = useState(false);
+
+    const fetchFonts = () => {
+        return Font.loadAsync({
+            'century-gothic': require('./assets/fonts/century-gothic-400.ttf'),
+        });
+    };
+
+    if (!fontLoaded) {
+        return (
+            <AppLoading
+                startAsync={fetchFonts}
+                onFinish={() => setFontLoaded(true)}/>
+            )
+    }
 
     return (
         <NavigationContainer>
