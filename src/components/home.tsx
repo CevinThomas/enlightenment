@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
 
     mainHeading: {
         fontSize: 25,
+        fontFamily: "century-gothic-400",
         color: GlobalStyles.darkColor
     }
 });
