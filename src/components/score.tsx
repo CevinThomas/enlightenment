@@ -3,6 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import ModalRemoveQuestions from "./modalRemoveQuestions";
 import Modal from "./modal";
 import FadeIn from "./fadeIn";
+import GlobalStyles from "../utils/globalStyles"
 
 
 const Score = ({results, ...props}) => {
@@ -24,11 +25,16 @@ const Score = ({results, ...props}) => {
                 </View>
 
                 <View style={styles.textContainer}>
+
                     <Text style={styles.titles}>Total amount of questions: {props.totalQuestions}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
-                    <Text style={styles.titles}>First Try Correct: {props.firstTry}</Text>
+                    <Text style={styles.titles}>Correct attempts: {results.correctAnswers.length}</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text style={styles.titles}>Wrong attempts: {results.wrongAnswers.length}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
@@ -37,20 +43,12 @@ const Score = ({results, ...props}) => {
                 </View>
 
                 <View style={styles.textContainer}>
-                    <Text style={styles.titles}>Wrong attempts: {results.wrongAnswers.length}</Text>
-                </View>
-
-                <View style={styles.textContainer}>
-                    <Text style={styles.titles}>Correct attempts: {results.correctAnswers.length}</Text>
-                </View>
-
-                <View style={styles.textContainer}>
                     <Text style={[styles.titles, {marginBottom: 10}]}>Categories used:</Text>
 
                     {props.categoryAnswers.map(category => {
                         return (
                             <View key={category.name}>
-                                <Text style={styles.titles}>{category.name} Scored: {category.firstTry} out
+                                <Text style={styles.titles}>{category.name} Scored: {category.timesCorrect} out
                                     of {category.totalQuestions}</Text>
                             </View>
                         );
@@ -58,9 +56,8 @@ const Score = ({results, ...props}) => {
                 </View>
 
 
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={{color: "white", textAlign: "center"}}
-                          onPress={() => props.navigation.navigate("Home")}>Do it
+                <TouchableOpacity onPress={() => props.navigation.navigate("Home")} style={styles.buttonContainer}>
+                    <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Do it
                         again!
                     </Text>
                 </TouchableOpacity>
@@ -92,20 +89,20 @@ const styles = StyleSheet.create({
     },
     headingContainer: {
         borderBottomWidth: 1,
-        borderBottomColor: "green"
+        borderBottomColor: GlobalStyles.darkColor
     },
     mainheading: {
         fontSize: 18,
-        color: "green",
+        color: GlobalStyles.darkColor,
         textAlign: "center",
         marginBottom: 20
     },
     titles: {
-        color: "green",
+        color: GlobalStyles.darkColor,
     },
     buttonContainer: {
         marginTop: 20,
-        backgroundColor: "green",
+        backgroundColor: GlobalStyles.lightColor,
         borderRadius: 10,
         padding: 10,
         textAlign: "center",

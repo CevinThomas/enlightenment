@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {AsyncStorage, Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import QuestionView from "./questionView";
+import {resetQuestions, shuffle} from "../utils/functions";
+import {IsAnswered} from "../enums/isAnswered";
 
 const TopicRoute = (props) => {
 
@@ -9,30 +11,37 @@ const TopicRoute = (props) => {
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
     const [savedQuestions, setSavedQuestions] = useState<[]>([]);
-    const [questionsAreShowing, setQuestionsAreShowing] = useState<boolean>(false);
-
-    function shuffle(array: any) {
-        array.sort(() => Math.random() - 0.5);
-    }
+    const [displayQuestions, setDisplayQuestions] = useState(false);
 
     useEffect(() => {
         async function load() {
             const value: string = await AsyncStorage.getItem(props.route.params.id.toString());
 
             if (value !== null) {
+                const questionsReset = resetQuestions(JSON.parse(value));
+                shuffle(questionsReset);
+                setSavedQuestions(questionsReset);
                 setNumberOfQuestions(JSON.parse(value).length);
-                setSavedQuestions(JSON.parse(value));
             } else {
-                setNumberOfQuestions(props.route.params.questions.initialQuestions.length);
+                setSavedQuestions([]);
+                setNumberOfQuestions(props.route.params.questions.length);
             }
-            shuffle(props.route.params.questions.initialQuestions);
-            props.route.params.questions.initialQuestions.forEach(question => shuffle(question.options));
-        }
 
+            resetQuestions(props.route.params.questions);
+            shuffle(props.route.params.questions);
+            props.route.params.questions.forEach(question => shuffle(question.options));
+            displayFirstQuestion();
+        }
         load();
     }, []);
 
+    function displayFirstQuestion(): void {
+        setCurrentQuestion(props.route.params.questions[0]);
+        setCounterForQuestions(counterForQuestions + 1);
+    }
+
     function displayCorrectQuestion(): void {
+
         if (counterForQuestions === numberOfQuestions) {
             return setDispalyScoreBoard(true);
         }
@@ -40,62 +49,145 @@ const TopicRoute = (props) => {
         return checkLengthOfQuestionsLeft();
     }
 
-    function checkLengthOfQuestionsLeft() {
+    function checkLengthOfQuestionsLeft(): void {
         if (savedQuestions.length !== 0) {
 
             setCurrentQuestion(savedQuestions[counterForQuestions]);
             setCounterForQuestions(counterForQuestions + 1);
-        } else {
-            setCurrentQuestion(props.route.params.questions.initialQuestions[counterForQuestions]);
-            setCounterForQuestions(counterForQuestions + 1);
+            return;
         }
+
+        setCurrentQuestion(props.route.params.questions[counterForQuestions]);
+        setCounterForQuestions(counterForQuestions + 1);
     }
 
-    function questionsAreBeingShownHandler(beingShown: boolean): void {
-        setQuestionsAreShowing(beingShown);
+    function viewPreviousQuestions(): void {
+        let counter = counterForQuestions;
+        let updatedCounter = counter - 1;
+        if (savedQuestions.length !== 0) {
+
+            setCurrentQuestion(savedQuestions[updatedCounter - 1]);
+            setCounterForQuestions(counterForQuestions - 1);
+            return;
+        }
+
+        setCounterForQuestions(counterForQuestions - 1);
+        setCurrentQuestion(props.route.params.questions[updatedCounter - 1]);
+    }
+
+    function viewNextQuestion(nextQuestion: any): void {
+        if (savedQuestions.length !== 0) {
+
+            setCurrentQuestion(nextQuestion);
+            setCounterForQuestions(counterForQuestions + 1);
+            return;
+        }
+
+        setCounterForQuestions(counterForQuestions + 1);
+        setCurrentQuestion(nextQuestion);
+    }
+
+    function isNextQuestionAnswered(): boolean | void  {
+        let secondNextQuestion, isLastQuestionComing, questionIndex, nextQuestion;
+        questionIndex = counterForQuestions;
+        if (savedQuestions.length !== 0) {
+
+            isLastQuestionComing = savedQuestions.length - counterForQuestions;
+            nextQuestion = savedQuestions[questionIndex];
+        } else {
+            isLastQuestionComing = props.route.params.questions.length - counterForQuestions;
+            nextQuestion = props.route.params.questions[questionIndex];
+        }
+
+        if (isLastQuestionComing > 1) {
+            secondNextQuestion = props.route.params.questions[questionIndex + 1];
+        }
+
+
+            if (currentQuestion.answered === IsAnswered.yes && isLastQuestionComing === 1) {
+                return viewNextQuestion(nextQuestion);
+            }
+
+            if (currentQuestion.answered === IsAnswered.no) {
+                return false;
+            }
+
+            if (nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
+                viewNextQuestion(nextQuestion);
+            }
+
+            if (nextQuestion.answered === IsAnswered.no ) {
+                return false;
+            }
+
+            viewNextQuestion(nextQuestion);
+    }
+
+    function canWeViewNextQuestion(): boolean {
+        let secondNextQuestion, isLastQuestionComing, questionIndex, nextQuestion;
+        questionIndex = counterForQuestions;
+        if (savedQuestions.length !== 0) {
+
+            isLastQuestionComing = savedQuestions.length - counterForQuestions;
+            nextQuestion = savedQuestions[questionIndex];
+        } else {
+            isLastQuestionComing = props.route.params.questions.length - counterForQuestions;
+            nextQuestion = props.route.params.questions[questionIndex];
+        }
+
+        if (isLastQuestionComing > 1) {
+            secondNextQuestion = props.route.params.questions[questionIndex + 1];
+        }
+
+
+        if (currentQuestion.answered === IsAnswered.yes && isLastQuestionComing === 1) {
+            return true;
+        }
+
+        if (currentQuestion.answered === IsAnswered.no) {
+            return false;
+        }
+
+        if (nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
+            return true;
+        }
+
+        if (nextQuestion.answered === IsAnswered.no ) {
+            return false;
+        }
+
+        return true;
     }
 
     return (
         <View style={styles.container}>
-            {questionsAreShowing !== true ? <Text style={styles.heading}>{props.route.params.name}</Text> : null}
 
-
-            <View>{currentQuestion !== undefined ?
+              <View>{currentQuestion !== undefined ?
 
                 <QuestionView
                     id={props.route.params.id}
-                    allQuestions={savedQuestions.length !== 0 ? savedQuestions : props.route.params.questions.initialQuestions}
+                    allQuestions={savedQuestions.length !== 0 ? savedQuestions : props.route.params.questions}
                     counter={counterForQuestions}
-                    totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.initialQuestions.length}
+                    totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.length}
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={displayCorrectQuestion}
+                    viewPreviousQuestion={viewPreviousQuestions}
+                    viewNextQuestion={isNextQuestionAnswered}
+                    isNextQuestionViewable={canWeViewNextQuestion}
                     question={currentQuestion}
                 /> : null}
 
             </View>
 
-            {counterForQuestions === 0 ?
-
-                <TouchableOpacity onPress={() => {
-                    questionsAreBeingShownHandler(true);
-                displayCorrectQuestion()
-                }
-                } style={styles.startedButtonContainer}>
-                    <Text style={styles.getStarted}>Let's Get Started!</Text>
-                </TouchableOpacity>
-
-                : null}
-
         </View>
     );
 };
 
+const {width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     getStarted: {
         color: "green",
-    },
-    container: {
-        padding: 20
     },
     heading: {
         margin: 20,
@@ -116,7 +208,10 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        width: width * 0.8,
+        marginLeft: "auto",
+        marginRight: "auto"
     }
 });
 

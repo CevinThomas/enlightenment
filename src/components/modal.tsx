@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Alert, Modal, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import GlobalStyles from "../utils/globalStyles"
 
 class ModalExample extends Component {
     state = {
@@ -27,7 +28,7 @@ class ModalExample extends Component {
                                             onPress={() => {
                                                 this.setModalVisible(!this.state.modalVisible);
                                             }}>
-                            <Text style={{color: "white", textAlign: "center"}}>Hide Modal</Text>
+                            <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Go back</Text>
                         </TouchableHighlight>
 
                     </View>
@@ -38,7 +39,7 @@ class ModalExample extends Component {
                     onPress={() => {
                         this.setModalVisible(true);
                     }}>
-                    <Text style={{color: "white", textAlign: "center"}}>Remove Questions</Text>
+                    <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Remove Questions</Text>
                 </TouchableHighlight>
             </View>
         );
@@ -48,22 +49,32 @@ class ModalExample extends Component {
 const styles = StyleSheet.create({
     hideButtonContainer: {
         padding: 20,
-        backgroundColor: "green",
+        backgroundColor: GlobalStyles.lightColor,
         width: 270,
         marginLeft: "auto",
         marginRight: "auto",
-        borderRadius: 10
+        borderRadius: 10,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     },
     hideButton: {
         marginLeft: "auto",
         marginRight: "auto",
-        color: "white",
+        color: GlobalStyles.lightColor,
     },
     button: {
         marginTop: 0,
-        backgroundColor: "green",
+        backgroundColor: GlobalStyles.lightColor,
         borderRadius: 10,
         padding: 10,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
     }
 });
 

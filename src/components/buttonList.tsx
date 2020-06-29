@@ -1,24 +1,32 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from "react-native";
-import JavascriptBasics from "../questions/javascriptBasics";
-import SeoBasics from "../questions/seoBasics";
-
+import JavascriptQuestions from "../questions/javascriptQuestions";
+import PythonCategories from "../questions/pythonQuestions"
+import SeoQuestions from "../questions/seoQuestions";
 const ButtonList = (props) => {
 
     function f(e, buttonId) {
         switch (buttonId) {
             case "seo":
-                props.navigation.navigate("Questions", {
+                props.navigation.navigate("Subjects", {
                     name: "Welcome to the SEO Course!",
-                    questions: SeoBasics,
+                    categories: SeoQuestions,
                     id: "seo"
                 });
                 break;
             case "javascript":
-                props.navigation.navigate("Questions", {
+                props.navigation.navigate("Subjects", {
                     name: "Welcome to the JavaScript Course!",
-                    questions: JavascriptBasics, id: "js"
+                    categories: JavascriptQuestions,
+                    id: "js"
                 });
+                break;
+            case "python":
+                props.navigation.navigate("Subjects", {
+                    name: "Welcome to the Python Course!",
+                    categories: PythonCategories,
+                    id: "sub"
+                })
         }
     }
 
@@ -31,7 +39,7 @@ const ButtonList = (props) => {
                     <Text onPress={(event) => f(event, props.boxTitle.toLowerCase())}
                           style={styles.boxTitle}>{props.boxTitle}
                     </Text>
-                    
+
                 </ImageBackground>
             </View>
         </View>
@@ -57,10 +65,10 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
     },
     container: {
-        margin: 20,
+        marginTop: 20,
         backgroundColor: "white",
         color: "white",
         flexDirection: "row",
@@ -72,7 +80,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         alignItems: "center",
         display: "flex",
-        borderRadius: 10,
+        borderRadius: 20,
     }
 });
 
