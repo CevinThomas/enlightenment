@@ -33,7 +33,7 @@ const ButtonList = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.innerContainer}>
-                <ImageBackground source={require("../../assets/images/turquoise-1540436_1280.png")}
+                <ImageBackground source={require("../../assets/images/question-mark-2492009_1920.jpg")}
                                  style={styles.backgroundImageStyling}>
 
                     <Text onPress={(event) => f(event, props.boxTitle.toLowerCase())}
