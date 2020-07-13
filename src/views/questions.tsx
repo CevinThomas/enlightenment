@@ -8,27 +8,39 @@ const Questions = (props) => {
 
     const [counterForQuestions, setCounterForQuestions] = useState<number>(0);
     const [currentQuestion, setCurrentQuestion] = useState();
+    const [questionsBeingUsed, setQuestionsBeingUsed] = useState<[]>([]);
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
     const [savedQuestions, setSavedQuestions] = useState<[]>([]);
 
-    useEffect(() => {
-        async function load() {
-            const value: string = await AsyncStorage.getItem(props.route.params.id.toString());
+    const questionsBeingUsedRef = React.useRef(questionsBeingUsed);
 
-            if (value !== null) {
-                const questionsReset = resetQuestions(JSON.parse(value));
-                shuffle(questionsReset);
-                setSavedQuestions(questionsReset);
-                setNumberOfQuestions(JSON.parse(value).length);
+    const updateQuestionsBeingUsed = (questionsToSet: []): void => {
+        questionsBeingUsedRef.current = questionsToSet;
+        setQuestionsBeingUsed(questionsToSet);
+    };
+
+    useEffect(() => {
+
+        const allQuestions = props.route.params.questions;
+        updateQuestionsBeingUsed(allQuestions);
+
+        async function load() {
+            const storedQuestions = await AsyncStorage.getItem(props.route.params.id.toString());
+
+            if (storedQuestions !== null) {
+                const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
+                shuffle(storedAreNowReset);
+                setSavedQuestions(storedAreNowReset);
+                return setNumberOfQuestions(JSON.parse(storedQuestions).length);
             } else {
                 setSavedQuestions([]);
-                setNumberOfQuestions(props.route.params.questions.length);
+                setNumberOfQuestions(allQuestions.length);
             }
 
-            resetQuestions(props.route.params.questions);
-            shuffle(props.route.params.questions);
-            props.route.params.questions.forEach(question => shuffle(question.options));
+            resetQuestions(allQuestions);
+            shuffle(allQuestions);
+            allQuestions.forEach(question => shuffle(question.options));
             displayFirstQuestion();
         }
 
@@ -36,52 +48,38 @@ const Questions = (props) => {
     }, []);
 
     function displayFirstQuestion(): void {
-        setCurrentQuestion(props.route.params.questions[0]);
+        setCurrentQuestion(questionsBeingUsedRef.current[0]);
         setCounterForQuestions(counterForQuestions + 1);
     }
 
-    function displayCorrectQuestion(): void {
+    function checkLengthOfQuestionsLeft(): void {
 
         if (counterForQuestions === numberOfQuestions) {
             return setDispalyScoreBoard(true);
         }
 
-        return checkLengthOfQuestionsLeft();
+        return displayCorrectQuestion();
     }
 
-    function checkLengthOfQuestionsLeft(): void {
+    function displayCorrectQuestion(): void {
         if (savedQuestions.length !== 0) {
-
             setCurrentQuestion(savedQuestions[counterForQuestions]);
-            setCounterForQuestions(counterForQuestions + 1);
-            return;
+        } else {
+            setCurrentQuestion(questionsBeingUsed[counterForQuestions]);
         }
-
-        setCurrentQuestion(props.route.params.questions[counterForQuestions]);
         setCounterForQuestions(counterForQuestions + 1);
     }
 
-    function viewPreviousQuestions(): void {
-        let updatedCounter = counterForQuestions - 1;
+    const viewPreviousQuestions = (): void => {
         if (savedQuestions.length !== 0) {
-
-            setCurrentQuestion(savedQuestions[updatedCounter - 1]);
-            setCounterForQuestions(counterForQuestions - 1);
-            return;
+            setCurrentQuestion(savedQuestions[counterForQuestions - 2]);
+        } else {
+            setCurrentQuestion(questionsBeingUsed[counterForQuestions - 2]);
         }
-
         setCounterForQuestions(counterForQuestions - 1);
-        setCurrentQuestion(props.route.params.questions[updatedCounter - 1]);
-    }
+    };
 
     function viewNextQuestion(nextQuestion: any): void {
-        if (savedQuestions.length !== 0) {
-
-            setCurrentQuestion(nextQuestion);
-            setCounterForQuestions(counterForQuestions + 1);
-            return;
-        }
-
         setCounterForQuestions(counterForQuestions + 1);
         setCurrentQuestion(nextQuestion);
     }
@@ -167,7 +165,7 @@ const Questions = (props) => {
                     counter={counterForQuestions}
                     totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.length}
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
-                    displayNextQuestion={displayCorrectQuestion}
+                    displayNextQuestion={checkLengthOfQuestionsLeft}
                     viewPreviousQuestion={viewPreviousQuestions}
                     viewNextQuestion={isNextQuestionAnswered}
                     isNextQuestionViewable={canWeViewNextQuestion}
