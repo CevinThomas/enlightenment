@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import ModalRemoveQuestions from "./modalRemoveQuestions";
-import Modal from "./modal";
 import FadeIn from "./fadeIn";
 import GlobalStyles from "../utils/globalStyles"
 
