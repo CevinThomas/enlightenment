@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AsyncStorage, Dimensions, StyleSheet, View} from "react-native";
+import {AsyncStorage, View} from "react-native";
 import QuestionView from "../components/questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
 import {IsAnswered} from "../enums/isAnswered";
@@ -151,10 +151,8 @@ const Questions = (props) => {
     };
 
     return (
-        <View style={styles.container}>
-
+        <View>
             <View>{currentQuestion !== undefined ?
-
                 <QuestionView
                     id={props.route.params.id}
                     allQuestions={savedQuestions.length !== 0 ? savedQuestions : props.route.params.questions}
@@ -167,43 +165,9 @@ const Questions = (props) => {
                     isNextQuestionViewable={canWeViewNextQuestion}
                     question={currentQuestion}
                 /> : null}
-
             </View>
-
         </View>
     );
 };
-
-const {width} = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-    getStarted: {
-        color: "green",
-    },
-    heading: {
-        margin: 20,
-        color: "green",
-        textAlign: "center",
-        fontSize: 25
-    },
-    startedButtonContainer: {
-        width: "100%",
-        display: "flex",
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        borderRadius: 10,
-        height: 50,
-        shadowOffset: {width: 0, height: 0},
-        shadowColor: "#000",
-        elevation: 100,
-        shadowRadius: 5,
-        shadowOpacity: 0.1,
-        width: width * 0.8,
-        marginLeft: "auto",
-        marginRight: "auto"
-    }
-});
 
 export default Questions;
