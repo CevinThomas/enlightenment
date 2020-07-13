@@ -18,10 +18,8 @@ const Categories = (props) => {
         setAllCategories(categoriesWithCapitalFirst);
     }, [])
 
-    function navigateToProperQuestions(): void {
-        setShowModal(false)
-
-        // TODO: Filter the correct subjects questions before sending to the questions screen.
+    const navigateToProperQuestions = (): void => {
+        setShowModal(false);
 
         const questionsToUse = allCategories[categoryToUse.toLowerCase()].questions;
 
@@ -30,12 +28,12 @@ const Categories = (props) => {
             questions: questionsToUse,
             id: "seo"
         });
-    }
+    };
 
-    function openModalAndSetState(chosenCategory: string): void {
+    const openModalAndSetState = (chosenCategory: string): void => {
         setShowModal(true);
         setCategoryToUse(chosenCategory);
-    }
+    };
 
     return (
         <View style={styles.outerContainer}>
