@@ -286,7 +286,8 @@ const styles = StyleSheet.create({
     },
     totalQuestions: {
       flexDirection: "row",
-      justifyContent: "center"
+      justifyContent: "center",
+        marginRight: 10
     },
     prevAndNext: {
         width: "100%",
