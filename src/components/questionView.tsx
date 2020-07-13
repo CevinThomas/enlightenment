@@ -11,25 +11,30 @@ import ModalRemoveQuestions from "./modalRemoveQuestions";
 
 const QuestionView: React.FC = (props) => {
 
-    const [questionsData, setQuestionsData] = useState<any>({
+    const [questionsData, setQuestionsData] = useState({
         allQuestions: [],
         isNextQuestionViewable: false,
         currentQuestion: {},
-        rightAnswer: {},
+        rightAnswer: {}
+    });
+
+    const [guessesAndChoices, setGuessesAndChoices] = useState({
         rightAnswerGuessed: false,
         wrongAnswerGuessed: false,
         guessChoice: [],
-        guesses: [],
-        categories: [],
-        results: {
-            wrongAnswersWithExplanation: [],
-            wrongAnswers: [],
-            wrongAnswer: [],
-            correctAnswers: [],
-            timesCorrect: 0,
-            stateWithCategories: [],
-        }
+        guesses: []
     });
+
+    const [results, setResults] = useState({
+        wrongAnswersWithExplanation: [],
+        wrongAnswers: [],
+        wrongAnswer: [],
+        correctAnswers: [],
+        timesCorrect: 0,
+        stateWithCategories: [],
+    });
+
+    const [categories, setCategories] = useState<[]>([]);
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
     const [isViewable, setIsViewable] = useState(false);
 
@@ -39,27 +44,32 @@ const QuestionView: React.FC = (props) => {
         const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
         const allQuestions = [...props.allQuestions];
         const currentQuestion = props.question;
+
         setDisplayCorrectAnswer(false);
 
         setQuestionsData({
-            ...questionsData,
-            currentQuestion: currentQuestion,
             allQuestions: allQuestions,
-            rightAnswer: correctAnswer,
+            currentQuestion: currentQuestion,
             isNextQuestionViewable: isViewable,
+            rightAnswer: correctAnswer
+        });
+
+        setGuessesAndChoices({
+            ...guessesAndChoices,
             rightAnswerGuessed: false,
             wrongAnswerGuessed: false
-        })
+        });
+
     }, [props.question]);
 
     function wrongAnswer(event, choice) {
 
         updateQuestionProperty(event, choice);
 
-        let previousGuesses = [...questionsData.guesses];
-        let updatedWrongAnswers = [...questionsData.results.wrongAnswers];
-        let previousStateCategories = [...questionsData.results.stateWithCategories];
-        let previousCategories = [...questionsData.categories];
+        let previousGuesses = [...guessesAndChoices.guesses];
+        let updatedWrongAnswers = [...results.wrongAnswers];
+        let previousStateCategories = [...results.stateWithCategories];
+        let previousCategories = categories;
         updatedWrongAnswers.push({choice: choice.choice, explanation: choice.explanation});
 
         const category = props.question.category;
@@ -68,8 +78,8 @@ const QuestionView: React.FC = (props) => {
             previousGuesses.push(choice.choice);
         }
 
-        if (questionsData.categories.includes(category)) {
-            questionsData.results.stateWithCategories.forEach(item => {
+        if (categories.includes(category)) {
+            results.stateWithCategories.forEach(item => {
                 if (item.name === category) {
                     item.totalQuestions++;
                 }
@@ -85,19 +95,21 @@ const QuestionView: React.FC = (props) => {
             previousStateCategories.push(freshCategoryCounter);
         }
 
-        setQuestionsData({
-            ...questionsData,
+        setGuessesAndChoices({
+            ...guessesAndChoices,
             wrongAnswerGuessed: true,
-            categories: previousCategories,
             guesses: previousGuesses,
-            results: {
-                ...questionsData.results,
-                wrongAnswersWithExplanation: updatedWrongAnswers,
-                wrongAnswers: updatedWrongAnswers,
-                wrongAnswer: [choice.choice],
-                stateWithCategories: previousStateCategories
-            }
-        })
+        });
+
+        setResults({
+            ...results,
+            wrongAnswersWithExplanation: updatedWrongAnswers,
+            wrongAnswers: updatedWrongAnswers,
+            wrongAnswer: [choice.choice],
+            stateWithCategories: previousStateCategories
+        });
+
+        setCategories(previousCategories);
 
         setDisplayCorrectAnswer(true);
 
@@ -108,15 +120,15 @@ const QuestionView: React.FC = (props) => {
         updateQuestionProperty(event, choice);
 
         let guessedChoiceInformation = [choice.choice, choice.explanation];
-        let previousCorrectAnswers = [...questionsData.results.correctAnswers];
-        let previousStateCategories = [...questionsData.results.stateWithCategories];
-        let previousCategories = [...questionsData.categories];
+        let previousCorrectAnswers = [...results.correctAnswers];
+        let previousStateCategories = [...results.stateWithCategories];
+        let previousCategories = categories;
         previousCorrectAnswers.push(choice.choice);
 
         const category = props.question.category;
 
-        if (questionsData.categories.includes(category)) {
-            questionsData.results.stateWithCategories.forEach(item => {
+        if (categories.includes(category)) {
+            results.stateWithCategories.forEach(item => {
                 if (item.name === category) {
                     item.timesCorrect++;
                     item.totalQuestions++;
@@ -128,27 +140,29 @@ const QuestionView: React.FC = (props) => {
                 name: category,
                 timesCorrect: 1,
                 totalQuestions: 1,
-            }
+            };
 
             previousStateCategories.push(freshCategoryWithCounter);
         }
 
-        setQuestionsData({
-            ...questionsData,
+        setGuessesAndChoices({
+            ...guessesAndChoices,
             guessChoice: guessedChoiceInformation,
             rightAnswerGuessed: true,
-            categories: previousCategories,
-            results: {
-                ...questionsData.results,
-                correctAnswers: previousCorrectAnswers,
-                timesCorrect: questionsData.results.timesCorrect + 1,
-                stateWithCategories: previousStateCategories
-            }
-        })
+        });
+
+        setResults({
+            ...results,
+            correctAnswers: previousCorrectAnswers,
+            timesCorrect: results.timesCorrect + 1,
+            stateWithCategories: previousStateCategories
+        });
+
+        setCategories(previousCategories);
 
         setTimeout(() => {
-            props.displayNextQuestion(null, questionsData.guessChoice)
-        }, 1000)
+            props.displayNextQuestion(null, guessesAndChoices.guessChoice);
+        }, 1000);
     }
 
     function updateQuestionProperty(event: any, choice: any): void {
@@ -162,9 +176,13 @@ const QuestionView: React.FC = (props) => {
 
         setQuestionsData({
             ...questionsData,
-            rightAnswerGuessed: true,
             allQuestions: allQuestions
-        })
+        });
+
+        setGuessesAndChoices({
+            ...guessesAndChoices,
+            rightAnswerGuessed: true,
+        });
     }
 
     function checkIfAnswerIsCorrect(event, choice) {
@@ -200,52 +218,56 @@ const QuestionView: React.FC = (props) => {
                                                  {
                                                      backgroundColor:
                                                          displayCorrectAnswer === true && questionsData.rightAnswer.choice === optionToChoose.choice ? "green" :
-                                                             questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
-                                                                 questionsData.guessChoice.includes(optionToChoose.choice) ? "green" :
+                                                             results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
+                                                                 guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? "green" :
                                                                      questionsData.rightAnswer.choice === optionToChoose.choice && questionsData.currentQuestion.answered === IsAnswered.yes ? "green" :
-                                                                         questionsData.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === IsAnswered.yes ? "red" : "white"
+                                                                         guessesAndChoices.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === IsAnswered.yes ? "red" : "white"
                                                  },
                                              ]}>
 
                                 <Button
-                                    color={questionsData.guessChoice.includes(optionToChoose.choice) ? "white" : "white" &&
-                                    questionsData.results.wrongAnswer.includes(optionToChoose.choice) ? "white" : GlobalStyles.darkColor}
-                                    disabled={questionsData.rightAnswerGuessed && !
-                                                questionsData.guessChoice.includes(optionToChoose.choice) ||
-                                                questionsData.wrongAnswerGuessed ||
-                                                questionsData.currentQuestion.answered === IsAnswered.yes}
+                                    color={guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? "white" : "white" &&
+                                    results.wrongAnswer.includes(optionToChoose.choice) ? "white" : GlobalStyles.darkColor}
+                                    disabled={guessesAndChoices.rightAnswerGuessed && !
+                                        guessesAndChoices.guessChoice.includes(optionToChoose.choice) ||
+                                    guessesAndChoices.wrongAnswerGuessed ||
+                                    questionsData.currentQuestion.answered === IsAnswered.yes}
                                     title={optionToChoose.choice}
-                                    onPress={questionsData.guessChoice.includes(optionToChoose.choice) ? null : (option) => {
+                                    onPress={guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? null : (option) => {
                                         checkIfAnswerIsCorrect(option, optionToChoose);
                                     }}/>
                             </View>;
                         }) : null}
 
-                        {questionsData.wrongAnswerGuessed ?
+                        {guessesAndChoices.wrongAnswerGuessed ?
                             <React.Fragment>
                                 <View>
                                     {<Text style={styles.errorMessage}>{questionsData.rightAnswer.explanation}</Text>}
                                 </View>
                                 <View style={styles.nextQuestion}>
                                     <Button color={GlobalStyles.darkColor} title={"Next Question!"}
-                                            onPress={() => props.displayNextQuestion(null, questionsData.guessChoice)}
+                                            onPress={() => props.displayNextQuestion(null, guessesAndChoices.guessChoice)}
                                     />
                                 </View>
                             </React.Fragment>
                             : null}</> :
 
                     <Score
-                        categoryAnswers={questionsData.results.stateWithCategories}
+                        categoryAnswers={results.stateWithCategories}
 
                         id={props.id}
-                        allQuestions={props.allQuestions} firstTry={questionsData.results.timesCorrect}
+                        allQuestions={props.allQuestions} firstTry={results.timesCorrect}
                         totalQuestions={props.totalQuestions}
                         navigation={props.navigation}
-                        results={questionsData.results}/>}
+                        results={results}/>}
 
-                {questionsData.wrongAnswerGuessed ? null : <View style={styles.prevAndNextContainer}>
-                    {props.counter > 1 ? <View style={[ styles.prevAndNext,  {backgroundColor: "white"}, {width: isViewable === false ? "100%" : "40%"}]}><Button color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View>  : null}
-                    {isViewable === true ?  <View style={[ styles.prevAndNext, {backgroundColor: "white"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button color={"black"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
+                {guessesAndChoices.wrongAnswerGuessed ? null : <View style={styles.prevAndNextContainer}>
+                    {props.counter > 1 ? <View
+                        style={[styles.prevAndNext, {backgroundColor: "white"}, {width: isViewable === false ? "100%" : "40%"}]}><Button
+                        color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View> : null}
+                    {isViewable === true ? <View
+                        style={[styles.prevAndNext, {backgroundColor: "white"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button
+                        color={"black"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
                 </View>}
 
 
