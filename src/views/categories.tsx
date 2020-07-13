@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from "react-native";
 import GlobalStyles from "../utils/globalStyles"
 import BottomBarLogo from "../components/bottomBarLogo";
@@ -8,20 +8,21 @@ import QuestionOverlay from "../components/questionOverlay";
 const Categories = (props) => {
 
     const [allCategories, setAllCategories] = useState<string[]>([]);
+    const [allQuestions, setAllQuestions] = useState<object>({});
     const [showModal, setShowModal] = useState<boolean>(false);
     const [categoryToUse, setCategoryToUse] = useState<string>("");
 
     useEffect(() => {
-        // TODO: Rename arrayQ
         const categoriesAsArray = Object.keys(props.route.params.categories);
         const categoriesWithCapitalFirst = categoriesAsArray.map(subjectString => capitalizeFirstLetter(subjectString));
         setAllCategories(categoriesWithCapitalFirst);
+        setAllQuestions(props.route.params.categories);
     }, [])
 
     const navigateToProperQuestions = (): void => {
         setShowModal(false);
 
-        const questionsToUse = allCategories[categoryToUse.toLowerCase()].questions;
+        const questionsToUse = allQuestions[categoryToUse.toLowerCase()].questions;
 
         props.navigation.navigate("Questions", {
             name: categoryToUse,
@@ -35,16 +36,21 @@ const Categories = (props) => {
         setCategoryToUse(chosenCategory);
     };
 
+    const renderCategoriesToUI = (): ReactNode => {
+        if (allCategories.length === 0) return;
+        return allCategories.map(category => {
+            return <TouchableOpacity key={category} style={styles.buttonContainer}
+                                     onPress={() => openModalAndSetState(category)}>
+                <Text style={styles.text}>{category}</Text>
+            </TouchableOpacity>;
+        });
+    };
+
     return (
         <View style={styles.outerContainer}>
-            {showModal=== true ? <QuestionOverlay navigateToQuestionsFunction={navigateToProperQuestions}/> : null}
+            {showModal === true ? <QuestionOverlay navigateToQuestionsFunction={navigateToProperQuestions}/> : null}
             <View style={styles.innerContainer}>
-                {allCategories.length !== 0 ? allCategories.map(subject => {
-                    return <TouchableOpacity key={subject} style={styles.buttonContainer}
-                                             onPress={() => openModalAndSetState(subject)}>
-                        <Text style={styles.text}>{subject}</Text>
-                    </TouchableOpacity>;
-                }) : null}
+                {renderCategoriesToUI()}
             </View>
             <BottomBarLogo/>
         </View>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {AsyncStorage, Dimensions, StyleSheet, View} from "react-native";
-import QuestionView from "./questionView";
+import QuestionView from "../components/questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
 import {IsAnswered} from "../enums/isAnswered";
 
