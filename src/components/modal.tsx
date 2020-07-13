@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Alert, Modal, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import GlobalStyles from "../utils/globalStyles"
 
+
 class ModalExample extends Component {
     state = {
         modalVisible: false,
@@ -39,6 +40,7 @@ class ModalExample extends Component {
                     onPress={() => {
                         this.setModalVisible(true);
                     }}>
+
                     <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Remove Questions</Text>
                 </TouchableHighlight>
             </View>
