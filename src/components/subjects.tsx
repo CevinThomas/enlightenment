@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from "react-native";
 import GlobalStyles from "../utils/globalStyles"
 import BottomBarLogo from "./bottomBarLogo";
+import capitalizeFirstLetter from "../utils/functions";
 const Subjects = (props) => {
 
     const [allSubjects, setAllSubjects] = useState<string[]>([]);
@@ -24,10 +25,6 @@ const Subjects = (props) => {
             questions: questionsToUse,
             id: "seo"
         });
-    }
-
-    function capitalizeFirstLetter(nameOfCategory: string) {
-        return nameOfCategory.charAt(0).toUpperCase() + nameOfCategory.slice(1);
     }
 
     return (

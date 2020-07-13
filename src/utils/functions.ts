@@ -22,3 +22,7 @@ export function resetQuestions(allQuestions: []): [] {
     }
 }
 
+export default function capitalizeFirstLetter(nameOfCategory: string) {
+    return nameOfCategory.charAt(0).toUpperCase() + nameOfCategory.slice(1);
+}
+
