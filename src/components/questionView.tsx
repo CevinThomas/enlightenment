@@ -36,11 +36,9 @@ const QuestionView: React.FC = (props) => {
 
     const [categories, setCategories] = useState<[]>([]);
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
-    const [isViewable, setIsViewable] = useState(false);
 
     useEffect(() => {
         const isViewable = props.isNextQuestionViewable();
-        setIsViewable(isViewable);
         const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
         const allQuestions = [...props.allQuestions];
         const currentQuestion = props.question;
@@ -263,9 +261,9 @@ const QuestionView: React.FC = (props) => {
 
                 {guessesAndChoices.wrongAnswerGuessed ? null : <View style={styles.prevAndNextContainer}>
                     {props.counter > 1 ? <View
-                        style={[styles.prevAndNext, {backgroundColor: "white"}, {width: isViewable === false ? "100%" : "40%"}]}><Button
+                        style={[styles.prevAndNext, {backgroundColor: "white"}, {width: questionsData.isNextQuestionViewable === false ? "100%" : "40%"}]}><Button
                         color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View> : null}
-                    {isViewable === true ? <View
+                    {questionsData.isNextQuestionViewable === true ? <View
                         style={[styles.prevAndNext, {backgroundColor: "white"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button
                         color={"black"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
                 </View>}
