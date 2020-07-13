@@ -1,8 +1,8 @@
 import React from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
-import ButtonList from "./buttonList";
+import ButtonList from "../components/buttonList";
 import GlobalStyles from "../utils/globalStyles"
-import BottomBarLogo from "./bottomBarLogo";
+import BottomBarLogo from "../components/bottomBarLogo";
 
 const Home = ({navigation}) => {
 

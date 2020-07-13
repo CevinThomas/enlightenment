@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Home from "./src/components/home";
+import Home from "./src/views/home";
 import "react-native-gesture-handler";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
