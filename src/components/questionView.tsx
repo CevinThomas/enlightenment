@@ -39,7 +39,6 @@ const QuestionView: React.FC = (props) => {
 
     useEffect(() => {
         const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
-
         setDisplayCorrectAnswer(false);
 
         setQuestionsData({
@@ -57,14 +56,43 @@ const QuestionView: React.FC = (props) => {
 
     }, [props.question]);
 
+    const updateCategories = (category: any, wasCorrect: boolean): any => {
+
+        let previousStateCategories = [...results.stateWithCategories];
+        let previousCategories = categories;
+        let timesCorrectValue = 0;
+
+        if (wasCorrect === true) timesCorrectValue = 1;
+
+        if (categories.includes(category)) {
+            previousStateCategories.forEach(item => {
+                if (item.name === category) {
+                    item.totalQuestions++;
+                    if (wasCorrect === true) item.timesCorrect++;
+                }
+            });
+        } else {
+            previousCategories.push(category);
+            const freshCategoryCounter = {
+                name: category,
+                timesCorrect: timesCorrectValue,
+                totalQuestions: 1
+            };
+            previousStateCategories.push(freshCategoryCounter);
+        }
+
+        return {
+            previousStateCategories,
+            previousCategories
+        };
+    };
+
     function wrongAnswer(event, choice) {
 
         updateQuestionProperty(event, choice);
 
         let previousGuesses = [...guessesAndChoices.guesses];
         let updatedWrongAnswers = [...results.wrongAnswers];
-        let previousStateCategories = [...results.stateWithCategories];
-        let previousCategories = categories;
         updatedWrongAnswers.push({choice: choice.choice, explanation: choice.explanation});
 
         const category = props.question.category;
@@ -73,22 +101,7 @@ const QuestionView: React.FC = (props) => {
             previousGuesses.push(choice.choice);
         }
 
-        if (categories.includes(category)) {
-            results.stateWithCategories.forEach(item => {
-                if (item.name === category) {
-                    item.totalQuestions++;
-                }
-            });
-        } else {
-            previousCategories.push(category);
-            const freshCategoryCounter = {
-                name: category,
-                timesCorrect: 0,
-                totalQuestions: 1
-            };
-
-            previousStateCategories.push(freshCategoryCounter);
-        }
+        const updatedCategories = updateCategories(category, false);
 
         setGuessesAndChoices({
             ...guessesAndChoices,
@@ -101,10 +114,10 @@ const QuestionView: React.FC = (props) => {
             wrongAnswersWithExplanation: updatedWrongAnswers,
             wrongAnswers: updatedWrongAnswers,
             wrongAnswer: [choice.choice],
-            stateWithCategories: previousStateCategories
+            stateWithCategories: updatedCategories.previousStateCategories
         });
 
-        setCategories(previousCategories);
+        setCategories(updatedCategories.previousCategories);
 
         setDisplayCorrectAnswer(true);
 
@@ -116,29 +129,11 @@ const QuestionView: React.FC = (props) => {
 
         let guessedChoiceInformation = [choice.choice, choice.explanation];
         let previousCorrectAnswers = [...results.correctAnswers];
-        let previousStateCategories = [...results.stateWithCategories];
-        let previousCategories = categories;
         previousCorrectAnswers.push(choice.choice);
 
         const category = props.question.category;
 
-        if (categories.includes(category)) {
-            results.stateWithCategories.forEach(item => {
-                if (item.name === category) {
-                    item.timesCorrect++;
-                    item.totalQuestions++;
-                }
-            });
-        } else {
-            previousCategories.push(category);
-            const freshCategoryWithCounter = {
-                name: category,
-                timesCorrect: 1,
-                totalQuestions: 1,
-            };
-
-            previousStateCategories.push(freshCategoryWithCounter);
-        }
+        const updatedCategories = updateCategories(category, true);
 
         setGuessesAndChoices({
             ...guessesAndChoices,
@@ -150,10 +145,10 @@ const QuestionView: React.FC = (props) => {
             ...results,
             correctAnswers: previousCorrectAnswers,
             timesCorrect: results.timesCorrect + 1,
-            stateWithCategories: previousStateCategories
+            stateWithCategories: updatedCategories.previousStateCategories
         });
 
-        setCategories(previousCategories);
+        setCategories(updatedCategories.previousCategories);
 
         setTimeout(() => {
             props.displayNextQuestion(null, guessesAndChoices.guessChoice);
