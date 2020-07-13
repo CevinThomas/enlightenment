@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Modal, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Alert, Image, Modal, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import GlobalStyles from "../utils/globalStyles"
 
 
@@ -41,7 +41,7 @@ class ModalExample extends Component {
                         this.setModalVisible(true);
                     }}>
 
-                    <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Remove Questions</Text>
+                    <Image style={styles.image} source={require("../../assets/images/gear-1119298_1920.png")}/>
                 </TouchableHighlight>
             </View>
         );
@@ -49,6 +49,12 @@ class ModalExample extends Component {
 }
 
 const styles = StyleSheet.create({
+    image: {
+      overflow: "hidden",
+      resizeMode: "contain",
+        width: 20,
+        height: 20,
+    },
     hideButtonContainer: {
         padding: 20,
         backgroundColor: GlobalStyles.lightColor,
