@@ -5,7 +5,7 @@ import PythonCategories from "../questions/pythonQuestions"
 import SeoQuestions from "../questions/seoQuestions";
 const ButtonList = (props) => {
 
-    function f(e, buttonId) {
+    function navigateToQuestions(e, buttonId) {
         switch (buttonId) {
             case "seo":
                 props.navigation.navigate("Subjects", {
@@ -36,7 +36,7 @@ const ButtonList = (props) => {
                 <ImageBackground source={require("../../assets/images/question-mark-2492009_1920.jpg")}
                                  style={styles.backgroundImageStyling}>
 
-                    <Text onPress={(event) => f(event, props.boxTitle.toLowerCase())}
+                    <Text onPress={(event) => navigateToQuestions(event, props.boxTitle.toLowerCase())}
                           style={styles.boxTitle}>{props.boxTitle}
                     </Text>
                 </ImageBackground>
