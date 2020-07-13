@@ -4,11 +4,11 @@ import "react-native-gesture-handler";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import TopicRoute from "./src/components/topicRoute";
-import Subjects from "./src/components/subjects";
 import GlobalStyles from "./src/utils/globalStyles"
 const Stack = createStackNavigator();
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import Categories from "./src/views/categories";
 
 export default function App() {
 
@@ -43,7 +43,7 @@ export default function App() {
                     gestureEnabled: false,
                     headerBackTitle: "Categories"
                 }}/>
-                <Stack.Screen name={"Subjects"} component={Subjects} options={{
+                <Stack.Screen name={"Categories"} component={Categories} options={{
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: GlobalStyles.darkColor,
                     headerTitle: "",

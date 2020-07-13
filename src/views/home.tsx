@@ -9,25 +9,25 @@ import PythonCategories from "../questions/pythonQuestions";
 
 const Home = (props) => {
 
-    //TODO: This is obviously hard coded
+    //TODO: This is obviously hard coded and will be replaced with backend functionality
     const navigateToQuestions = (e, buttonId) => {
         switch (buttonId) {
             case "seo":
-                props.navigation.navigate("Subjects", {
+                props.navigation.navigate("Categories", {
                     name: "Welcome to the SEO Course!",
                     categories: SeoQuestions,
                     id: "seo"
                 });
                 break;
             case "javascript":
-                props.navigation.navigate("Subjects", {
+                props.navigation.navigate("Categories", {
                     name: "Welcome to the JavaScript Course!",
                     categories: JavascriptQuestions,
                     id: "js"
                 });
                 break;
             case "python":
-                props.navigation.navigate("Subjects", {
+                props.navigation.navigate("Categories", {
                     name: "Welcome to the Python Course!",
                     categories: PythonCategories,
                     id: "sub"
