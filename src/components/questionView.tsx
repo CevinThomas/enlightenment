@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dimensions, StyleSheet, Text, View} from "react-native";
+import {Button, Dimensions, StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import Score from "./score";
 import FadeIn from "./fadeIn";
 import {IsAnswered} from "../enums/isAnswered";
 import GestureRecognizer from "react-native-swipe-gestures"
 import GlobalStyles from "../utils/globalStyles"
 import BottomBarLogo from "./bottomBarLogo";
+import Modal from "./modal";
+import ModalRemoveQuestions from "./modalRemoveQuestions";
 
 const QuestionView: React.FC = (props) => {
 
@@ -183,7 +185,13 @@ const QuestionView: React.FC = (props) => {
                         <View style={styles.counterContainer}>
                             <Text style={styles.questionHeading}>{props.question.question}</Text>
                         </View>
+                    <View style={styles.totalQuestions}>
                         <Text style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
+                        <TouchableOpacity>
+                            <Modal children={<ModalRemoveQuestions {...props} />}/>
+                        </TouchableOpacity>
+                    </View>
+
                         {props.question.options !== undefined ? props.question.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
                                          style={
@@ -275,6 +283,10 @@ const styles = StyleSheet.create({
         elevation: 100,
         shadowRadius: 5,
         shadowOpacity: 0.1
+    },
+    totalQuestions: {
+      flexDirection: "row",
+      justifyContent: "center"
     },
     prevAndNext: {
         width: "100%",

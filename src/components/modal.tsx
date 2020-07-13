@@ -65,17 +65,6 @@ const styles = StyleSheet.create({
         marginRight: "auto",
         color: GlobalStyles.lightColor,
     },
-    button: {
-        marginTop: 0,
-        backgroundColor: GlobalStyles.lightColor,
-        borderRadius: 10,
-        padding: 10,
-        shadowOffset: {width: 0, height: 0},
-        shadowColor: "#000",
-        elevation: 100,
-        shadowRadius: 5,
-        shadowOpacity: 0.1
-    }
 });
 
 export default ModalExample;

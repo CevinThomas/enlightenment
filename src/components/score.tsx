@@ -61,11 +61,6 @@ const Score = ({results, ...props}) => {
                         again!
                     </Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Modal children={<ModalRemoveQuestions {...props} />}/>
-                </TouchableOpacity>
-
             </FadeIn>
         </View>
     );
