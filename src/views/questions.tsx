@@ -85,59 +85,40 @@ const Questions = (props) => {
     }
 
     function isNextQuestionAnswered(): boolean | void {
-        let secondNextQuestion, isLastQuestionComing, questionIndex, nextQuestion;
-        questionIndex = counterForQuestions;
-        if (savedQuestions.length !== 0) {
+        let secondNextQuestion;
+        const questions = calculateNextQuestion();
 
-            isLastQuestionComing = savedQuestions.length - counterForQuestions;
-            nextQuestion = savedQuestions[questionIndex];
-        } else {
-            isLastQuestionComing = props.route.params.questions.length - counterForQuestions;
-            nextQuestion = props.route.params.questions[questionIndex];
+        if (questions.isLastQuestionComing > 1) {
+            secondNextQuestion = questionsBeingUsed[counterForQuestions + 1];
         }
 
-        if (isLastQuestionComing > 1) {
-            secondNextQuestion = props.route.params.questions[questionIndex + 1];
+        if (currentQuestion.answered === IsAnswered.yes && questions.isLastQuestionComing === 1) {
+            return viewNextQuestion(questions.nextQuestion);
         }
 
-
-        if (currentQuestion.answered === IsAnswered.yes && isLastQuestionComing === 1) {
-            return viewNextQuestion(nextQuestion);
+        if (questions.nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
+            viewNextQuestion(questions.nextQuestion);
         }
 
         if (currentQuestion.answered === IsAnswered.no) {
             return false;
         }
 
-        if (nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
-            viewNextQuestion(nextQuestion);
-        }
-
-        if (nextQuestion.answered === IsAnswered.no) {
+        if (questions.nextQuestion.answered === IsAnswered.no) {
             return false;
         }
-
-        viewNextQuestion(nextQuestion);
+        viewNextQuestion(questions.nextQuestion);
     }
 
     function canWeViewNextQuestion(): boolean {
-        let secondNextQuestion, isLastQuestionComing, questionIndex, nextQuestion;
-        questionIndex = counterForQuestions;
-        if (savedQuestions.length !== 0) {
+        let secondNextQuestion;
+        const questions = calculateNextQuestion();
 
-            isLastQuestionComing = savedQuestions.length - counterForQuestions;
-            nextQuestion = savedQuestions[questionIndex];
-        } else {
-            isLastQuestionComing = props.route.params.questions.length - counterForQuestions;
-            nextQuestion = props.route.params.questions[questionIndex];
+        if (questions.isLastQuestionComing > 1) {
+            secondNextQuestion = questionsBeingUsed[counterForQuestions + 1];
         }
 
-        if (isLastQuestionComing > 1) {
-            secondNextQuestion = props.route.params.questions[questionIndex + 1];
-        }
-
-
-        if (currentQuestion.answered === IsAnswered.yes && isLastQuestionComing === 1) {
+        if (currentQuestion.answered === IsAnswered.yes && questions.isLastQuestionComing === 1) {
             return true;
         }
 
@@ -145,14 +126,29 @@ const Questions = (props) => {
             return false;
         }
 
-        if (nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
+        if (questions.nextQuestion.answered === IsAnswered.no && secondNextQuestion.answered === IsAnswered.no) {
             return true;
         }
-
-        return nextQuestion.answered !== IsAnswered.no;
-
-
+        return questions.nextQuestion.answered !== IsAnswered.no;
     }
+
+    const calculateNextQuestion = () => {
+        let isLastQuestionComing, nextQuestion;
+
+        if (savedQuestions.length !== 0) {
+
+            isLastQuestionComing = savedQuestions.length - counterForQuestions;
+            nextQuestion = savedQuestions[counterForQuestions];
+        } else {
+            isLastQuestionComing = questionsBeingUsed.length - counterForQuestions;
+            nextQuestion = questionsBeingUsed[counterForQuestions];
+        }
+
+        return {
+            isLastQuestionComing,
+            nextQuestion
+        };
+    };
 
     return (
         <View style={styles.container}>
