@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AsyncStorage, Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {AsyncStorage, Dimensions, StyleSheet, View} from "react-native";
 import QuestionView from "./questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
 import {IsAnswered} from "../enums/isAnswered";
@@ -11,7 +11,6 @@ const TopicRoute = (props) => {
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
     const [savedQuestions, setSavedQuestions] = useState<[]>([]);
-    const [displayQuestions, setDisplayQuestions] = useState(false);
 
     useEffect(() => {
         async function load() {
@@ -62,8 +61,7 @@ const TopicRoute = (props) => {
     }
 
     function viewPreviousQuestions(): void {
-        let counter = counterForQuestions;
-        let updatedCounter = counter - 1;
+        let updatedCounter = counterForQuestions - 1;
         if (savedQuestions.length !== 0) {
 
             setCurrentQuestion(savedQuestions[updatedCounter - 1]);
@@ -152,11 +150,9 @@ const TopicRoute = (props) => {
             return true;
         }
 
-        if (nextQuestion.answered === IsAnswered.no ) {
-            return false;
-        }
+        return nextQuestion.answered !== IsAnswered.no;
 
-        return true;
+
     }
 
     return (

@@ -39,7 +39,6 @@ const ButtonList = (props) => {
                     <Text onPress={(event) => f(event, props.boxTitle.toLowerCase())}
                           style={styles.boxTitle}>{props.boxTitle}
                     </Text>
-
                 </ImageBackground>
             </View>
         </View>

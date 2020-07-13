@@ -3,8 +3,9 @@ import {Button, Dimensions, StyleSheet, Text, View} from "react-native";
 import Score from "./score";
 import FadeIn from "./fadeIn";
 import {IsAnswered} from "../enums/isAnswered";
-import GestureRecognizer, {swipeDirections} from "react-native-swipe-gestures"
+import GestureRecognizer from "react-native-swipe-gestures"
 import GlobalStyles from "../utils/globalStyles"
+import BottomBarLogo from "./bottomBarLogo";
 
 const QuestionView: React.FC = (props) => {
 
@@ -155,7 +156,7 @@ const QuestionView: React.FC = (props) => {
         currentQuestionToUpdate.answered = IsAnswered.yes;
         currentQuestionToUpdate.options.forEach(option => option.choice === choice.choice ? choice.chosen = IsAnswered.yes : null);
 
-        allQuestions.forEach(question => question.question === currentQuestionToUpdate.question ? question = currentQuestionToUpdate : null);
+        allQuestions.forEach(question => question.question === currentQuestionToUpdate.question ? currentQuestionToUpdate : null);
 
         setQuestionsData({
             ...questionsData,
@@ -175,7 +176,7 @@ const QuestionView: React.FC = (props) => {
     const {height, width} = Dimensions.get('window');
 
     return (
-        <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={(state) => props.viewNextQuestion()} onSwipeRight={(state) => props.counter > 1 ? props.viewPreviousQuestion() : null}>
+        <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={() => props.viewNextQuestion()} onSwipeRight={() => props.counter > 1 ? props.viewPreviousQuestion() : null}>
         <View style={styles.container}>
             <FadeIn>
                 {props.scoreBoard !== true ? <>
@@ -242,11 +243,14 @@ const QuestionView: React.FC = (props) => {
 
 
             </FadeIn>
+            <BottomBarLogo/>
         </View>
         </GestureRecognizer>
 
     );
 };
+
+const {height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     prevAndNextContainer: {
@@ -285,6 +289,7 @@ const styles = StyleSheet.create({
     },
     container: {
         padding: 40,
+        height: height * 0.9,
     },
     counter: {
         paddingBottom: 5,

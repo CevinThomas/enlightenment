@@ -2,6 +2,7 @@ import React from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import ButtonList from "./buttonList";
 import GlobalStyles from "../utils/globalStyles"
+import BottomBarLogo from "./bottomBarLogo";
 
 const Home = ({navigation}) => {
 
@@ -21,6 +22,7 @@ const Home = ({navigation}) => {
                           renderItem={({item}) => <ButtonList key={item} navigation={navigation}
                                                               boxTitle={item}/>}/>
             </View>
+            <BottomBarLogo/>
         </View>
     );
 };
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         width: width * 0.9,
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
     },
     secondaryText: {
         color: GlobalStyles.darkColor,

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from "react-native";
 import GlobalStyles from "../utils/globalStyles"
+import BottomBarLogo from "./bottomBarLogo";
 const Subjects = (props) => {
 
     const [allSubjects, setAllSubjects] = useState<string[]>([]);
@@ -37,8 +38,8 @@ const Subjects = (props) => {
                         <Text style={styles.text}>{subject}</Text>
                     </TouchableOpacity>
                 }) : null}
-
             </View>
+            <BottomBarLogo/>
         </View>
     );
 };
@@ -47,7 +48,7 @@ const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     outerContainer: {
-        height: height,
+        height: height * 0.9,
     },
     innerContainer: {
         width: width,
