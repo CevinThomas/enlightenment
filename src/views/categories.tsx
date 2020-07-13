@@ -7,7 +7,7 @@ import QuestionOverlay from "../components/questionOverlay";
 
 const Categories = (props) => {
 
-    const [allSubjects, setAllSubjects] = useState<string[]>([]);
+    const [allCategories, setAllCategories] = useState<string[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [subjectToUse, setSubjectToUse] = useState<string>("");
 
@@ -15,7 +15,7 @@ const Categories = (props) => {
         // TODO: Rename arrayQ
         const arrayQ = Object.keys(props.route.params.categories);
         const subjectsWithCapitalFirst = arrayQ.map(subjectString => capitalizeFirstLetter(subjectString));
-        setAllSubjects(subjectsWithCapitalFirst);
+        setAllCategories(subjectsWithCapitalFirst);
     }, [])
 
     function navigateToProperQuestions(): void {
@@ -41,10 +41,11 @@ const Categories = (props) => {
         <View style={styles.outerContainer}>
             {showModal=== true ? <QuestionOverlay navigateToQuestionsFunction={navigateToProperQuestions}/> : null}
             <View style={styles.innerContainer}>
-                {allSubjects.length !== 0 ? allSubjects.map(subject => {
-                    return  <TouchableOpacity key={subject} style={styles.buttonContainer} onPress={() => openModalAndSetState(subject)}>
+                {allCategories.length !== 0 ? allCategories.map(subject => {
+                    return <TouchableOpacity key={subject} style={styles.buttonContainer}
+                                             onPress={() => openModalAndSetState(subject)}>
                         <Text style={styles.text}>{subject}</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>;
                 }) : null}
             </View>
             <BottomBarLogo/>
