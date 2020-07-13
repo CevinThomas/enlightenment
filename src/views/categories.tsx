@@ -38,6 +38,7 @@ const Categories = (props) => {
 
     const renderCategoriesToUI = (): ReactNode => {
         if (allCategories.length === 0) return;
+
         return allCategories.map(category => {
             return <TouchableOpacity key={category} style={styles.buttonContainer}
                                      onPress={() => openModalAndSetState(category)}>
