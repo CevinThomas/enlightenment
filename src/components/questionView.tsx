@@ -39,14 +39,12 @@ const QuestionView: React.FC = (props) => {
 
     useEffect(() => {
         const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
-        const allQuestions = [...props.allQuestions];
-        const currentQuestion = props.question;
 
         setDisplayCorrectAnswer(false);
 
         setQuestionsData({
-            allQuestions: allQuestions,
-            currentQuestion: currentQuestion,
+            allQuestions: props.allQuestions,
+            currentQuestion: props.question,
             isNextQuestionViewable: props.isNextQuestionViewable(),
             rightAnswer: correctAnswer
         });
