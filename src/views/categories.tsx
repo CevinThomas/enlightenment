@@ -9,13 +9,13 @@ const Categories = (props) => {
 
     const [allCategories, setAllCategories] = useState<string[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [subjectToUse, setSubjectToUse] = useState<string>("");
+    const [categoryToUse, setCategoryToUse] = useState<string>("");
 
     useEffect(() => {
         // TODO: Rename arrayQ
-        const arrayQ = Object.keys(props.route.params.categories);
-        const subjectsWithCapitalFirst = arrayQ.map(subjectString => capitalizeFirstLetter(subjectString));
-        setAllCategories(subjectsWithCapitalFirst);
+        const categoriesAsArray = Object.keys(props.route.params.categories);
+        const categoriesWithCapitalFirst = categoriesAsArray.map(subjectString => capitalizeFirstLetter(subjectString));
+        setAllCategories(categoriesWithCapitalFirst);
     }, [])
 
     function navigateToProperQuestions(): void {
@@ -23,18 +23,18 @@ const Categories = (props) => {
 
         // TODO: Filter the correct subjects questions before sending to the questions screen.
 
-        const questionsToUse = props.route.params.categories[subjectToUse.toLowerCase()].questions;
+        const questionsToUse = allCategories[categoryToUse.toLowerCase()].questions;
 
         props.navigation.navigate("Questions", {
-            name: subjectToUse,
+            name: categoryToUse,
             questions: questionsToUse,
             id: "seo"
         });
     }
 
-    function openModalAndSetState(subjectToSet: string): void {
+    function openModalAndSetState(chosenCategory: string): void {
         setShowModal(true);
-        setSubjectToUse(subjectToSet);
+        setCategoryToUse(chosenCategory);
     }
 
     return (
