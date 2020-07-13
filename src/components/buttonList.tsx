@@ -1,34 +1,7 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from "react-native";
-import JavascriptQuestions from "../questions/javascriptQuestions";
-import PythonCategories from "../questions/pythonQuestions"
-import SeoQuestions from "../questions/seoQuestions";
-const ButtonList = (props) => {
 
-    function navigateToQuestions(e, buttonId) {
-        switch (buttonId) {
-            case "seo":
-                props.navigation.navigate("Subjects", {
-                    name: "Welcome to the SEO Course!",
-                    categories: SeoQuestions,
-                    id: "seo"
-                });
-                break;
-            case "javascript":
-                props.navigation.navigate("Subjects", {
-                    name: "Welcome to the JavaScript Course!",
-                    categories: JavascriptQuestions,
-                    id: "js"
-                });
-                break;
-            case "python":
-                props.navigation.navigate("Subjects", {
-                    name: "Welcome to the Python Course!",
-                    categories: PythonCategories,
-                    id: "sub"
-                })
-        }
-    }
+const ButtonList = (props) => {
 
     return (
         <View style={styles.container}>
@@ -36,7 +9,7 @@ const ButtonList = (props) => {
                 <ImageBackground source={require("../../assets/images/question-mark-2492009_1920.jpg")}
                                  style={styles.backgroundImageStyling}>
 
-                    <Text onPress={(event) => navigateToQuestions(event, props.boxTitle.toLowerCase())}
+                    <Text onPress={(event) => props.navigateFunc(event, props.boxTitle.toLowerCase())}
                           style={styles.boxTitle}>{props.boxTitle}
                     </Text>
                 </ImageBackground>

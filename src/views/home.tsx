@@ -3,8 +3,37 @@ import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import ButtonList from "../components/buttonList";
 import GlobalStyles from "../utils/globalStyles"
 import BottomBarLogo from "../components/bottomBarLogo";
+import SeoQuestions from "../questions/seoQuestions";
+import JavascriptQuestions from "../questions/javascriptQuestions";
+import PythonCategories from "../questions/pythonQuestions";
 
-const Home = ({navigation}) => {
+const Home = (props) => {
+
+    //TODO: This is obviously hard coded
+    const navigateToQuestions = (e, buttonId) => {
+        switch (buttonId) {
+            case "seo":
+                props.navigation.navigate("Subjects", {
+                    name: "Welcome to the SEO Course!",
+                    categories: SeoQuestions,
+                    id: "seo"
+                });
+                break;
+            case "javascript":
+                props.navigation.navigate("Subjects", {
+                    name: "Welcome to the JavaScript Course!",
+                    categories: JavascriptQuestions,
+                    id: "js"
+                });
+                break;
+            case "python":
+                props.navigation.navigate("Subjects", {
+                    name: "Welcome to the Python Course!",
+                    categories: PythonCategories,
+                    id: "sub"
+                })
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -19,7 +48,7 @@ const Home = ({navigation}) => {
             <View style={styles.buttonContainer}>
                 <FlatList keyExtractor={(item, index) => index.toString()}
                           data={["SEO", "Javascript", "Python"]}
-                          renderItem={({item}) => <ButtonList key={item} navigation={navigation}
+                          renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item} navigation={props.navigation}
                                                               boxTitle={item}/>}/>
             </View>
             <BottomBarLogo/>
