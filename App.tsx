@@ -3,12 +3,12 @@ import Home from "./src/views/home";
 import "react-native-gesture-handler";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
-import TopicRoute from "./src/components/topicRoute";
 import GlobalStyles from "./src/utils/globalStyles"
 const Stack = createStackNavigator();
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import Categories from "./src/views/categories";
+import Questions from "./src/views/questions";
 
 export default function App() {
 
@@ -36,7 +36,7 @@ export default function App() {
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: GlobalStyles.darkColor
                 }}/>
-                <Stack.Screen name={"Questions"} component={TopicRoute} options={{
+                <Stack.Screen name={"Questions"} component={Questions} options={{
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: GlobalStyles.darkColor,
                     headerTitle: "",
