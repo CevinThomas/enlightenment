@@ -246,7 +246,7 @@ const QuestionView: React.FC = (props) => {
                         categoryAnswers={results.stateWithCategories}
 
                         id={props.id}
-                        allQuestions={props.allQuestions} firstTry={results.timesCorrect}
+                        firstTry={results.timesCorrect}
                         totalQuestions={props.totalQuestions}
                         navigation={props.navigation}
                         results={results}/>}

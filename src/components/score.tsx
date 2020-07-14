@@ -9,7 +9,6 @@ const Score = ({results, ...props}) => {
     const [percentageCorrect, setPercentageCorrect] = useState(0);
 
     useEffect(() => {
-        console.log(results);
         setPercentageCorrect(
             (props.firstTry / props.totalQuestions) * 100
         );
@@ -23,7 +22,6 @@ const Score = ({results, ...props}) => {
                 </View>
 
                 <View style={styles.textContainer}>
-
                     <Text style={styles.titles}>Total amount of questions: {props.totalQuestions}</Text>
                 </View>
 
