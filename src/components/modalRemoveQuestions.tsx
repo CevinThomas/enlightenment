@@ -11,9 +11,7 @@ class ModalRemoveQuestions extends Component {
 
     removeQuestion(event, question) {
         let updatedRemovedQuestions = [...this.state.removedQuestions];
-        if (updatedRemovedQuestions.includes(question)) {
-            return;
-        }
+        if (updatedRemovedQuestions.includes(question)) return;
         updatedRemovedQuestions.push(question);
         this.setState({removedQuestions: updatedRemovedQuestions});
     }
@@ -28,9 +26,7 @@ class ModalRemoveQuestions extends Component {
 
     async updateQuestions() {
         const questionsToBeSaved = this.props.allQuestions.filter(questions => {
-            if (!this.state.removedQuestions.includes(questions.question)) {
-                return questions;
-            }
+            if (!this.state.removedQuestions.includes(questions.question)) return questions;
         });
         try {
             await AsyncStorage.setItem(this.props.id.toString(), JSON.stringify(questionsToBeSaved));
