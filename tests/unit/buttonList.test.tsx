@@ -18,7 +18,7 @@ test('ButtonList Component Renders', () => {
     expect(tree).toMatchSnapshot();
 });
 
-test("test", () => {
+test("ButtonList Text View has props title", () => {
     const wrapper = shallow(
         <ButtonList boxTitle={"Title"}/>
     );
