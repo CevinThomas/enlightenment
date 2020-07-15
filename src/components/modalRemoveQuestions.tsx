@@ -5,9 +5,16 @@ import GlobalStyles from "../utils/globalStyles"
 class ModalRemoveQuestions extends Component {
 
     state = {
+        allQuestions: [],
         modalVisible: false,
         removedQuestions: []
     };
+
+    componentDidMount(): void {
+        this.setState({
+            allQuestions: this.props.allQuestions
+        });
+    }
 
     removeQuestion(event, question) {
         let updatedRemovedQuestions = [...this.state.removedQuestions];
@@ -52,16 +59,16 @@ class ModalRemoveQuestions extends Component {
                 <View style={styles.removeContainer}>
                     <Text style={styles.removeHeading}>What Questions do you want to remove?</Text>
 
-                    {this.props.allQuestions.map(question => {
+                    {this.state.allQuestions !== undefined ? this.state.allQuestions.map(question => {
                         return <TouchableOpacity
                             key={question.question}
                             style={[styles.removeQuestionContainer, {backgroundColor: this.state.removedQuestions.includes(question.question) ? "red" : "white"}]}><Text
                             style={[styles.removeQuestion, {
-                                color: this.state.removedQuestions.includes(question.question) ? "white" :  GlobalStyles.darkColor,
+                                color: this.state.removedQuestions.includes(question.question) ? "white" : GlobalStyles.darkColor,
                             }]}
                             onPress={this.state.removedQuestions.includes(question.question) ? (event) => this.recallQuestion(event, question.question) : (event) => this.removeQuestion(event, question.question)}>{question.question}</Text>
                         </TouchableOpacity>;
-                    })}
+                    }) : null}
                 </View>
 
                 <View>

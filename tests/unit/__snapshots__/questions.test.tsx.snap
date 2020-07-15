@@ -5,9 +5,3 @@ exports[`Questions View Renders 1`] = `
   <View />
 </View>
 `;
-
-exports[`renders correctly 1`] = `
-<View>
-  <View />
-</View>
-`;

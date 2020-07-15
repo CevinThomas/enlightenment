@@ -4,11 +4,17 @@ import FadeIn from "./fadeIn";
 import GlobalStyles from "../utils/globalStyles"
 
 
-const Score = ({results, ...props}) => {
+const Score = (props) => {
 
     const [percentageCorrect, setPercentageCorrect] = useState(0);
+    const [correctAttempts, setCorrectAnswers] = useState<number>(0);
+    const [wrongAttempts, setWrongAttempts] = useState<number>(0);
+    const [categoryAnswers, setCategoryAnswers] = useState<[]>([]);
 
     useEffect(() => {
+        setCorrectAnswers(props.results.correctAnswers.length);
+        setWrongAttempts(props.results.wrongAnswers.length);
+        setCategoryAnswers(props.categoryAnswers);
         setPercentageCorrect(
             (props.firstTry / props.totalQuestions) * 100
         );
@@ -26,11 +32,11 @@ const Score = ({results, ...props}) => {
                 </View>
 
                 <View style={styles.textContainer}>
-                    <Text style={styles.titles}>Correct attempts: {results.correctAnswers.length}</Text>
+                    <Text style={styles.titles}>Correct attempts: {correctAttempts}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
-                    <Text style={styles.titles}>Wrong attempts: {results.wrongAnswers.length}</Text>
+                    <Text style={styles.titles}>Wrong attempts: {wrongAttempts}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
@@ -41,7 +47,7 @@ const Score = ({results, ...props}) => {
                 <View style={styles.textContainer}>
                     <Text style={[styles.titles, {marginBottom: 10}]}>Categories used:</Text>
 
-                    {props.categoryAnswers.map(category => {
+                    {categoryAnswers.map(category => {
                         return (
                             <View key={category.name}>
                                 <Text style={styles.titles}>{category.name} Scored: {category.timesCorrect} out

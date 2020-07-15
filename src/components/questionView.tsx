@@ -244,7 +244,6 @@ const QuestionView: React.FC = (props) => {
 
                     <Score
                         categoryAnswers={results.stateWithCategories}
-
                         id={props.id}
                         firstTry={results.timesCorrect}
                         totalQuestions={props.totalQuestions}

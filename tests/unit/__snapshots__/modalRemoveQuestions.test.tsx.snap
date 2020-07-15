@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalRemoveQuestions Component Renders 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": "auto",
+      "marginRight": "auto",
+      "marginTop": 100,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#eee",
+        "display": "flex",
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "justifyContent": "space-between",
+        "paddingBottom": 50,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 50,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#000",
+          "marginBottom": 30,
+          "textAlign": "center",
+        }
+      }
+    >
+      What Questions do you want to remove?
+    </Text>
+  </View>
+  <View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "elevation": 100,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "marginTop": 50,
+          "shadowColor": "#000",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 0.1,
+          "shadowRadius": 5,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#fff",
+            "borderRadius": 10,
+            "color": "#000",
+            "margin": 5,
+            "marginBottom": 20,
+            "marginTop": 10,
+            "opacity": 1,
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#000",
+            }
+          }
+        >
+          Update Questions
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#fff",
+            "borderRadius": 10,
+            "color": "#000",
+            "margin": 5,
+            "marginBottom": 20,
+            "marginTop": 10,
+            "opacity": 1,
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#000",
+            }
+          }
+        >
+          Reset Questions
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
