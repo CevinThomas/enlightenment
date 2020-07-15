@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Questions View Renders 1`] = `
+<View>
+  <View />
+</View>
+`;
+
 exports[`renders correctly 1`] = `
 <View>
   <View />
