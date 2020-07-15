@@ -12,29 +12,22 @@ const Questions = (props) => {
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
     const [savedQuestions, setSavedQuestions] = useState<[]>([]);
-    const [categoryId, setCategoryId] = useState<number>(0);
 
     const questionsBeingUsedRef = React.useRef(questionsBeingUsed);
-    const categoryIdRef = React.useRef(categoryId);
 
     const updateQuestionsBeingUsed = (questionsToSet: []): void => {
         questionsBeingUsedRef.current = questionsToSet;
         setQuestionsBeingUsed(questionsToSet);
     };
 
-    const updateCategoryId = (categoryIdUsed: number): void => {
-        categoryIdRef.current = categoryIdUsed;
-        setCategoryId(categoryIdUsed);
-    };
 
     useEffect(() => {
 
-        const allQuestions = props.route.params.questions;
-        updateCategoryId(props.route.params.id);
-        updateQuestionsBeingUsed(allQuestions);
+        const idToUse = props.route.params.id;
+        updateQuestionsBeingUsed(props.route.params.questions);
 
         async function load() {
-            const storedQuestions = await AsyncStorage.getItem(categoryIdRef.current.toString());
+            const storedQuestions = await AsyncStorage.getItem(idToUse.toString());
 
             if (storedQuestions !== null) {
                 const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
@@ -43,12 +36,12 @@ const Questions = (props) => {
                 return setNumberOfQuestions(JSON.parse(storedQuestions).length);
             } else {
                 setSavedQuestions([]);
-                setNumberOfQuestions(allQuestions.length);
+                setNumberOfQuestions(questionsBeingUsedRef.current.length);
             }
 
-            resetQuestions(allQuestions);
-            shuffle(allQuestions);
-            allQuestions.forEach(question => shuffle(question.options));
+            resetQuestions(questionsBeingUsedRef.current);
+            shuffle(questionsBeingUsedRef.current);
+            questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
             displayFirstQuestion();
         }
 
@@ -163,7 +156,6 @@ const Questions = (props) => {
         <View>
             <View>{currentQuestion !== undefined ?
                 <QuestionView
-                    id={categoryId}
                     allQuestions={savedQuestions.length !== 0 ? savedQuestions : questionsBeingUsed}
                     counter={counterForQuestions}
                     totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : questionsBeingUsed.length}

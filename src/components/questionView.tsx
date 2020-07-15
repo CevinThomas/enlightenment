@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dimensions, StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import Score from "./score";
-import FadeIn from "./fadeIn";
 import {IsAnswered} from "../enums/isAnswered";
 import GestureRecognizer from "react-native-swipe-gestures"
 import GlobalStyles from "../utils/globalStyles"
@@ -9,7 +8,7 @@ import BottomBarLogo from "./bottomBarLogo";
 import Modal from "./modal";
 import ModalRemoveQuestions from "./modalRemoveQuestions";
 
-const QuestionView: React.FC = (props) => {
+const QuestionView = (props) => {
 
     const [questionsData, setQuestionsData] = useState({
         allQuestions: [],
@@ -38,7 +37,10 @@ const QuestionView: React.FC = (props) => {
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
 
     useEffect(() => {
-        const correctAnswer = props.question.options.find((option) => option.isCorrect === true);
+        let correctAnswer: object;
+        if (props.question !== undefined) {
+            correctAnswer = props.question.options.find((option) => option.isCorrect === true);
+        }
         setDisplayCorrectAnswer(false);
 
         setQuestionsData({
@@ -188,10 +190,9 @@ const QuestionView: React.FC = (props) => {
     return (
         <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={() => props.viewNextQuestion()} onSwipeRight={() => props.counter > 1 ? props.viewPreviousQuestion() : null}>
         <View style={styles.container}>
-            <FadeIn>
                 {props.scoreBoard !== true ? <>
                         <View style={styles.counterContainer}>
-                            <Text style={styles.questionHeading}>{props.question.question}</Text>
+                            <Text style={styles.questionHeading}>{questionsData.currentQuestion.question}</Text>
                         </View>
                     <View style={styles.totalQuestions}>
                         <Text style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
@@ -200,7 +201,7 @@ const QuestionView: React.FC = (props) => {
                         </TouchableOpacity>
                     </View>
 
-                        {props.question.options !== undefined ? props.question.options.map(optionToChoose => {
+                        {questionsData.currentQuestion.options !== undefined ? questionsData.currentQuestion.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
                                          style={
                                              [
@@ -244,7 +245,6 @@ const QuestionView: React.FC = (props) => {
 
                     <Score
                         categoryAnswers={results.stateWithCategories}
-                        id={props.id}
                         firstTry={results.timesCorrect}
                         totalQuestions={props.totalQuestions}
                         navigation={props.navigation}
@@ -261,7 +261,6 @@ const QuestionView: React.FC = (props) => {
 
 
 
-            </FadeIn>
             <BottomBarLogo/>
         </View>
         </GestureRecognizer>
