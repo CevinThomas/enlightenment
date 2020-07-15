@@ -23,7 +23,8 @@ test("test", () => {
         <ButtonList boxTitle={"Title"}/>
     );
     expect(wrapper.find(Text).contains("Title")).toBeTruthy();
-
 });
+
+//TODO: Future, write a test for the ImageBackground element that is supposed to be dynamic background
 
 
