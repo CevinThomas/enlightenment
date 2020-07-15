@@ -1,15 +1,8 @@
 import 'react-native';
 import React from 'react';
 import ButtonList from '../../src/components/buttonList';
-import {shallow} from "enzyme";
 
 import renderer from 'react-test-renderer';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import {Text} from "react-native";
-
-Enzyme.configure({adapter: new Adapter()});
-
 
 test('ButtonList Component Renders', () => {
     const tree = renderer.create(
@@ -18,12 +11,6 @@ test('ButtonList Component Renders', () => {
     expect(tree).toMatchSnapshot();
 });
 
-test("ButtonList Text View has props title", () => {
-    const wrapper = shallow(
-        <ButtonList boxTitle={"Title"}/>
-    );
-    expect(wrapper.find(Text).contains("Title")).toBeTruthy();
-});
 
 //TODO: Future, write a test for the ImageBackground element that is supposed to be dynamic background
 

@@ -19,16 +19,11 @@
     ]
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.29",
-    "@fortawesome/free-solid-svg-icons": "^5.13.1",
-    "@fortawesome/react-native-fontawesome": "^0.2.5",
     "@react-native-community/masked-view": "0.1.5",
     "@react-navigation/native": "^5.0.7",
     "@react-navigation/stack": "^5.0.8",
-    "enzyme": "^3.11.0",
     "expo": "~36.0.0",
     "expo-font": "~8.0.0",
-    "jest-serializer-enzyme": "^1.0.0",
     "react": "~16.9.0",
     "react-addons-test-utils": "^15.6.2",
     "react-dom": "^16.13.1",
