@@ -12,21 +12,29 @@ const Questions = (props) => {
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
     const [savedQuestions, setSavedQuestions] = useState<[]>([]);
+    const [categoryId, setCategoryId] = useState<number>(0);
 
     const questionsBeingUsedRef = React.useRef(questionsBeingUsed);
+    const categoryIdRef = React.useRef(categoryId);
 
     const updateQuestionsBeingUsed = (questionsToSet: []): void => {
         questionsBeingUsedRef.current = questionsToSet;
         setQuestionsBeingUsed(questionsToSet);
     };
 
+    const updateCategoryId = (categoryIdUsed: number): void => {
+        categoryIdRef.current = categoryIdUsed;
+        setCategoryId(categoryIdUsed);
+    };
+
     useEffect(() => {
 
         const allQuestions = props.route.params.questions;
+        updateCategoryId(props.route.params.id);
         updateQuestionsBeingUsed(allQuestions);
 
         async function load() {
-            const storedQuestions = await AsyncStorage.getItem(props.route.params.id.toString());
+            const storedQuestions = await AsyncStorage.getItem(categoryIdRef.current.toString());
 
             if (storedQuestions !== null) {
                 const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
