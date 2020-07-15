@@ -4,7 +4,7 @@ import Questions from '../../src/views/questions';
 
 import renderer from 'react-test-renderer';
 
-test('renders correctly', () => {
+test('Questions View Renders', () => {
     const tree = renderer.create(
         <Questions/>
     ).toJSON();

@@ -4,7 +4,7 @@ import Home from '../../src/views/home';
 
 import renderer from 'react-test-renderer';
 
-test('renders correctly', () => {
+test('Home View Renders', () => {
     const tree = renderer.create(
         <Home/>
     ).toJSON();
