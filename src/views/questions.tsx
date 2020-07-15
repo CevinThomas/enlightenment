@@ -132,6 +132,7 @@ const Questions = (props) => {
         return questions.nextQuestion.answered !== IsAnswered.no;
     }
 
+
     const calculateNextQuestion = () => {
         let isLastQuestionComing, nextQuestion;
 
@@ -155,9 +156,9 @@ const Questions = (props) => {
             <View>{currentQuestion !== undefined ?
                 <QuestionView
                     id={props.route.params.id}
-                    allQuestions={savedQuestions.length !== 0 ? savedQuestions : props.route.params.questions}
+                    allQuestions={savedQuestions.length !== 0 ? savedQuestions : questionsBeingUsed}
                     counter={counterForQuestions}
-                    totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : props.route.params.questions.length}
+                    totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : questionsBeingUsed.length}
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={checkLengthOfQuestionsLeft}
                     viewPreviousQuestion={viewPreviousQuestions}
