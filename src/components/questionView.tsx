@@ -241,6 +241,7 @@ const QuestionView = (props) => {
                                     />
                                 </View>
                             </React.Fragment>
+
                             : null}</> :
 
                     <Score
