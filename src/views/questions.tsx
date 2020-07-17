@@ -23,10 +23,7 @@ const Questions = (props) => {
 
     useEffect(() => {
 
-        if (props.route.params.questions === undefined) {
-            Alert.alert("Something went wrong with this category, please try again or another.");
-            return props.navigation.navigate("Home", {});
-        } else {
+        if (props.route && props.route.params.questions !== undefined) {
             const idToUse = props.route.params.id;
             updateQuestionsBeingUsed(props.route.params.questions);
 
@@ -47,9 +44,12 @@ const Questions = (props) => {
                 shuffle(questionsBeingUsedRef.current);
                 questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
                 displayFirstQuestion();
+
             }
 
             load();
+        } else {
+            Alert.alert("Something went wrong with this category, please try again or another.");
         }
     }, []);
 

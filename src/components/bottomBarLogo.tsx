@@ -4,7 +4,8 @@ import {Image, View, StyleSheet} from "react-native";
 const BottomBarLogo = () => {
     return (
         <View style={styles.container}>
-            <Image style={styles.image} source={require("../../assets/images/anegy-logo.png")}/>
+            <Image accessibilityLabel={"BottomBarLogo"} style={styles.image}
+                   source={require("../../assets/images/anegy-logo.png")}/>
         </View>
     );
 };

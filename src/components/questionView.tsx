@@ -37,16 +37,18 @@ const QuestionView = (props) => {
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
 
     useEffect(() => {
-        let correctAnswer: object;
+        let correctAnswer: object, canWeViewNextQ;
         if (props.question !== undefined) {
             correctAnswer = props.question.options.find((option) => option.isCorrect === true);
+            canWeViewNextQ = props.isNextQuestionViewable();
         }
+
         setDisplayCorrectAnswer(false);
 
         setQuestionsData({
             allQuestions: props.allQuestions,
             currentQuestion: props.question,
-            isNextQuestionViewable: props.isNextQuestionViewable(),
+            isNextQuestionViewable: canWeViewNextQ,
             rightAnswer: correctAnswer
         });
 
@@ -190,10 +192,10 @@ const QuestionView = (props) => {
     return (
         <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={() => props.viewNextQuestion()} onSwipeRight={() => props.counter > 1 ? props.viewPreviousQuestion() : null}>
         <View style={styles.container}>
-                {props.scoreBoard !== true ? <>
-                        <View style={styles.counterContainer}>
-                            <Text style={styles.questionHeading}>{questionsData.currentQuestion.question}</Text>
-                        </View>
+            {props.scoreBoard !== true && questionsData.currentQuestion !== undefined ? <>
+                    <View style={styles.counterContainer}>
+                        <Text style={styles.questionHeading}>{questionsData.currentQuestion.question}</Text>
+                    </View>
                     <View style={styles.totalQuestions}>
                         <Text style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
                         <TouchableOpacity>

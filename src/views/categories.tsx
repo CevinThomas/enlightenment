@@ -13,10 +13,12 @@ const Categories = (props) => {
     const [categoryToUse, setCategoryToUse] = useState<string>("");
 
     useEffect(() => {
-        const categoriesAsArray = Object.keys(props.route.params.categories);
-        const categoriesWithCapitalFirst = categoriesAsArray.map(subjectString => capitalizeFirstLetter(subjectString));
-        setAllCategories(categoriesWithCapitalFirst);
-        setAllQuestions(props.route.params.categories);
+        if (props.route !== undefined) {
+            const categoriesAsArray = Object.keys(props.route.params.categories);
+            const categoriesWithCapitalFirst = categoriesAsArray.map(subjectString => capitalizeFirstLetter(subjectString));
+            setAllCategories(categoriesWithCapitalFirst);
+            setAllQuestions(props.route.params.categories);
+        }
     }, [])
 
     const navigateToProperQuestions = (): void => {
