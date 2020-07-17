@@ -71,7 +71,12 @@ describe( "QuestionView Props testing", () => {
     test( "Should show correct number of total questions", () => {
         const totalQuestionsNumberText = component.queryByA11yLabel( "currentQuestionNumber" ).props.children[3];
         expect( totalQuestionsNumberText ).toEqual( numberOfQuestions );
+    } );
 
+    test( "Should show correct current question number", () => {
+        const currentQuestionNumber = component.queryByA11yLabel( "currentQuestionNumber" ).props.children[1];
+        console.log( currentQuestionNumber );
+        expect( currentQuestionNumber ).toEqual( 1 );
     } );
 } );
 
