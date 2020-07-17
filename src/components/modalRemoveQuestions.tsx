@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import GlobalStyles from "../utils/globalStyles"
+import {Alert, AsyncStorage, Modal, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import GlobalStyles from "../utils/globalStyles";
 
 class ModalRemoveQuestions extends Component {
 
@@ -43,7 +43,6 @@ class ModalRemoveQuestions extends Component {
         } catch (e) {
             console.log(e);
         }
-
     }
 
     async resetQuestions() {
@@ -57,47 +56,72 @@ class ModalRemoveQuestions extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.removeContainer}>
-                    <Text style={styles.removeHeading}>What Questions do you want to remove?</Text>
+            <Modal
+                animationType="slide"
+                transparent={false}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                }}>
+                <View style={styles.container}>
+                    <View style={styles.removeContainer}>
+                        <Text style={styles.removeHeading}>What Questions do you want to remove?</Text>
 
-                    {this.state.allQuestions !== undefined ? this.state.allQuestions.map(question => {
-                        return <TouchableOpacity
-                            key={question.question}
-                            style={[styles.removeQuestionContainer, {backgroundColor: this.state.removedQuestions.includes(question.question) ? "red" : "white"}]}><Text
-                            style={[styles.removeQuestion, {
-                                color: this.state.removedQuestions.includes(question.question) ? "white" : GlobalStyles.darkColor,
-                            }]}
-                            onPress={this.state.removedQuestions.includes(question.question) ? (event) => this.recallQuestion(event, question.question) : (event) => this.removeQuestion(event, question.question)}>{question.question}</Text>
-                        </TouchableOpacity>;
-                    }) : null}
-                </View>
+                        {this.state.allQuestions !== undefined ? this.state.allQuestions.map(question => {
+                            return <TouchableOpacity
+                                key={question.question}
+                                style={[styles.removeQuestionContainer, {backgroundColor: this.state.removedQuestions.includes(question.question) ? "red" : "white"}]}><Text
+                                style={[styles.removeQuestion, {
+                                    color: this.state.removedQuestions.includes(question.question) ? "white" : GlobalStyles.darkColor,
+                                }]}
+                                onPress={this.state.removedQuestions.includes(question.question) ? (event) => this.recallQuestion(event, question.question) : (event) => this.removeQuestion(event, question.question)}>{question.question}</Text>
+                            </TouchableOpacity>;
+                        }) : null}
+                    </View>
 
-                <View>
-                    <View style={styles.mainButtonContainer}>
+                    <View>
+                        <View style={styles.mainButtonContainer}>
 
-                        <TouchableOpacity style={styles.buttonContainerTwo} onPress={this.updateQuestions.bind(this)}>
-                            <Text style={{color:  GlobalStyles.darkColor}}>Update Questions</Text>
+                            <TouchableOpacity style={styles.buttonContainerTwo}
+                                              onPress={this.updateQuestions.bind(this)}>
+                                <Text style={{color: GlobalStyles.darkColor}}>Update Questions</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.buttonContainerTwo}
+                                              onPress={this.resetQuestions.bind(this)}>
+                                <Text style={{color: GlobalStyles.darkColor}}>Reset Questions</Text>
+                            </TouchableOpacity>
+
+                        </View>
+                        <TouchableOpacity onPress={this.props.goBack} style={styles.hideButtonContainer}>
+                            <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Go back</Text>
                         </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.buttonContainerTwo} onPress={this.resetQuestions.bind(this)}>
-                            <Text style={{color:  GlobalStyles.darkColor}}>Reset Questions</Text>
-                        </TouchableOpacity>
-
                     </View>
                 </View>
-            </View>
+            </Modal>
         );
     }
 
 }
 
 const styles = StyleSheet.create({
+    hideButtonContainer: {
+        padding: 20,
+        backgroundColor: GlobalStyles.lightColor,
+        width: 270,
+        marginLeft: "auto",
+        marginRight: "auto",
+        borderRadius: 10,
+        shadowOffset: {width: 0, height: 0},
+        shadowColor: "#000",
+        elevation: 100,
+        shadowRadius: 5,
+        shadowOpacity: 0.1
+    },
     removeQuestionContainer: {
         borderRadius: 10,
         marginBottom: 15,
         shadowOffset: {width: 0, height: 0},
-        shadowColor:  GlobalStyles.darkColor,
+        shadowColor: GlobalStyles.darkColor,
         elevation: 100,
         shadowRadius: 5,
         shadowOpacity: 0.1

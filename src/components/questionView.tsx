@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dimensions, StyleSheet, Text, View, TouchableOpacity} from "react-native";
+import {Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Image, TouchableHighlight} from "react-native";
 import Score from "./score";
 import {IsAnswered} from "../enums/isAnswered";
 import GestureRecognizer from "react-native-swipe-gestures"
@@ -35,6 +35,7 @@ const QuestionView = (props) => {
 
     const [categories, setCategories] = useState<[]>([]);
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
+    const [removeQuestionsModal, setRemoveQuestionsModal] = useState(false);
 
     useEffect(() => {
         let correctAnswer: object, canWeViewNextQ;
@@ -187,22 +188,29 @@ const QuestionView = (props) => {
         }
     }
 
+    function showRemoveQuestionsModal(): void {
+        setRemoveQuestionsModal(!removeQuestionsModal);
+    }
+
     const {height, width} = Dimensions.get('window');
 
     return (
-        <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={() => props.viewNextQuestion()} onSwipeRight={() => props.counter > 1 ? props.viewPreviousQuestion() : null}>
-        <View style={styles.container}>
-            {props.scoreBoard !== true && questionsData.currentQuestion !== undefined ? <>
-                    <View style={styles.counterContainer}>
-                        <Text style={styles.questionHeading}>{questionsData.currentQuestion.question}</Text>
-                    </View>
-                    <View style={styles.totalQuestions}>
-                        <Text accessibilityLabel={"currentQuestionNumber"}
-                              style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
-                        <TouchableOpacity>
-                            <Modal children={<ModalRemoveQuestions {...props} />}/>
-                        </TouchableOpacity>
-                    </View>
+        <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={() => props.viewNextQuestion()}
+                           onSwipeRight={() => props.counter > 1 ? props.viewPreviousQuestion() : null}>
+            <View style={styles.container}>
+                {props.scoreBoard !== true && questionsData.currentQuestion !== undefined ? <>
+                        <View style={styles.counterContainer}>
+                            <Text style={styles.questionHeading}>{questionsData.currentQuestion.question}</Text>
+                        </View>
+                        <View style={styles.totalQuestions}>
+                            <Text accessibilityLabel={"currentQuestionNumber"}
+                                  style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
+                            <TouchableOpacity style={styles.button} onPress={showRemoveQuestionsModal}>
+                                <Image style={styles.image} source={require("../../assets/images/gear-1119298_1920.png")}/>
+                                {removeQuestionsModal === true ?
+                                    <ModalRemoveQuestions goBack={showRemoveQuestionsModal} {...props}/> : null}
+                            </TouchableOpacity>
+                        </View>
 
                         {questionsData.currentQuestion.options !== undefined ? questionsData.currentQuestion.options.map(optionToChoose => {
                             return <View key={optionToChoose.choice}
@@ -275,8 +283,19 @@ const QuestionView = (props) => {
 const {height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+    button: {
+        marginTop: 11,
+        marginLeft: 10,
+        marginRight: -10
+    },
+    image: {
+        overflow: "hidden",
+        resizeMode: "contain",
+        width: 20,
+        height: 20,
+    },
     prevAndNextContainer: {
-      display: "flex",
+        display: "flex",
         flexDirection: "row",
         marginTop: 50,
         width: 250,
