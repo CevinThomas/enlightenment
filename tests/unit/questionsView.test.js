@@ -27,39 +27,51 @@ test( "Should have a BottomBarLogo", () => {
     expect( bottomComp ).toBeTruthy();
 } );
 
-test( "Should show correct number current question", () => {
-    const component = render( <QuestionView allQuestions={javascriptQuestions} question={{
-        question: "How do you declare a variable?",
-        category: ProgrammingCategories.Language,
-        answered: IsAnswered.no,
-        options: [
-            {
-                choice: "Let, Const or Var =",
-                isCorrect: true,
-                explanation: "ES6 new way of declaring."
-            },
-            {
-                choice: "Variable =",
-                isCorrect: false,
-                explanation: "This is incorrect due to ..."
-            },
-            {
-                choice: "New Variable =",
-                isCorrect: false,
-                explanation: "This is incorrect due to ..."
-            },
-            {
-                choice: "Varr =",
-                isCorrect: false,
-                explanation: "This is incorrect due to ...",
-            }
-        ]
-    }} counter={1} totalQuestions={5} scoreBoard={false}
-                                            displayNextQuestion={fakeFunction}
-                                            viewPreviousQuestion={fakeFunction}
-                                            viewNextQuestion={fakeFunction}
-                                            isNextQuestionViewable={fakeFunction}
+describe( "QuestionView Props testing", () => {
+    const numberOfQuestions = 5;
+    const counterForQuestions = 1;
+    const component = render( <QuestionView
+        allQuestions={javascriptQuestions}
+        question={{
+            question: "How do you declare a variable?",
+            category: ProgrammingCategories.Language,
+            answered: IsAnswered.no,
+            options: [
+                {
+                    choice: "Let, Const or Var =",
+                    isCorrect: true,
+                    explanation: "ES6 new way of declaring."
+                },
+                {
+                    choice: "Variable =",
+                    isCorrect: false,
+                    explanation: "This is incorrect due to ..."
+                },
+                {
+                    choice: "New Variable =",
+                    isCorrect: false,
+                    explanation: "This is incorrect due to ..."
+                },
+                {
+                    choice: "Varr =",
+                    isCorrect: false,
+                    explanation: "This is incorrect due to ...",
+                }
+            ]
+        }}
+        counter={counterForQuestions}
+        totalQuestions={numberOfQuestions}
+        scoreBoard={false}
+        displayNextQuestion={fakeFunction}
+        viewPreviousQuestion={fakeFunction}
+        viewNextQuestion={fakeFunction}
+        isNextQuestionViewable={fakeFunction}
     /> );
-    const questionNumberText = component.queryByA11yLabel( "currentQuestionNumber" );
-    console.log( questionNumberText.props );
+
+    test( "Should show correct number of total questions", () => {
+        const totalQuestionsNumberText = component.queryByA11yLabel( "currentQuestionNumber" ).props.children[3];
+        expect( totalQuestionsNumberText ).toEqual( numberOfQuestions );
+
+    } );
 } );
+
