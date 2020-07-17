@@ -11,9 +11,11 @@ class ModalRemoveQuestions extends Component {
     };
 
     componentDidMount(): void {
-        this.setState({
-            allQuestions: this.props.allQuestions
-        });
+        if (this.props.allQuestions !== undefined) {
+            this.setState({
+                allQuestions: this.props.allQuestions
+            });
+        }
     }
 
     removeQuestion(event, question) {

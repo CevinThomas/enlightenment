@@ -197,7 +197,8 @@ const QuestionView = (props) => {
                         <Text style={styles.questionHeading}>{questionsData.currentQuestion.question}</Text>
                     </View>
                     <View style={styles.totalQuestions}>
-                        <Text style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
+                        <Text accessibilityLabel={"currentQuestionNumber"}
+                              style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
                         <TouchableOpacity>
                             <Modal children={<ModalRemoveQuestions {...props} />}/>
                         </TouchableOpacity>
