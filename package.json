@@ -9,9 +9,11 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "jest-expo",
+    "preset": "react-native",
     "timers": "fake",
-    "testEnvironment": "jsdom"
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   },
   "rnpm": {
     "assets": [
