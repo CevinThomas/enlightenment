@@ -55,7 +55,6 @@ const Categories = (props) => {
             <View style={styles.innerContainer}>
                 {renderCategoriesToUI()}
             </View>
-            <Text>1</Text>
             <BottomBarLogo/>
         </View>
     );

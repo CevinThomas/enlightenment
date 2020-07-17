@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import QuestionView from "../../src/components/questionView";
-import {render} from "react-native-testing-library";
+import {fireEvent, render, waitFor} from "react-native-testing-library";
 import SeoQuestions from "../../src/questions/seoQuestions";
 import Questions from "../../src/views/questions";
 import javascriptQuestions from "../../src/questions/javascriptQuestions";
@@ -31,7 +31,7 @@ describe( "QuestionView Props testing", () => {
     const numberOfQuestions = 5;
     const counterForQuestions = 1;
     const component = render( <QuestionView
-        allQuestions={javascriptQuestions}
+        allQuestions={javascriptQuestions.variables.questions}
         question={{
             question: "How do you declare a variable?",
             category: ProgrammingCategories.Language,

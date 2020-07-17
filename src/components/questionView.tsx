@@ -36,6 +36,7 @@ const QuestionView = (props) => {
     const [categories, setCategories] = useState<[]>([]);
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
     const [removeQuestionsModal, setRemoveQuestionsModal] = useState(false);
+    const [fakeNumber, setFakeNumber] = useState(0);
 
     useEffect(() => {
         let correctAnswer: object, canWeViewNextQ;
@@ -45,7 +46,6 @@ const QuestionView = (props) => {
         }
 
         setDisplayCorrectAnswer(false);
-
         setQuestionsData({
             allQuestions: props.allQuestions,
             currentQuestion: props.question,
@@ -161,7 +161,7 @@ const QuestionView = (props) => {
     }
 
     function updateQuestionProperty(event: any, choice: any): void {
-        const allQuestions = [...questionsData.allQuestions];
+        const allQuestions = questionsData.allQuestions;
         const currentQuestionToUpdate = allQuestions.find(option => option.question === questionsData.currentQuestion.question);
 
         currentQuestionToUpdate.answered = IsAnswered.yes;
@@ -228,6 +228,7 @@ const QuestionView = (props) => {
                                              ]}>
 
                                 <Button
+                                    accessibilityLabel={"choiceButton"}
                                     color={guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? "white" : "white" &&
                                     results.wrongAnswer.includes(optionToChoose.choice) ? "white" : GlobalStyles.darkColor}
                                     disabled={guessesAndChoices.rightAnswerGuessed && !
@@ -247,7 +248,8 @@ const QuestionView = (props) => {
                                     {<Text style={styles.errorMessage}>{questionsData.rightAnswer.explanation}</Text>}
                                 </View>
                                 <View style={styles.nextQuestion}>
-                                    <Button color={GlobalStyles.darkColor} title={"Next Question!"}
+                                    <Button accessibilityLabel={"nextQuestion"} color={GlobalStyles.darkColor}
+                                            title={"Next Question!"}
                                             onPress={() => props.displayNextQuestion(null, guessesAndChoices.guessChoice)}
                                     />
                                 </View>
