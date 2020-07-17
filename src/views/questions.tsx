@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AsyncStorage, View} from "react-native";
+import {Alert, AsyncStorage, View} from "react-native";
 import QuestionView from "../components/questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
 import {IsAnswered} from "../enums/isAnswered";
@@ -23,29 +23,34 @@ const Questions = (props) => {
 
     useEffect(() => {
 
-        const idToUse = props.route.params.id;
-        updateQuestionsBeingUsed(props.route.params.questions);
+        if (props.route.params.questions === undefined) {
+            Alert.alert("Something went wrong with this category, please try again or another.");
+            return props.navigation.navigate("Home", {});
+        } else {
+            const idToUse = props.route.params.id;
+            updateQuestionsBeingUsed(props.route.params.questions);
 
-        async function load() {
-            const storedQuestions = await AsyncStorage.getItem(idToUse.toString());
+            async function load() {
+                const storedQuestions = await AsyncStorage.getItem(idToUse.toString());
 
-            if (storedQuestions !== null) {
-                const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
-                shuffle(storedAreNowReset);
-                setSavedQuestions(storedAreNowReset);
-                return setNumberOfQuestions(JSON.parse(storedQuestions).length);
-            } else {
-                setSavedQuestions([]);
-                setNumberOfQuestions(questionsBeingUsedRef.current.length);
+                if (storedQuestions !== null) {
+                    const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
+                    shuffle(storedAreNowReset);
+                    setSavedQuestions(storedAreNowReset);
+                    return setNumberOfQuestions(JSON.parse(storedQuestions).length);
+                } else {
+                    setSavedQuestions([]);
+                    setNumberOfQuestions(questionsBeingUsedRef.current.length);
+                }
+
+                resetQuestions(questionsBeingUsedRef.current);
+                shuffle(questionsBeingUsedRef.current);
+                questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
+                displayFirstQuestion();
             }
 
-            resetQuestions(questionsBeingUsedRef.current);
-            shuffle(questionsBeingUsedRef.current);
-            questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
-            displayFirstQuestion();
+            load();
         }
-
-        load();
     }, []);
 
     function displayFirstQuestion(): void {
