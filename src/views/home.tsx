@@ -39,7 +39,8 @@ const Home = (props) => {
         <View style={styles.container}>
             <Text style={styles.mainHeading}>Welcome future Beast!</Text>
             <View style={styles.secondaryContainer}>
-                <Text style={styles.secondaryText}>This is place for you to be the fucking ultimate beast and advance
+                <Text style={styles.secondaryText}>testThis is place for you to be the fucking ultimate beast and
+                    advance
                     your
                     skills in the shit that is
                     required. Please, pick a category.</Text>
