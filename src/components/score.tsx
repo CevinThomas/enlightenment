@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {Text} from "@ui-kitten/components";
 import FadeIn from "./fadeIn";
-import GlobalStyles from "../utils/globalStyles"
+import GlobalStyles from "../utils/globalStyles";
 
 
 const Score = (props) => {

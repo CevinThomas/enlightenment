@@ -1,14 +1,16 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Dimensions, Modal} from "react-native";
+import {Dimensions, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Text} from "@ui-kitten/components";
+
 
 const QuestionOverlay = (props) => {
     return (
         <Modal animationType={"slide"}>
             <View style={styles.container}>
-                    <View style={styles.questionsContainer}>
-                        <TouchableOpacity onPress={props.navigateToQuestionsFunction} style={styles.textButton}>
-                            <Text style={styles.text}>Quiz Me!</Text>
-                        </TouchableOpacity>
+                <View style={styles.questionsContainer}>
+                    <TouchableOpacity onPress={props.navigateToQuestionsFunction} style={styles.textButton}>
+                        <Text style={styles.text}>Quiz Me!</Text>
+                    </TouchableOpacity>
                         <TouchableOpacity style={styles.textButton}>
                             <Text style={styles.text}>Teach Me!</Text>
                         </TouchableOpacity>
