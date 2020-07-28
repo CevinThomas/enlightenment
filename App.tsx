@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
-import Home from "./src/views/home";
 import "react-native-gesture-handler";
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
-import GlobalStyles from "./src/utils/globalStyles"
-const Stack = createStackNavigator();
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
-import Categories from "./src/views/categories";
-import Questions from "./src/views/questions";
+import {AppLoading} from 'expo';
+import {BaseNavigator} from "./src/stackNavigators";
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider, IconRegistry} from "@ui-kitten/components";
+import {default as theme} from "./custom-theme.json";
+import {default as mapping} from "./mapping.json";
+import {EvaIconsPack} from "@ui-kitten/eva-icons";
 
 export default function App() {
 
@@ -29,28 +28,13 @@ export default function App() {
     }
 
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name={"Home"} component={Home} options={{
-                    headerTitle: "Education",
-                    headerStyle: {backgroundColor: "#eee"},
-                    headerTintColor: GlobalStyles.darkColor
-                }}/>
-                <Stack.Screen name={"Questions"} component={Questions} options={{
-                    headerStyle: {backgroundColor: "#eee"},
-                    headerTintColor: GlobalStyles.darkColor,
-                    headerTitle: "",
-                    gestureEnabled: false,
-                    headerBackTitle: "Categories"
-                }}/>
-                <Stack.Screen name={"Categories"} component={Categories} options={{
-                    headerStyle: {backgroundColor: "#eee"},
-                    headerTintColor: GlobalStyles.darkColor,
-                    headerTitle: "",
-                    headerBackTitle: "Start"
-                }}/>
-            </Stack.Navigator>
-        </NavigationContainer>
+        <React.Fragment>
+            <IconRegistry icons={EvaIconsPack}/>
+            <ApplicationProvider customMapping={mapping} theme={{...eva.dark, ...theme}} {...eva}>
+                <BaseNavigator/>
+            </ApplicationProvider>
+        </React.Fragment>
+
     );
 }
 

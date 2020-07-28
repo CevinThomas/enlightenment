@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Alert, AsyncStorage, Modal, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {Alert, AsyncStorage, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Text} from "@ui-kitten/components";
 import GlobalStyles from "../utils/globalStyles";
 
 class ModalRemoveQuestions extends Component {

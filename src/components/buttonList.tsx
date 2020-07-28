@@ -1,5 +1,7 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from "react-native";
+import {ImageBackground, StyleSheet, View} from "react-native";
+import {Text} from "@ui-kitten/components";
+
 
 const ButtonList = (props) => {
 

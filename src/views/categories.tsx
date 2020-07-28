@@ -1,6 +1,7 @@
 import React, {ReactNode, useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from "react-native";
-import GlobalStyles from "../utils/globalStyles"
+import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Text} from "@ui-kitten/components";
+import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
 import capitalizeFirstLetter from "../utils/functions";
 import QuestionOverlay from "../components/questionOverlay";

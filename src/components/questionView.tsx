@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Image, TouchableHighlight} from "react-native";
+import {Button, Dimensions, Image, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Text} from "@ui-kitten/components";
 import Score from "./score";
 import {IsAnswered} from "../enums/isAnswered";
-import GestureRecognizer from "react-native-swipe-gestures"
-import GlobalStyles from "../utils/globalStyles"
+import GestureRecognizer from "react-native-swipe-gestures";
+import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "./bottomBarLogo";
-import Modal from "./modal";
 import ModalRemoveQuestions from "./modalRemoveQuestions";
 
 const QuestionView = (props) => {
