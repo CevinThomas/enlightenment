@@ -5,6 +5,7 @@ import {AppLoading} from 'expo';
 import {BaseNavigator} from "./src/stackNavigators";
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider} from "@ui-kitten/components";
+import {default as theme} from "./custom-theme.json";
 
 export default function App() {
 
@@ -25,7 +26,7 @@ export default function App() {
     }
 
     return (
-        <ApplicationProvider theme={eva.light} {...eva}>
+        <ApplicationProvider theme={{...eva.dark, ...theme}} {...eva}>
             <BaseNavigator/>
         </ApplicationProvider>
     );
