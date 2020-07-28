@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import ButtonList from "../components/buttonList";
-import GlobalStyles from "../utils/globalStyles"
+import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
 import SeoQuestions from "../questions/seoQuestions";
 import JavascriptQuestions from "../questions/javascriptQuestions";
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#eee',
         alignItems: 'center',
-        paddingTop: 30,
+        paddingTop: 31,
         width: width * 0.9,
         marginLeft: "auto",
         marginRight: "auto",
