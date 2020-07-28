@@ -1,12 +1,11 @@
 import React from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import ButtonList from "../components/buttonList";
-import GlobalStyles from "../utils/globalStyles"
+import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
 import SeoQuestions from "../questions/seoQuestions";
 import JavascriptQuestions from "../questions/javascriptQuestions";
 import PythonCategories from "../questions/pythonQuestions";
-
 
 const Home = (props) => {
 

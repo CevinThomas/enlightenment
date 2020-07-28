@@ -4,9 +4,10 @@ import * as Font from 'expo-font';
 import {AppLoading} from 'expo';
 import {BaseNavigator} from "./src/stackNavigators";
 import * as eva from '@eva-design/eva';
-import {ApplicationProvider} from "@ui-kitten/components";
+import {ApplicationProvider, IconRegistry} from "@ui-kitten/components";
 import {default as theme} from "./custom-theme.json";
 import {default as mapping} from "./mapping.json";
+import {EvaIconsPack} from "@ui-kitten/eva-icons";
 
 export default function App() {
 
@@ -27,9 +28,13 @@ export default function App() {
     }
 
     return (
-        <ApplicationProvider customMapping={mapping} theme={{...eva.dark, ...theme}} {...eva}>
-            <BaseNavigator/>
-        </ApplicationProvider>
+        <React.Fragment>
+            <IconRegistry icons={EvaIconsPack}/>
+            <ApplicationProvider customMapping={mapping} theme={{...eva.dark, ...theme}} {...eva}>
+                <BaseNavigator/>
+            </ApplicationProvider>
+        </React.Fragment>
+
     );
 }
 
