@@ -6,6 +6,7 @@ import {BaseNavigator} from "./src/stackNavigators";
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider} from "@ui-kitten/components";
 import {default as theme} from "./custom-theme.json";
+import {default as mapping} from "./mapping.json";
 
 export default function App() {
 
@@ -26,7 +27,7 @@ export default function App() {
     }
 
     return (
-        <ApplicationProvider theme={{...eva.dark, ...theme}} {...eva}>
+        <ApplicationProvider customMapping={mapping} theme={{...eva.dark, ...theme}} {...eva}>
             <BaseNavigator/>
         </ApplicationProvider>
     );
