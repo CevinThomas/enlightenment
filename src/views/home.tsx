@@ -7,6 +7,7 @@ import SeoQuestions from "../questions/seoQuestions";
 import JavascriptQuestions from "../questions/javascriptQuestions";
 import PythonCategories from "../questions/pythonQuestions";
 
+
 const Home = (props) => {
 
     //TODO: This is obviously hard coded and will be replaced with backend functionality
@@ -49,7 +50,8 @@ const Home = (props) => {
             <View style={styles.buttonContainer}>
                 <FlatList keyExtractor={(item, index) => index.toString()}
                           data={["SEO", "Javascript", "Python"]}
-                          renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item} navigation={props.navigation}
+                          renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item}
+                                                              navigation={props.navigation}
                                                               boxTitle={item}/>}/>
             </View>
             <BottomBarLogo/>
