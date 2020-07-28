@@ -1,5 +1,6 @@
 import React from 'react';
-import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, StyleSheet, View} from "react-native";
+import {Text} from "@ui-kitten/components";
 import ButtonList from "../components/buttonList";
 import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
@@ -39,7 +40,7 @@ const Home = (props) => {
         <View style={styles.container}>
             <Text style={styles.mainHeading}>Welcome future Beast!</Text>
             <View style={styles.secondaryContainer}>
-                <Text style={styles.secondaryText}>testsThis is place for you to be the fucking ultimate beast and
+                <Text style={styles.secondaryText}>This is place for you to be the fucking ultimate beast and
                     advance
                     your
                     skills in the shit that is
@@ -49,7 +50,8 @@ const Home = (props) => {
             <View style={styles.buttonContainer}>
                 <FlatList keyExtractor={(item, index) => index.toString()}
                           data={["SEO", "Javascript", "Python"]}
-                          renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item} navigation={props.navigation}
+                          renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item}
+                                                              navigation={props.navigation}
                                                               boxTitle={item}/>}/>
             </View>
             <BottomBarLogo/>
