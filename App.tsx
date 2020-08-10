@@ -8,6 +8,10 @@ import {ApplicationProvider, IconRegistry} from "@ui-kitten/components";
 import {default as theme} from "./custom-theme.json";
 import {default as mapping} from "./mapping.json";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
+import Amplify from 'aws-amplify';
+import config from './aws-exports';
+
+Amplify.configure(config);
 
 export default function App() {
 
