@@ -1,1 +1,10 @@
-{}
+{
+  "function": {
+    "firstLambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
+    }
+  }
+}
