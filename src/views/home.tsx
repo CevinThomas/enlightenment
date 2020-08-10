@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, FlatList, StyleSheet, View} from "react-native";
-import {Text} from "@ui-kitten/components";
+import {Button, Text} from "@ui-kitten/components";
 import ButtonList from "../components/buttonList";
 import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
@@ -39,6 +39,11 @@ const Home = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.mainHeading}>Welcome future Beast!</Text>
+            <Button style={{backgroundColor: "blue"}} appearance={"ghost"} status={"control"} onPress={() => {
+                fetch("https://32530keoae.execute-api.eu-central-1.amazonaws.com/Dev", {
+                    method: "GET",
+                }).then(resp => resp.json()).then(data => console.log(data)).catch();
+            }}>TEST</Button>
             <View style={styles.secondaryContainer}>
                 <Text style={styles.secondaryText}>This is place for you to be the fucking ultimate beast and
                     advance

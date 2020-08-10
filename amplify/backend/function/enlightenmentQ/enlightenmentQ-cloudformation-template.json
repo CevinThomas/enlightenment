@@ -9,6 +9,18 @@
     },
     "env": {
       "Type": "String"
+    },
+    "storagesecondLambdaName": {
+      "Type": "String",
+      "Default": "storagesecondLambdaName"
+    },
+    "storagesecondLambdaArn": {
+      "Type": "String",
+      "Default": "storagesecondLambdaArn"
+    },
+    "functionfirstLambdaName": {
+      "Type": "String",
+      "Default": "functionfirstLambdaName"
     }
   },
   "Conditions": {
@@ -33,12 +45,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "firstLambda",
+            "enlightenmentQ",
             {
               "Fn::Join": [
                 "",
                 [
-                  "firstLambda",
+                  "enlightenmentQ",
                   "-",
                   {
                     "Ref": "env"
@@ -55,6 +67,15 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "FUNCTION_FIRSTLAMBDA_NAME": {
+              "Ref": "functionfirstLambdaName"
+            },
+            "STORAGE_SECONDLAMBDA_NAME": {
+              "Ref": "storagesecondLambdaName"
+            },
+            "STORAGE_SECONDLAMBDA_ARN": {
+              "Ref": "storagesecondLambdaArn"
             }
           }
         },
@@ -69,7 +90,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-enlightenment-dev-192747-deployment",
-          "S3Key": "amplify-builds/firstLambda-4838732b647944736b79-build.zip"
+          "S3Key": "amplify-builds/enlightenmentQ-4236507a376d59715055-build.zip"
         }
       }
     },
@@ -79,12 +100,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "enlightenmentLambdaRoleca422558",
+            "enlightenmentLambdaRole4046fff5",
             {
               "Fn::Join": [
                 "",
                 [
-                  "enlightenmentLambdaRoleca422558",
+                  "enlightenmentLambdaRole4046fff5",
                   "-",
                   {
                     "Ref": "env"
@@ -150,6 +171,106 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:DescribeTable",
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagesecondLambdaArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storagesecondLambdaArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functionfirstLambdaName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagesecondLambdaArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storagesecondLambdaArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

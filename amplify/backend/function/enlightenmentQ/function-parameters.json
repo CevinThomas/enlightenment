@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "function": {
+      "firstLambda": [
+        "read"
+      ]
+    },
+    "storage": {
+      "secondLambda": [
+        "create"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
