@@ -33,12 +33,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "firstLambda",
+            "enlightenmentfeac2662",
             {
               "Fn::Join": [
                 "",
                 [
-                  "firstLambda",
+                  "enlightenmentfeac2662",
                   "-",
                   {
                     "Ref": "env"
@@ -68,8 +68,8 @@
         "Layers": [],
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-enlightenment-dev-192747-deployment",
-          "S3Key": "amplify-builds/firstLambda-4838732b647944736b79-build.zip"
+          "S3Bucket": "amplify-enlightenment-dev-182049-deployment",
+          "S3Key": "amplify-builds/enlightenmentfeac2662-77544676676557507158-build.zip"
         }
       }
     },
@@ -79,12 +79,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "enlightenmentLambdaRoleca422558",
+            "enlightenmentLambdaRolec05513ca",
             {
               "Fn::Join": [
                 "",
                 [
-                  "enlightenmentLambdaRoleca422558",
+                  "enlightenmentLambdaRolec05513ca",
                   "-",
                   {
                     "Ref": "env"
