@@ -10,6 +10,23 @@
       "StackName": "amplify-enlightenment-dev-182049",
       "StackId": "arn:aws:cloudformation:eu-central-1:568436900053:stack/amplify-enlightenment-dev-182049/c9bd3e50-dcb7-11ea-91d5-0228b727b50e",
       "AmplifyAppId": "d2cykiqq82qidh"
+    },
+    "categories": {
+      "function": {
+        "enlightenment0140bbb70140bbb7CreateAuthChallenge": {
+          "CHALLENGEANSWER": "Enlightenment"
+        },
+        "enlightenment0140bbb70140bbb7DefineAuthChallenge": {},
+        "enlightenment0140bbb70140bbb7PostConfirmation": {
+          "GROUP": "New Users"
+        },
+        "enlightenment0140bbb70140bbb7VerifyAuthChallengeResponse": {}
+      },
+      "auth": {
+        "enlightenment0140bbb70140bbb7": {
+          "facebookAppId": "291601718794810"
+        }
+      }
     }
   }
 }

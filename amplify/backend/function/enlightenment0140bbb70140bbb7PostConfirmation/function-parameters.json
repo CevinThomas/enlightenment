@@ -1,0 +1,16 @@
+{
+  "trigger": true,
+  "modules": [
+    "add-to-group"
+  ],
+  "parentResource": "enlightenment0140bbb70140bbb7",
+  "functionName": "enlightenment0140bbb70140bbb7PostConfirmation",
+  "resourceName": "enlightenment0140bbb70140bbb7PostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/usr/local/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "roleName": "enlightenment0140bbb70140bbb7PostConfirmation",
+  "skipEdit": true,
+  "GROUP": "New Users"
+}
