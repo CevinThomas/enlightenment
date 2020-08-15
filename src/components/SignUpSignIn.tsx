@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
+import {Auth} from "aws-amplify";
 
 const SignInSignUp = (props) => {
 
     const [method, setMethod] = React.useState<string>("");
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [secureTextEntry, setSecureTextEntry] = React.useState<boolean>(true);
-    const [userCredentials, setUserCredentials] = React.useState<{ email: string, password: string }>();
+    const [userCredentials, setUserCredentials] = React.useState<{ email: string, password: string, name: string }>();
 
     useEffect(() => {
         if (props.method !== "") setMethod(props.method);
@@ -25,13 +26,6 @@ const SignInSignUp = (props) => {
         </TouchableWithoutFeedback>
     );
 
-    function simulateLoading() {
-        setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-    }
-
     function updateUserEmailHandler(value) {
         setUserCredentials({
             ...userCredentials,
@@ -46,22 +40,51 @@ const SignInSignUp = (props) => {
         });
     }
 
+    function updateUserNameHandler(value) {
+        setUserCredentials({
+            ...userCredentials,
+            name: value
+        });
+    }
+
     function toggleSecureEntry() {
         setSecureTextEntry(!secureTextEntry);
+    }
+
+    async function loginOrSignup() {
+        if (method === "signup") {
+            const response = await Auth.signUp({
+                username: userCredentials.email,
+                password: userCredentials.password,
+                attributes: {
+                    email: userCredentials.email,
+                    name: userCredentials.name
+                }
+            });
+
+            console.log(response);
+        } else {
+
+        }
     }
 
     return (
         <View>
 
             <View>
-                <Input onChangeText={nextValue => updateUserEmailHandler(nextValue)} label={"Email"}
+                <Input autoCapitalize={"none"} autoCorrect={false}
+                       onChangeText={nextValue => updateUserNameHandler(nextValue)} label={"Name"}
+                       placeholder={"Enter your name"}/>
+                <Input autoCapitalize={"none"} autoCorrect={false}
+                       onChangeText={nextValue => updateUserEmailHandler(nextValue)} label={"Email"}
                        placeholder={"Enter your email"}/>
-                <Input onChangeText={nextValue => updateUserPasswordHandler(nextValue)}
+                <Input autoCapitalize={"none"} autoCorrect={false} caption='Should contain at least 8 symbols'
+                       onChangeText={nextValue => updateUserPasswordHandler(nextValue)}
                        secureTextEntry={secureTextEntry} accessoryRight={renderIcon} label={"Password"}
                        placeholder={"Enter your password"}/>
             </View>
 
-            <Button onPress={simulateLoading} style={styles.button} accessoryRight={LoadingIndicator}
+            <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
                     appearance={"filled"}>{method === "signup" ? "Sign up" : "Login"}</Button>
 
             {method === "signup" ? null : <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
