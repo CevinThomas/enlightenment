@@ -69,7 +69,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-enlightenment-dev-182049-deployment",
-          "S3Key": "amplify-builds/enlightenmentfeac2662-77544676676557507158-build.zip"
+          "S3Key": "amplify-builds/enlightenmentfeac2662-2f36454f547178307568-build.zip"
         }
       }
     },
