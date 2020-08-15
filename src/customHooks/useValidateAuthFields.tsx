@@ -19,7 +19,10 @@ const UseValidateAuthFields = (name, email, password) => {
     }
 
     function validateEmailHandler(email) {
+        const valid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const isValidEmail = valid.test(String(email).toLowerCase());
         if (email.length === 0) return setEmailError("Email cannot be empty.");
+        if (isValidEmail === false) return setEmailError("Please enter a valid email address.");
         setEmailError("");
     }
 

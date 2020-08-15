@@ -75,7 +75,6 @@ const SignInSignUp = (props) => {
 
     async function loginOrSignup() {
         const validated = validationHandler();
-        console.log(validated);
         if (validated === false) return;
         if (method === "signup") {
             const response = await Auth.signUp({
@@ -97,20 +96,57 @@ const SignInSignUp = (props) => {
         <View>
 
             <View>
-                <Input autoCapitalize={"none"} autoCorrect={false}
-                       onChangeText={nextValue => updateUserNameHandler(nextValue)} label={"Name"}
-                       placeholder={"Enter your name"}/>
-                {errorMessages.name !== "" ? <Text style={styles.errorMessage}>{errorMessages.name}</Text> : null}
-                <Input autoCapitalize={"none"} autoCorrect={false}
-                       onChangeText={nextValue => updateUserEmailHandler(nextValue)} label={"Email"}
-                       placeholder={"Enter your email"}/>
-                {errorMessages.email !== "" ? <Text style={styles.errorMessage}>{errorMessages.email}</Text> : null}
-                <Input autoCapitalize={"none"} autoCorrect={false} caption='Should contain at least 8 symbols'
-                       onChangeText={nextValue => updateUserPasswordHandler(nextValue)}
-                       secureTextEntry={secureTextEntry} accessoryRight={renderIcon} label={"Password"}
-                       placeholder={"Enter your password"}/>
-                {errorMessages.password !== "" ?
-                    <Text style={styles.errorMessage}>{errorMessages.password}</Text> : null}
+                <View style={styles.inputContainer}>
+                    <Input autoCapitalize={"none"} autoCorrect={false}
+                           onChangeText={nextValue => updateUserNameHandler(nextValue)} label={"Name"}
+                           placeholder={"Enter your name"}/>
+
+                    {errorMessages.name !== "" ? <View style={styles.errorMessageContainer}>
+                        <Icon
+                            animation={"pulse"}
+                            style={styles.icon}
+                            fill='red'
+                            name='maximize-outline'
+                        />
+                        <Text style={styles.errorMessage}>{errorMessages.name}</Text>
+                    </View> : null}
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Input autoCapitalize={"none"} autoCorrect={false}
+                           onChangeText={nextValue => updateUserEmailHandler(nextValue)} label={"Email"}
+                           placeholder={"Enter your email"}/>
+
+                    {errorMessages.email !== "" ? <View style={styles.errorMessageContainer}>
+                        <Icon
+                            animation={"pulse"}
+                            style={styles.icon}
+                            fill='red'
+                            name='maximize-outline'
+                        />
+                        <Text style={styles.errorMessage}>{errorMessages.email}</Text>
+                    </View> : null}
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Input autoCapitalize={"none"} autoCorrect={false} caption='Should contain at least 8 symbols'
+                           onChangeText={nextValue => updateUserPasswordHandler(nextValue)}
+                           secureTextEntry={secureTextEntry} accessoryRight={renderIcon} label={"Password"}
+                           placeholder={"Enter your password"}/>
+
+                    {errorMessages.password !== "" ? <View style={styles.errorMessageContainer}>
+                            <Icon
+                                animation={"pulse"}
+                                style={styles.icon}
+                                fill='red'
+                                name='maximize-outline'
+                            />
+                            <Text style={styles.errorMessage}>{errorMessages.password}</Text>
+                        </View>
+                        : null}
+                </View>
+
+
             </View>
 
             <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
@@ -125,8 +161,16 @@ const SignInSignUp = (props) => {
 };
 
 const styles = StyleSheet.create({
+    inputContainer: {
+        marginTop: 20
+    },
     signUpColor: {
         color: "blue"
+    },
+    icon: {
+        width: 32,
+        height: 32,
+        color: "green"
     },
     button: {
         backgroundColor: "blue"
@@ -135,9 +179,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    errorMessageContainer: {
+        flexDirection: "row",
+        textAlign: "left"
+    },
     errorMessage: {
-        color: "white",
-        backgroundColor: "red"
+        color: "red",
+        padding: 10,
+        textAlign: "left"
     }
 });
 
