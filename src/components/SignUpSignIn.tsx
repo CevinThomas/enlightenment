@@ -73,7 +73,12 @@ const SignInSignUp = (props) => {
         return false;
     }
 
+    async function confirmSignup() {
+        const response = await Auth.confirmSignUp("cevin.thomas.ny@gmail.com", "924519");
+    }
+
     async function loginOrSignup() {
+        setIsLoading(true);
         const validated = validationHandler();
         if (validated === false) return;
         if (method === "signup") {
@@ -86,10 +91,16 @@ const SignInSignUp = (props) => {
                 }
             });
 
+            if (response.userConfirmed === false) {
+                props.navigation.navigate("EnterCode", {username: response.user.getUsername()});
+                //TODO: Navigate to code screen
+            }
+
             console.log(response);
         } else {
 
         }
+        setIsLoading(false);
     }
 
     return (
@@ -151,6 +162,9 @@ const SignInSignUp = (props) => {
 
             <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
                     appearance={"filled"}>{method === "signup" ? "Sign up" : "Login"}</Button>
+
+            <Button onPress={confirmSignup} style={styles.button} accessoryRight={LoadingIndicator}
+                    appearance={"filled"}>{method === "signup" ? "Confirm" : "Login"}</Button>
 
             {method === "signup" ? null : <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
                 <Text style={styles.signUpColor}>Don't have an account? Sign up here.</Text>

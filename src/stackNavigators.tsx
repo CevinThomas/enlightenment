@@ -7,6 +7,7 @@ import React from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 import Login from "./views/login";
 import Signup from "./views/signup";
+import EnterMfaCode from "./views/enterMfaCode";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,11 @@ export const BaseNavigator = () => {
                 }}/>
                 <Stack.Screen name={"Signup"} component={Signup} options={{
                     headerTitle: "Sign Up",
+                    headerStyle: {backgroundColor: "#eee"},
+                    headerTintColor: GlobalStyles.darkColor
+                }}/>
+                <Stack.Screen name={"EnterCode"} component={EnterMfaCode} options={{
+                    headerTitle: "Enter Code",
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: GlobalStyles.darkColor
                 }}/>
