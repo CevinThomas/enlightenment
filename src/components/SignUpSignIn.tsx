@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import {Alert, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import {Auth} from "aws-amplify";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
@@ -73,34 +73,37 @@ const SignInSignUp = (props) => {
         return false;
     }
 
-    async function confirmSignup() {
-        const response = await Auth.confirmSignUp("cevin.thomas.ny@gmail.com", "924519");
-    }
-
     async function loginOrSignup() {
         setIsLoading(true);
         const validated = validationHandler();
-        if (validated === false) return;
+        if (validated === false) return setIsLoading(false);
         if (method === "signup") {
-            const response = await Auth.signUp({
-                username: userCredentials.email,
-                password: userCredentials.password,
-                attributes: {
-                    email: userCredentials.email,
-                    name: userCredentials.name
+
+            try {
+                const response = await Auth.signUp({
+                    username: userCredentials.email,
+                    password: userCredentials.password,
+                    attributes: {
+                        email: userCredentials.email,
+                        name: userCredentials.name
+                    }
+                });
+
+                if (response.userConfirmed === false) {
+                    setIsLoading(false);
+                    props.navigation.navigate("EnterCode", {username: response.user.getUsername()});
                 }
-            });
-
-            if (response.userConfirmed === false) {
-                props.navigation.navigate("EnterCode", {username: response.user.getUsername()});
-                //TODO: Navigate to code screen
+            } catch (e) {
+                setIsLoading(false);
+                if (e.code === "UsernameExistsException") return Alert.alert(e.message);
+                return Alert.alert("There was an error, please contact support.");
             }
-
-            console.log(response);
         } else {
 
+            //TODO: This is where we login
+
         }
-        setIsLoading(false);
+
     }
 
     return (
@@ -162,9 +165,6 @@ const SignInSignUp = (props) => {
 
             <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
                     appearance={"filled"}>{method === "signup" ? "Sign up" : "Login"}</Button>
-
-            <Button onPress={confirmSignup} style={styles.button} accessoryRight={LoadingIndicator}
-                    appearance={"filled"}>{method === "signup" ? "Confirm" : "Login"}</Button>
 
             {method === "signup" ? null : <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
                 <Text style={styles.signUpColor}>Don't have an account? Sign up here.</Text>

@@ -11,6 +11,7 @@ import PythonCategories from "../questions/pythonQuestions";
 const Home = (props) => {
 
     //TODO: This is obviously hard coded and will be replaced with backend functionality
+
     const navigateToQuestions = (e, buttonId) => {
         switch (buttonId) {
             case "seo":
