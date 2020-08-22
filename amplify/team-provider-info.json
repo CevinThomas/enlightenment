@@ -18,7 +18,7 @@
         },
         "enlightenment0140bbb70140bbb7DefineAuthChallenge": {},
         "enlightenment0140bbb70140bbb7PostConfirmation": {
-          "GROUP": "New Users"
+          "GROUP": "NewUsers"
         },
         "enlightenment0140bbb70140bbb7VerifyAuthChallengeResponse": {}
       },

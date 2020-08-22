@@ -12,5 +12,5 @@
   "triggerTemplate": "PostConfirmation.json.ejs",
   "roleName": "enlightenment0140bbb70140bbb7PostConfirmation",
   "skipEdit": true,
-  "GROUP": "New Users"
+  "GROUP": "NewUsers"
 }
