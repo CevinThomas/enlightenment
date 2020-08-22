@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Alert, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import {Alert, Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import {Auth} from "aws-amplify";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
@@ -14,11 +14,12 @@ const SignInSignUp = (props) => {
         password: "",
         email: ""
     });
-    const [errorMessages, setErrorMessages] = React.useState<{ name: string, email: string, password: string }>({
+    const [errorMessages, setErrorMessages] = React.useState<{ name?: string, email: string, password: string }>({
         name: "",
         email: "",
         password: ""
     });
+    const [renderUI, setRenderUI] = React.useState<number>(0);
 
     const [nameError, emailError, passwordError] = UseValidateAuthFields(userCredentials.name, userCredentials.email, userCredentials.password);
 
@@ -64,7 +65,11 @@ const SignInSignUp = (props) => {
     }
 
     function validationHandler() {
-        if (nameError === "" && emailError === "" && passwordError === "") return true;
+        if (method === "login") {
+            if (emailError === "" && passwordError === "") return true;
+        } else {
+            if (nameError === "" && emailError === "" && passwordError === "") return true;
+        }
         setErrorMessages({
             name: nameError,
             email: emailError,
@@ -77,8 +82,8 @@ const SignInSignUp = (props) => {
         setIsLoading(true);
         const validated = validationHandler();
         if (validated === false) return setIsLoading(false);
+        setRenderUI(prevState => prevState + 1);
         if (method === "signup") {
-
             try {
                 const response = await Auth.signUp({
                     username: userCredentials.email,
@@ -88,7 +93,6 @@ const SignInSignUp = (props) => {
                         name: userCredentials.name
                     }
                 });
-
                 if (response.userConfirmed === false) {
                     setIsLoading(false);
                     props.navigation.navigate("EnterCode", {username: response.user.getUsername()});
@@ -100,17 +104,24 @@ const SignInSignUp = (props) => {
             }
         } else {
 
-            //TODO: This is where we login
-
+            try {
+                const response = await Auth.signIn(userCredentials.email, userCredentials.password);
+                setIsLoading(false);
+                if (response.signInUserSession) {
+                    //TODO: We are logged in, now change screens.
+                }
+            } catch (e) {
+                setIsLoading(false);
+                if (e.code === "NotAuthorizedException") return Alert.alert(e.message);
+            }
         }
 
     }
 
     return (
-        <View>
-
-            <View>
-                <View style={styles.inputContainer}>
+        <View style={styles.container}>
+            <View style={styles.mainContainer}>
+                {method === "signup" ? <View style={styles.inputContainer}>
                     <Input autoCapitalize={"none"} autoCorrect={false}
                            onChangeText={nextValue => updateUserNameHandler(nextValue)} label={"Name"}
                            placeholder={"Enter your name"}/>
@@ -124,7 +135,7 @@ const SignInSignUp = (props) => {
                         />
                         <Text style={styles.errorMessage}>{errorMessages.name}</Text>
                     </View> : null}
-                </View>
+                </View> : null}
 
                 <View style={styles.inputContainer}>
                     <Input autoCapitalize={"none"} autoCorrect={false}
@@ -163,23 +174,42 @@ const SignInSignUp = (props) => {
 
             </View>
 
-            <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
-                    appearance={"filled"}>{method === "signup" ? "Sign up" : "Login"}</Button>
+            <View style={styles.buttonContainer}>
+                <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
+                        appearance={"filled"}>{method === "signup" ? "Sign up" : "Login"}</Button>
 
-            {method === "signup" ? null : <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
-                <Text style={styles.signUpColor}>Don't have an account? Sign up here.</Text>
-            </TouchableOpacity>}
+                {method === "signup" ? null : <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
+                    <Text style={styles.signUpColor}>Don't have an account? Sign up here.</Text>
+                </TouchableOpacity>}
+            </View>
+
 
         </View>
     );
 };
 
+const {height} = Dimensions.get("screen");
+
 const styles = StyleSheet.create({
+    container: {
+        height: height,
+    },
+    mainContainer: {
+        flex: 1,
+        justifyContent: "center",
+    },
+    buttonContainer: {
+        marginTop: 0,
+        flex: 1
+    },
     inputContainer: {
         marginTop: 20
     },
     signUpColor: {
-        color: "blue"
+        color: "black",
+        marginTop: 20,
+        textAlign: "center",
+        fontSize: 14
     },
     icon: {
         width: 32,
@@ -187,7 +217,7 @@ const styles = StyleSheet.create({
         color: "green"
     },
     button: {
-        backgroundColor: "blue"
+        backgroundColor: "black"
     },
     indicator: {
         justifyContent: 'center',
