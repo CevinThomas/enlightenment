@@ -104,19 +104,8 @@ const SignInSignUp = (props) => {
                 return Alert.alert("There was an error, please contact support.");
             }
         } else {
-
-            try {
-
-                const login = await props.authenticate(userCredentials.email, userCredentials.password);
-                if (login.signInUserSession) {
-                    //TODO: We are logged in, now change screens.
-                }
-                setIsLoading(false);
-
-            } catch (e) {
-                setIsLoading(false);
-                if (e.code === "NotAuthorizedException") return Alert.alert(e.message);
-            }
+            await props.authenticate(userCredentials.email, userCredentials.password);
+            setIsLoading(false);
         }
 
     }

@@ -5,17 +5,18 @@ import {Alert} from "react-native";
 
 const Login = (props) => {
 
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
     async function login(email: string, password: string): Promise<void> {
-        setIsLoading(true);
         try {
             const response = await Auth.signIn(email, password);
-            setIsLoading(false);
+
+            if (response.signInUserSession) {
+                //TODO: We are logged in, now change screens.
+            }
+
             return response;
         } catch (e) {
-            setIsLoading(false);
             if (e.code === "NotAuthorizedException") return Alert.alert(e.message);
+            if (e.code === "UserNotFoundException") return Alert.alert("No user exists with this email");
         }
     }
 
