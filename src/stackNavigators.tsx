@@ -32,7 +32,6 @@ export const AuthStackNavigator = () => {
                     headerStyle: {backgroundColor: "#eee"},
                     headerTintColor: GlobalStyles.darkColor
                 }}/>
-                <AuthStack.Screen name={"Base"} component={BaseNavigator}/>
             </AuthStack.Navigator>
         </NavigationContainer>
     );
@@ -40,25 +39,27 @@ export const AuthStackNavigator = () => {
 
 export const BaseNavigator = () => {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name={"Home"} component={Home} options={{
-                headerTitle: "Education",
-                headerStyle: {backgroundColor: "#eee"},
-                headerTintColor: GlobalStyles.darkColor
-            }}/>
-            <Stack.Screen name={"Questions"} component={Questions} options={{
-                headerStyle: {backgroundColor: "#eee"},
-                headerTintColor: GlobalStyles.darkColor,
-                headerTitle: "",
-                gestureEnabled: false,
-                headerBackTitle: "Categories"
-            }}/>
-            <Stack.Screen name={"Categories"} component={Categories} options={{
-                headerStyle: {backgroundColor: "#eee"},
-                headerTintColor: GlobalStyles.darkColor,
-                headerTitle: "",
-                headerBackTitle: "Start"
-            }}/>
-        </Stack.Navigator>
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name={"Home"} component={Home} options={{
+                    headerTitle: "Education",
+                    headerStyle: {backgroundColor: "#eee"},
+                    headerTintColor: GlobalStyles.darkColor
+                }}/>
+                <Stack.Screen name={"Questions"} component={Questions} options={{
+                    headerStyle: {backgroundColor: "#eee"},
+                    headerTintColor: GlobalStyles.darkColor,
+                    headerTitle: "",
+                    gestureEnabled: false,
+                    headerBackTitle: "Categories"
+                }}/>
+                <Stack.Screen name={"Categories"} component={Categories} options={{
+                    headerStyle: {backgroundColor: "#eee"},
+                    headerTintColor: GlobalStyles.darkColor,
+                    headerTitle: "",
+                    headerBackTitle: "Start"
+                }}/>
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 };
