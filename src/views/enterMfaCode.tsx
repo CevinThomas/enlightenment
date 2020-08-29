@@ -1,7 +1,8 @@
 import React from 'react';
-import {Alert, Dimensions, StyleSheet, View} from "react-native";
+import {Alert, StyleSheet, View} from "react-native";
 import {Button, Input, Spinner, Text} from "@ui-kitten/components";
 import {Auth} from "aws-amplify";
+import MainLayout from "../components/mainLayout";
 
 const EnterMfaCode = (props) => {
 
@@ -40,7 +41,7 @@ const EnterMfaCode = (props) => {
     }
 
     return (
-        <View style={styles.container}>
+        <MainLayout>
             <View>
                 <Text>
                     Please enter the text that you received in your email.
@@ -55,13 +56,9 @@ const EnterMfaCode = (props) => {
                 <Button style={styles.button} accessoryRight={LoadingIndicator} onPress={submitCodeToCognito}>Submit
                     Code</Button>
             </View>
-
-
-        </View>
+        </MainLayout>
     );
 };
-
-const {width} = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
     button: {
@@ -71,11 +68,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    container: {
-        width: width * 0.9,
-        marginLeft: "auto",
-        marginRight: "auto"
-    }
 });
 
 export default EnterMfaCode;
