@@ -3,7 +3,6 @@ import {Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
 import MainLayout from "./mainLayout";
-import {UseDispatchContext} from "./contextProvider";
 
 const SignInSignUp = (props) => {
 
@@ -23,8 +22,6 @@ const SignInSignUp = (props) => {
     const [renderUI, setRenderUI] = React.useState<number>(0);
 
     const [nameError, emailError, passwordError] = UseValidateAuthFields(userCredentials.name, userCredentials.email, userCredentials.password);
-
-    const updateState = UseDispatchContext();
 
     useEffect(() => {
         if (props.method !== "") setMethod(props.method);
@@ -107,7 +104,7 @@ const SignInSignUp = (props) => {
         <MainLayout>
             <View style={styles.container}>
                 <Button onPress={() => {
-                    updateState({navigation: 1});
+
                 }} style={{backgroundColor: "blue"}}>Switch Navigators</Button>
                 <View style={styles.mainContainer}>
                     {method === "signup" ? <View style={styles.inputContainer}>

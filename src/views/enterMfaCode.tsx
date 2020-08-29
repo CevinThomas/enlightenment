@@ -4,11 +4,8 @@ import {Button, Input, Spinner, Text} from "@ui-kitten/components";
 import {Auth} from "aws-amplify";
 import MainLayout from "../components/mainLayout";
 import ResendConfirmationCode from "../components/resendConfirmationCode";
-import {UseDispatchContext} from "../components/contextProvider";
 
 const EnterMfaCode = (props) => {
-
-    const updateState = UseDispatchContext();
 
     const [userEnteredCode, setUserEnteredCode] = React.useState<string>("");
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -29,8 +26,7 @@ const EnterMfaCode = (props) => {
             console.log(response);
             if (response === "SUCCESS") {
                 setIsLoading(false);
-                return updateState({navigation: 1});
-
+                return Alert.alert("SUCCESS");
                 //TODO: Navigate to Main Screen
             }
 
