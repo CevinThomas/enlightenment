@@ -2,18 +2,19 @@ import React from 'react';
 import SignInSignUp from "../components/SignUpSignIn";
 import {Auth} from "aws-amplify";
 import {Alert} from "react-native";
-import {useNavigationUpdate} from "../contexts/navigationContext";
+import {useGlobalStateUpdate} from "../contexts/navigationContext";
+import {CHANGE_NAV} from "../constants/dispatch";
 
 const Login = (props) => {
 
-    const updateNavigation = useNavigationUpdate();
+    const updateGlobalState = useGlobalStateUpdate();
 
     async function login(email: string, password: string): Promise<void> {
         try {
             const response = await Auth.signIn(email, password);
 
             if (response.signInUserSession) {
-                return updateNavigation();
+                return updateGlobalState({type: CHANGE_NAV});
                 //TODO: We are logged in, now change screens.
             }
 

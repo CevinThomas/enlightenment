@@ -1,29 +1,38 @@
-import React, {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useReducer} from "react";
 
-const NavigationContext = createContext(undefined);
-const UpdateNavigationContext = createContext(undefined);
+const StateContext = createContext(undefined);
+const UpdateStateContext = createContext(undefined);
 
-export function useNavigation() {
-    return useContext(NavigationContext);
+export function useGlobalState() {
+    return useContext(StateContext);
 }
 
-export function useNavigationUpdate() {
-    return useContext(UpdateNavigationContext);
+export function useGlobalStateUpdate() {
+    return useContext(UpdateStateContext);
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case "CHANGE_NAV":
+            return {
+                navigation: !state.navigation
+            };
+    }
 }
 
 export function NavigationProvider({children}) {
-    const [navigationState, setNavigationState] = useState(false);
+    const [state, dispatch] = useReducer(reducer, {navigation: false});
 
-    function toggleNavigation() {
-        setNavigationState(prevState => !prevState);
+    function toggleNavigation(payload) {
+        dispatch(payload);
     }
 
     return (
-        <NavigationContext.Provider value={navigationState}>
-            <UpdateNavigationContext.Provider value={toggleNavigation}>
+        <StateContext.Provider value={state}>
+            <UpdateStateContext.Provider value={toggleNavigation}>
                 {children}
-            </UpdateNavigationContext.Provider>
-        </NavigationContext.Provider>
+            </UpdateStateContext.Provider>
+        </StateContext.Provider>
     );
 
 }

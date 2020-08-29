@@ -1,24 +1,25 @@
 import React, {useEffect, useRef} from 'react';
 import {AuthStackNavigator, BaseNavigator} from "../stackNavigators";
-import {useNavigation, useNavigationUpdate} from "../contexts/navigationContext";
+import {useGlobalState, useGlobalStateUpdate} from "../contexts/navigationContext";
 import {Alert, AppState} from "react-native";
 import {Auth} from "aws-amplify";
+import {CHANGE_NAV} from "../constants/dispatch";
 
 const RootComponent = () => {
 
-    const navigation = useNavigation();
-    const updateNavigation = useNavigationUpdate();
+    const state = useGlobalState();
+    const updateGlobalState = useGlobalStateUpdate();
 
     const timeStampState = useRef(0);
 
     useEffect(() => {
-        if (navigation === true) {
+        if (state.navigation === true) {
             AppState.addEventListener("change", checkAppStatus);
         } else {
             AppState.removeEventListener("change", checkAppStatus);
         }
 
-    }, [navigation]);
+    }, [state.navigation]);
 
     function checkAppStatus(activeState: string): void {
 
@@ -35,7 +36,7 @@ const RootComponent = () => {
             if (timeStampState.current !== 0) {
                 if (timestampDifferenceInMinutes > 1) {
                     Auth.signOut().then(() => {
-                        updateNavigation(false);
+                        updateGlobalState({type: CHANGE_NAV});
                         Alert.alert("Please login again.");
                     });
                 } else {
@@ -48,7 +49,7 @@ const RootComponent = () => {
 
     return (
         <>
-            {navigation === true ? <BaseNavigator/> : <AuthStackNavigator/>}
+            {state.navigation === true ? <BaseNavigator/> : <AuthStackNavigator/>}
         </>
     );
 };
