@@ -2,15 +2,18 @@ import React from 'react';
 import SignInSignUp from "../components/SignUpSignIn";
 import {Auth} from "aws-amplify";
 import {Alert} from "react-native";
+import {useNavigationUpdate} from "../contexts/navigationContext";
 
 const Login = (props) => {
+
+    const updateNavigation = useNavigationUpdate();
 
     async function login(email: string, password: string): Promise<void> {
         try {
             const response = await Auth.signIn(email, password);
 
             if (response.signInUserSession) {
-                return Alert.alert("LOGGED IN. (COMING SOON)");
+                return updateNavigation();
                 //TODO: We are logged in, now change screens.
             }
 

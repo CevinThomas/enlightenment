@@ -1,9 +1,17 @@
-import React, {createContext, useState} from "react";
+import React, {createContext, useContext, useState} from "react";
 
 const NavigationContext = createContext(undefined);
 const UpdateNavigationContext = createContext(undefined);
 
-export default function NavigationProvider({children}) {
+export function useNavigation() {
+    return useContext(NavigationContext);
+}
+
+export function useNavigationUpdate() {
+    return useContext(UpdateNavigationContext);
+}
+
+export function NavigationProvider({children}) {
     const [navigationState, setNavigationState] = useState(false);
 
     function toggleNavigation() {

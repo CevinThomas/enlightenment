@@ -10,7 +10,7 @@ import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import Amplify from 'aws-amplify';
 import config from './src/aws-exports';
 import {AppState} from "react-native";
-import NavigationProvider from "./src/contexts/navigationContext";
+import {NavigationProvider} from "./src/contexts/navigationContext";
 import RootComponent from "./src/components/rootComponent";
 
 Amplify.configure(config);

@@ -3,6 +3,7 @@ import {Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
 import MainLayout from "./mainLayout";
+import {useNavigationUpdate} from "../contexts/navigationContext";
 
 const SignInSignUp = (props) => {
 
@@ -97,15 +98,14 @@ const SignInSignUp = (props) => {
             await props.authenticate(userCredentials.email, userCredentials.password);
             setIsLoading(false);
         }
-
     }
+
+    const updateNavigation = useNavigationUpdate();
 
     return (
         <MainLayout>
             <View style={styles.container}>
-                <Button onPress={() => {
-
-                }} style={{backgroundColor: "blue"}}>Switch Navigators</Button>
+                <Button onPress={updateNavigation} style={{backgroundColor: "blue"}}>Switch Navigators</Button>
                 <View style={styles.mainContainer}>
                     {method === "signup" ? <View style={styles.inputContainer}>
                         <Input autoCapitalize={"none"} autoCorrect={false}

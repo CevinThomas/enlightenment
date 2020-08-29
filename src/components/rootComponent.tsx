@@ -1,9 +1,15 @@
 import React from 'react';
-import {AuthStackNavigator} from "../stackNavigators";
+import {AuthStackNavigator, BaseNavigator} from "../stackNavigators";
+import {useNavigation} from "../contexts/navigationContext";
 
 const RootComponent = () => {
+
+    const navigation = useNavigation();
+
     return (
-        <AuthStackNavigator/>
+        <>
+            {navigation === true ? <BaseNavigator/> : <AuthStackNavigator/>}
+        </>
     );
 };
 
