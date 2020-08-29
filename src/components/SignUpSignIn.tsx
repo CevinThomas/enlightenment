@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
-import {Alert, Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import {Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
-import {Auth} from "aws-amplify";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
 import MainLayout from "./mainLayout";
 
@@ -84,25 +83,15 @@ const SignInSignUp = (props) => {
         const validated = validationHandler();
         if (validated === false) return setIsLoading(false);
         setRenderUI(prevState => prevState + 1);
+
         if (method === "signup") {
-            try {
-                const response = await Auth.signUp({
-                    username: userCredentials.email,
-                    password: userCredentials.password,
-                    attributes: {
-                        email: userCredentials.email,
-                        name: userCredentials.name
-                    }
-                });
-                if (response.userConfirmed === false) {
-                    setIsLoading(false);
-                    props.navigation.navigate("EnterCode", {username: response.user.getUsername()});
-                }
-            } catch (e) {
-                setIsLoading(false);
-                if (e.code === "UsernameExistsException") return Alert.alert(e.message);
-                return Alert.alert("There was an error, please contact support.");
-            }
+
+            await props.authenticate(userCredentials.email,
+                userCredentials.password,
+                userCredentials.name);
+
+            setIsLoading(false);
+
         } else {
             await props.authenticate(userCredentials.email, userCredentials.password);
             setIsLoading(false);

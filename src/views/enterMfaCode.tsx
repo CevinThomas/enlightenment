@@ -25,7 +25,8 @@ const EnterMfaCode = (props) => {
             console.log(response);
             if (response === "SUCCESS") {
                 setIsLoading(false);
-                props.navigation.navigate("Home", {});
+                return Alert.alert("SUCCESS");
+                //props.navigation.navigate("Home", {});
 
                 //TODO: Navigate to Main Screen
             }
