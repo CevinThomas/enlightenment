@@ -3,6 +3,7 @@ import {Alert, StyleSheet, View} from "react-native";
 import {Button, Input, Spinner, Text} from "@ui-kitten/components";
 import {Auth} from "aws-amplify";
 import MainLayout from "../components/mainLayout";
+import ResendConfirmationCode from "../components/resendConfirmationCode";
 
 const EnterMfaCode = (props) => {
 
@@ -57,6 +58,7 @@ const EnterMfaCode = (props) => {
                 <Button style={styles.button} accessoryRight={LoadingIndicator} onPress={submitCodeToCognito}>Submit
                     Code</Button>
             </View>
+            <ResendConfirmationCode user={props.route.params.username}/>
         </MainLayout>
     );
 };
