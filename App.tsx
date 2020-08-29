@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import "react-native-gesture-handler";
 import * as Font from 'expo-font';
 import {AppLoading} from 'expo';
-import {BaseNavigator} from "./src/stackNavigators";
+import {AuthStackNavigator} from "./src/stackNavigators";
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, IconRegistry} from "@ui-kitten/components";
 import {default as theme} from "./custom-theme.json";
@@ -35,7 +35,7 @@ export default function App() {
         <React.Fragment>
             <IconRegistry icons={EvaIconsPack}/>
             <ApplicationProvider customMapping={mapping} theme={{...eva.dark, ...theme}} {...eva}>
-                <BaseNavigator/>
+                <AuthStackNavigator/>
             </ApplicationProvider>
         </React.Fragment>
 

@@ -120,6 +120,11 @@ const SignInSignUp = (props) => {
 
     return (
         <View style={styles.container}>
+            <Button onPress={() => {
+                props.navigation.navigate("Base", {
+                    screen: "Home"
+                });
+            }} style={{backgroundColor: "blue"}}>Switch Navigators</Button>
             <View style={styles.mainContainer}>
                 {method === "signup" ? <View style={styles.inputContainer}>
                     <Input autoCapitalize={"none"} autoCorrect={false}
