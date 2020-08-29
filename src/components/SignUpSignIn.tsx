@@ -3,6 +3,7 @@ import {Alert, Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedbac
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import {Auth} from "aws-amplify";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
+import MainLayout from "./mainLayout";
 
 const SignInSignUp = (props) => {
 
@@ -119,77 +120,81 @@ const SignInSignUp = (props) => {
     }
 
     return (
-        <View style={styles.container}>
-            <Button onPress={() => {
-                props.navigation.navigate("Base", {
-                    screen: "Home"
-                });
-            }} style={{backgroundColor: "blue"}}>Switch Navigators</Button>
-            <View style={styles.mainContainer}>
-                {method === "signup" ? <View style={styles.inputContainer}>
-                    <Input autoCapitalize={"none"} autoCorrect={false}
-                           onChangeText={nextValue => updateUserNameHandler(nextValue)} label={"Name"}
-                           placeholder={"Enter your name"}/>
+        <MainLayout>
+            <View style={styles.container}>
+                <Button onPress={() => {
+                    props.navigation.navigate("Base", {
+                        screen: "Home"
+                    });
+                }} style={{backgroundColor: "blue"}}>Switch Navigators</Button>
+                <View style={styles.mainContainer}>
+                    {method === "signup" ? <View style={styles.inputContainer}>
+                        <Input autoCapitalize={"none"} autoCorrect={false}
+                               onChangeText={nextValue => updateUserNameHandler(nextValue)} label={"Name"}
+                               placeholder={"Enter your name"}/>
 
-                    {errorMessages.name !== "" ? <View style={styles.errorMessageContainer}>
-                        <Icon
-                            animation={"pulse"}
-                            style={styles.icon}
-                            fill='red'
-                            name='maximize-outline'
-                        />
-                        <Text style={styles.errorMessage}>{errorMessages.name}</Text>
-                    </View> : null}
-                </View> : null}
-
-                <View style={styles.inputContainer}>
-                    <Input autoCapitalize={"none"} autoCorrect={false}
-                           onChangeText={nextValue => updateUserEmailHandler(nextValue)} label={"Email"}
-                           placeholder={"Enter your email"}/>
-
-                    {errorMessages.email !== "" ? <View style={styles.errorMessageContainer}>
-                        <Icon
-                            animation={"pulse"}
-                            style={styles.icon}
-                            fill='red'
-                            name='maximize-outline'
-                        />
-                        <Text style={styles.errorMessage}>{errorMessages.email}</Text>
-                    </View> : null}
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <Input autoCapitalize={"none"} autoCorrect={false} caption='Should contain at least 8 symbols'
-                           onChangeText={nextValue => updateUserPasswordHandler(nextValue)}
-                           secureTextEntry={secureTextEntry} accessoryRight={renderIcon} label={"Password"}
-                           placeholder={"Enter your password"}/>
-
-                    {errorMessages.password !== "" ? <View style={styles.errorMessageContainer}>
+                        {errorMessages.name !== "" ? <View style={styles.errorMessageContainer}>
                             <Icon
                                 animation={"pulse"}
                                 style={styles.icon}
                                 fill='red'
                                 name='maximize-outline'
                             />
-                            <Text style={styles.errorMessage}>{errorMessages.password}</Text>
-                        </View>
-                        : null}
+                            <Text style={styles.errorMessage}>{errorMessages.name}</Text>
+                        </View> : null}
+                    </View> : null}
+
+                    <View style={styles.inputContainer}>
+                        <Input autoCapitalize={"none"} autoCorrect={false}
+                               onChangeText={nextValue => updateUserEmailHandler(nextValue)} label={"Email"}
+                               placeholder={"Enter your email"}/>
+
+                        {errorMessages.email !== "" ? <View style={styles.errorMessageContainer}>
+                            <Icon
+                                animation={"pulse"}
+                                style={styles.icon}
+                                fill='red'
+                                name='maximize-outline'
+                            />
+                            <Text style={styles.errorMessage}>{errorMessages.email}</Text>
+                        </View> : null}
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Input autoCapitalize={"none"} autoCorrect={false} caption='Should contain at least 8 symbols'
+                               onChangeText={nextValue => updateUserPasswordHandler(nextValue)}
+                               secureTextEntry={secureTextEntry} accessoryRight={renderIcon} label={"Password"}
+                               placeholder={"Enter your password"}/>
+
+                        {errorMessages.password !== "" ? <View style={styles.errorMessageContainer}>
+                                <Icon
+                                    animation={"pulse"}
+                                    style={styles.icon}
+                                    fill='red'
+                                    name='maximize-outline'
+                                />
+                                <Text style={styles.errorMessage}>{errorMessages.password}</Text>
+                            </View>
+                            : null}
+                    </View>
+
+
+                </View>
+
+                <View style={styles.buttonContainer}>
+                    <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
+                            appearance={"filled"}>{method === "signup" ? "Sign up" : "Login"}</Button>
+
+                    {method === "signup" ? null :
+                        <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
+                            <Text style={styles.signUpColor}>Don't have an account? Sign up here.</Text>
+                        </TouchableOpacity>}
                 </View>
 
 
             </View>
+        </MainLayout>
 
-            <View style={styles.buttonContainer}>
-                <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}
-                        appearance={"filled"}>{method === "signup" ? "Sign up" : "Login"}</Button>
-
-                {method === "signup" ? null : <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
-                    <Text style={styles.signUpColor}>Don't have an account? Sign up here.</Text>
-                </TouchableOpacity>}
-            </View>
-
-
-        </View>
     );
 };
 
