@@ -10,6 +10,7 @@ const Login = (props) => {
             const response = await Auth.signIn(email, password);
 
             if (response.signInUserSession) {
+                return Alert.alert("LOGGED IN. (COMING SOON)");
                 //TODO: We are logged in, now change screens.
             }
 
