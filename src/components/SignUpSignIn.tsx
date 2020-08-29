@@ -106,11 +106,13 @@ const SignInSignUp = (props) => {
         } else {
 
             try {
-                const response = await Auth.signIn(userCredentials.email, userCredentials.password);
-                setIsLoading(false);
-                if (response.signInUserSession) {
+
+                const login = await props.authenticate(userCredentials.email, userCredentials.password);
+                if (login.signInUserSession) {
                     //TODO: We are logged in, now change screens.
                 }
+                setIsLoading(false);
+
             } catch (e) {
                 setIsLoading(false);
                 if (e.code === "NotAuthorizedException") return Alert.alert(e.message);
