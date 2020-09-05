@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/educate-mobile.iml" filepath="$PROJECT_DIR$/.idea/educate-mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../enlightbackend/.idea/enlightBackend.iml" filepath="$PROJECT_DIR$/../enlightbackend/.idea/enlightBackend.iml" />
     </modules>
   </component>
 </project>
