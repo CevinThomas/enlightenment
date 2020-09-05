@@ -30,7 +30,7 @@ const Categories = (props) => {
         props.navigation.navigate("Questions", {
             name: categoryToUse,
             questions: questionsToUse,
-            id: "seo"
+            id: "seso"
         });
     };
 
