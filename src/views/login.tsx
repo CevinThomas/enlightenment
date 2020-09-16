@@ -1,9 +1,7 @@
 import React from 'react';
 import SignInSignUp from "../components/SignUpSignIn";
-import {Auth} from "aws-amplify";
 import {Alert} from "react-native";
 import {useGlobalStateUpdate} from "../contexts/navigationContext";
-import {CHANGE_NAV} from "../constants/dispatch";
 
 const Login = (props) => {
 
@@ -11,14 +9,14 @@ const Login = (props) => {
 
     async function login(email: string, password: string): Promise<void> {
         try {
-            const response = await Auth.signIn(email, password);
+            //TODO: Sign in to our API
 
-            if (response.signInUserSession) {
+
+            /*if (response.signInUserSession) {
                 return updateGlobalState({type: CHANGE_NAV});
-                //TODO: We are logged in, now change screens.
-            }
+            }*/
 
-            return response;
+            //return response;
         } catch (e) {
             if (e.code === "NotAuthorizedException") return Alert.alert(e.message);
             if (e.code === "UserNotFoundException") return Alert.alert("No user exists with this email");

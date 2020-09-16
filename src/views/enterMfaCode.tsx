@@ -1,9 +1,7 @@
 import React from 'react';
 import {Alert, StyleSheet, View} from "react-native";
 import {Button, Input, Spinner, Text} from "@ui-kitten/components";
-import {Auth} from "aws-amplify";
 import MainLayout from "../components/mainLayout";
-import ResendConfirmationCode from "../components/resendConfirmationCode";
 
 const EnterMfaCode = (props) => {
 
@@ -22,13 +20,13 @@ const EnterMfaCode = (props) => {
 
         try {
 
-            const response = await Auth.confirmSignUp(props.route.params.username, userEnteredCode.toString());
+            /*const response = await Auth.confirmSignUp(props.route.params.username, userEnteredCode.toString());
             console.log(response);
             if (response === "SUCCESS") {
                 setIsLoading(false);
                 return Alert.alert("SUCCESS");
                 //TODO: Navigate to Main Screen
-            }
+            }*/
 
         } catch (e) {
             console.log(e);
@@ -56,7 +54,6 @@ const EnterMfaCode = (props) => {
                 <Button style={styles.button} accessoryRight={LoadingIndicator} onPress={submitCodeToCognito}>Submit
                     Code</Button>
             </View>
-            <ResendConfirmationCode user={props.route.params.username}/>
         </MainLayout>
     );
 };

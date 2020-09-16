@@ -1,8 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {AuthStackNavigator, BaseNavigator} from "../stackNavigators";
 import {useGlobalState, useGlobalStateUpdate} from "../contexts/navigationContext";
-import {Alert, AppState} from "react-native";
-import {Auth} from "aws-amplify";
+import {AppState} from "react-native";
 import {CHANGE_NAV} from "../constants/dispatch";
 
 const RootComponent = () => {
@@ -35,10 +34,7 @@ const RootComponent = () => {
 
             if (timeStampState.current !== 0) {
                 if (timestampDifferenceInMinutes > 1) {
-                    Auth.signOut().then(() => {
                         updateGlobalState({type: CHANGE_NAV});
-                        Alert.alert("Please login again.");
-                    });
                 } else {
                     timeStampState.current = 0;
                 }
