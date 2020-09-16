@@ -1,26 +1,41 @@
 import React, {ReactNode, useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
-import {Text} from "@ui-kitten/components";
+import {Alert, Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Spinner, Text} from "@ui-kitten/components";
 import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
-import capitalizeFirstLetter from "../utils/functions";
+import {makeHttpsRequest} from "../utils/functions";
 import QuestionOverlay from "../components/questionOverlay";
+import EnvVariables from "../../envVariables";
+import {useGlobalStateUpdate} from "../contexts/navigationContext";
+import {CHANGE_NAV} from "../constants/dispatch";
 
 const Categories = (props) => {
+
+    const updateGlobalState = useGlobalStateUpdate();
 
     const [allCategories, setAllCategories] = useState<string[]>([]);
     const [allQuestions, setAllQuestions] = useState<object>({});
     const [showModal, setShowModal] = useState<boolean>(false);
     const [categoryToUse, setCategoryToUse] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (props.route !== undefined) {
-            const categoriesAsArray = Object.keys(props.route.params.categories);
-            const categoriesWithCapitalFirst = categoriesAsArray.map(subjectString => capitalizeFirstLetter(subjectString));
-            setAllCategories(categoriesWithCapitalFirst);
-            setAllQuestions(props.route.params.categories);
+        retrieveQuestionsByCategoryChosen().then(r => r);
+    }, []);
+
+    async function retrieveQuestionsByCategoryChosen() {
+        setIsLoading(true);
+        const url = EnvVariables.API_ENDPOINTS.GETCATEGORY + props.route.params.categoryChosen;
+        const response = await makeHttpsRequest(url, "GET");
+        if (response === "Unauthorized") {
+            Alert.alert("Unauthorized, please login again");
+            return updateGlobalState({type: CHANGE_NAV, payload: 0});
+        } else {
+
         }
-    }, [])
+        setIsLoading(false);
+        console.log(response);
+    }
 
     const navigateToProperQuestions = (): void => {
         setShowModal(false);
@@ -52,6 +67,7 @@ const Categories = (props) => {
 
     return (
         <View style={styles.outerContainer}>
+            <Spinner visible={isLoading}/>
             {showModal === true ? <QuestionOverlay navigateToQuestionsFunction={navigateToProperQuestions}/> : null}
             <View style={styles.innerContainer}>
                 {renderCategoriesToUI()}

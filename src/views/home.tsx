@@ -1,50 +1,39 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet, View} from "react-native";
-import {Button, Text} from "@ui-kitten/components";
+import {Text} from "@ui-kitten/components";
 import ButtonList from "../components/buttonList";
 import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
-import SeoQuestions from "../questions/seoQuestions";
-import JavascriptQuestions from "../questions/javascriptQuestions";
-import PythonCategories from "../questions/pythonQuestions";
+import {makeHttpsRequest} from "../utils/functions";
+import EnvVariables from "../../envVariables";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Home = (props) => {
 
     //TODO: This is obviously hard coded and will be replaced with backend functionality
 
+    const [allCategories, setAllCategories] = useState<Array<string>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const navigateToQuestions = (e, buttonId) => {
-        switch (buttonId) {
-            case "seo":
-                props.navigation.navigate("Categories", {
-                    name: "Welcome to the SEO Course!",
-                    categories: SeoQuestions,
-                    id: "seo"
-                });
-                break;
-            case "javascript":
-                props.navigation.navigate("Categories", {
-                    name: "Welcome to the JavaScript Course!",
-                    categories: JavascriptQuestions,
-                    id: "js"
-                });
-                break;
-            case "python":
-                props.navigation.navigate("Categories", {
-                    name: "Welcome to the Python Course!",
-                    categories: PythonCategories,
-                    id: "sub"
-                })
-        }
+        props.navigation.navigate("Categories", {categoryChosen: buttonId});
+    };
+
+    useEffect(() => {
+        fetchCategories().then(r => r);
+    }, []);
+
+    async function fetchCategories(): Promise<void> {
+        setIsLoading(true);
+        const response = await makeHttpsRequest(EnvVariables.API_ENDPOINTS.GETCATEGORIES, "GET");
+        setAllCategories(response);
+        setIsLoading(false);
     }
 
     return (
         <View style={styles.container}>
+            <Spinner visible={isLoading}/>
             <Text style={styles.mainHeading}>Welcome future Beast!</Text>
-            <Button style={{backgroundColor: "blue"}} appearance={"ghost"} status={"control"} onPress={() => {
-                fetch("https://32530keoae.execute-api.eu-central-1.amazonaws.com/Dev", {
-                    method: "GET",
-                }).then(resp => resp.json()).then(data => console.log(data)).catch();
-            }}>TEST</Button>
             <View style={styles.secondaryContainer}>
                 <Text style={styles.secondaryText}>This is place for you to be the fucking ultimate beast and
                     advance
@@ -55,7 +44,7 @@ const Home = (props) => {
 
             <View style={styles.buttonContainer}>
                 <FlatList keyExtractor={(item, index) => index.toString()}
-                          data={["SEO", "Javascript", "Python"]}
+                          data={allCategories}
                           renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item}
                                                               navigation={props.navigation}
                                                               boxTitle={item}/>}/>

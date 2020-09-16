@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
@@ -22,6 +22,7 @@ const SignInSignUp = (props) => {
         password: ""
     });
     const [renderUI, setRenderUI] = React.useState<number>(0);
+    const [loginErrorMessage, setLoginErrorMessage] = useState<string>("");
 
     const [nameError, emailError, passwordError] = UseValidateAuthFields(userCredentials.name, userCredentials.email, userCredentials.password);
 
@@ -81,22 +82,34 @@ const SignInSignUp = (props) => {
         return false;
     }
 
+    function resetErrorMessages() {
+        setErrorMessages({
+            name: "",
+            email: "",
+            password: ""
+        });
+    }
+
     async function loginOrSignup() {
         setIsLoading(true);
         const validated = validationHandler();
         if (validated === false) return setIsLoading(false);
+        resetErrorMessages();
         setRenderUI(prevState => prevState + 1);
 
         if (method === "signup") {
 
-            await props.authenticate(userCredentials.email,
+            const signUpError = await props.authenticate(userCredentials.email,
                 userCredentials.password,
                 userCredentials.name);
+
+            setLoginErrorMessage(signUpError);
 
             setIsLoading(false);
 
         } else {
-            await props.authenticate(userCredentials.email, userCredentials.password);
+            const loginMessage = await props.authenticate(userCredentials.email, userCredentials.password);
+            if (loginMessage) setLoginErrorMessage(loginMessage);
             setIsLoading(false);
         }
     }
@@ -161,6 +174,13 @@ const SignInSignUp = (props) => {
 
 
                 </View>
+
+                {loginErrorMessage !== "" ?
+                    <View>
+                        <Text style={[styles.errorMessage, {textAlign: "center"}]}>{loginErrorMessage}</Text>
+                    </View> :
+                    null}
+
 
                 <View style={styles.buttonContainer}>
                     <Button onPress={loginOrSignup} style={styles.button} accessoryRight={LoadingIndicator}

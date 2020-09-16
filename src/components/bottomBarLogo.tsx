@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, StyleSheet} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 
 const BottomBarLogo = () => {
     return (
@@ -19,7 +19,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        marginBottom: 20
+        paddingBottom: 20,
+        paddingTop: 10,
+        backgroundColor: "#eee"
     },
     image: {
         resizeMode: "contain",

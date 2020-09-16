@@ -1,4 +1,5 @@
 import {IsAnswered} from "../enums/isAnswered";
+import * as SecureStore from "expo-secure-store";
 
 export function shuffle(array: any) {
     array.sort(() => Math.random() - 0.5);
@@ -19,6 +20,27 @@ export function resetQuestions(allQuestions: []): [] {
             }
         })
         return allQuestions;
+    }
+}
+
+export async function makeHttpsRequest(url: string, method: string, dataToPost?: any): Promise<any> {
+    if (method === "POST") {
+        return fetch(url, {
+            method: "POST",
+            mode: 'no-cors',
+            body: JSON.stringify(dataToPost)
+        }).then(response => response.json()).then(response => response);
+    } else if (method === "GET") {
+        const token = await SecureStore.getItemAsync("token");
+        return fetch(url, {
+            method: "GET",
+            headers: {
+                Accept: 'application/json',
+                Authorization: token,
+                "Content-type": "application/json"
+            },
+            mode: "no-cors",
+        }).then(response => response.json()).then(response => response).catch(e => console.log(e));
     }
 }
 

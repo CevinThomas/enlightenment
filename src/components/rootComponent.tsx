@@ -33,8 +33,8 @@ const RootComponent = () => {
             const timestampDifferenceInMinutes = Math.round(((timestampDifferenceInMs % 86400000) % 3600000) / 60000);
 
             if (timeStampState.current !== 0) {
-                if (timestampDifferenceInMinutes > 1) {
-                        updateGlobalState({type: CHANGE_NAV});
+                if (timestampDifferenceInMinutes > 30) {
+                    updateGlobalState({type: CHANGE_NAV});
                 } else {
                     timeStampState.current = 0;
                 }

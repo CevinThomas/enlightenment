@@ -25,8 +25,10 @@ export default function App() {
             <AppLoading
                 startAsync={fetchFonts}
                 onFinish={() => setFontLoaded(true)}/>
-            )
+        );
     }
+
+    //TODO: Check stored Token is valid when app starts? If not valid, then ask user to login, if valid, keep user logged in.
 
     return (
         <React.Fragment>
