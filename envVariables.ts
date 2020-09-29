@@ -5,7 +5,8 @@ const EnvVariables = {
         GETCATEGORIES: "http://localhost:3000/questions/allCategories",
         GETCATEGORY: "http://localhost:3000/questions?category=",
         GETGROUPSBYCATEGORY: "http://localhost:3000/questions?categoryGroup=",
-        GETQUESTIONSBYGROUPNAME: "http://localhost:3000/questions?group="
+        GETQUESTIONSBYGROUPNAME: "http://localhost:3000/questions?group=",
+        GETQUESTIONSBYGROUPID: "http://localhost:3000/questions?groupId="
     }
 };
 

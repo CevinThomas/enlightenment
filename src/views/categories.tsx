@@ -16,7 +16,7 @@ const Categories = (props) => {
     const updateGlobalState = useGlobalStateUpdate();
 
     const [allGroups, setAllGroups] = useState<string[]>([]);
-    const [allQuestions, setAllQuestions] = useState<object>({});
+    const [allQuestions, setAllQuestions] = useState<Array<object>>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [groupToUse, setGroupToUse] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,7 +33,8 @@ const Categories = (props) => {
             Alert.alert("Unauthorized, please login again");
             return updateGlobalState({type: CHANGE_NAV, payload: 0});
         } else {
-            setAllGroups(response.data);
+            setAllGroups(response.data.uniqueGroups);
+            setAllQuestions(response.data.questions);
         }
         setIsLoading(false);
     }
@@ -41,20 +42,27 @@ const Categories = (props) => {
     const navigateToProperQuestions = async (): void => {
         setShowModal(false);
 
-        const url = EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPNAME + groupToUse;
+        let groupIdToFilterBy: string;
+
+        for (let i = 0; i < allQuestions.length; i++) {
+            if (allQuestions[i].groupName === groupToUse) {
+                groupIdToFilterBy = allQuestions[i].groupId;
+                break;
+            }
+        }
+
+        console.log(groupIdToFilterBy);
+
+        const url = EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPID + groupIdToFilterBy;
         const response = await makeHttpsRequest(url, "GET");
-        console.log(response);
 
-        return console.log("hello");
+        //TODO: Check for error when making HTTPS request
 
-        //TODO: Make request to gather questions based on group chosen (chosenGroup)
-
-        const questionsToUse = allQuestions[groupToUse.toLowerCase()].questions;
+        const questionsToUse = response.data;
 
         props.navigation.navigate("Questions", {
             name: groupToUse,
             questions: questionsToUse,
-            id: "seso"
         });
     };
 
