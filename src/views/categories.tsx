@@ -1,6 +1,6 @@
 import React, {ReactNode, useEffect, useState} from 'react';
 import {Alert, Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
-import {Spinner, Text} from "@ui-kitten/components";
+import {Text} from "@ui-kitten/components";
 import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
 import {makeHttpsRequest} from "../utils/functions";
@@ -8,33 +8,34 @@ import QuestionOverlay from "../components/questionOverlay";
 import EnvVariables from "../../envVariables";
 import {useGlobalStateUpdate} from "../contexts/navigationContext";
 import {CHANGE_NAV} from "../constants/dispatch";
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 const Categories = (props) => {
 
     const updateGlobalState = useGlobalStateUpdate();
 
-    const [allCategories, setAllCategories] = useState<string[]>([]);
+    const [allGroups, setAllGroups] = useState<string[]>([]);
     const [allQuestions, setAllQuestions] = useState<object>({});
     const [showModal, setShowModal] = useState<boolean>(false);
     const [categoryToUse, setCategoryToUse] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        retrieveQuestionsByCategoryChosen().then(r => r);
+        retrieveGroupsByCategoryChosen().then(r => r);
     }, []);
 
-    async function retrieveQuestionsByCategoryChosen() {
+    async function retrieveGroupsByCategoryChosen() {
         setIsLoading(true);
-        const url = EnvVariables.API_ENDPOINTS.GETCATEGORY + props.route.params.categoryChosen;
+        const url = EnvVariables.API_ENDPOINTS.GETGROUPSBYCATEGORY + props.route.params.categoryChosen;
         const response = await makeHttpsRequest(url, "GET");
         if (response === "Unauthorized") {
             Alert.alert("Unauthorized, please login again");
             return updateGlobalState({type: CHANGE_NAV, payload: 0});
         } else {
-
+            setAllGroups(response.data);
         }
         setIsLoading(false);
-        console.log(response.data);
     }
 
     const navigateToProperQuestions = (): void => {
@@ -55,9 +56,9 @@ const Categories = (props) => {
     };
 
     const renderCategoriesToUI = (): ReactNode => {
-        if (allCategories.length === 0) return;
+        if (allGroups.length === 0) return;
 
-        return allCategories.map(category => {
+        return allGroups.map(category => {
             return <TouchableOpacity key={category} style={styles.buttonContainer}
                                      onPress={() => openModalAndSetState(category)}>
                 <Text style={styles.text}>{category}</Text>
