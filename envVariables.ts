@@ -4,7 +4,8 @@ const EnvVariables = {
         REGISTER: "http://localhost:3000/register",
         GETCATEGORIES: "http://localhost:3000/questions/allCategories",
         GETCATEGORY: "http://localhost:3000/questions?category=",
-        GETGROUPSBYCATEGORY: "http://localhost:3000/questions?categoryGroup="
+        GETGROUPSBYCATEGORY: "http://localhost:3000/questions?categoryGroup=",
+        GETQUESTIONSBYGROUPNAME: "http://localhost:3000/questions?group="
     }
 };
 

@@ -18,7 +18,7 @@ const Categories = (props) => {
     const [allGroups, setAllGroups] = useState<string[]>([]);
     const [allQuestions, setAllQuestions] = useState<object>({});
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [categoryToUse, setCategoryToUse] = useState<string>("");
+    const [groupToUse, setGroupToUse] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -38,30 +38,38 @@ const Categories = (props) => {
         setIsLoading(false);
     }
 
-    const navigateToProperQuestions = (): void => {
+    const navigateToProperQuestions = async (): void => {
         setShowModal(false);
 
-        const questionsToUse = allQuestions[categoryToUse.toLowerCase()].questions;
+        const url = EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPNAME + groupToUse;
+        const response = await makeHttpsRequest(url, "GET");
+        console.log(response);
+
+        return console.log("hello");
+
+        //TODO: Make request to gather questions based on group chosen (chosenGroup)
+
+        const questionsToUse = allQuestions[groupToUse.toLowerCase()].questions;
 
         props.navigation.navigate("Questions", {
-            name: categoryToUse,
+            name: groupToUse,
             questions: questionsToUse,
             id: "seso"
         });
     };
 
-    const openModalAndSetState = (chosenCategory: string): void => {
+    const openModalAndSetState = (chosenGroup: string): void => {
         setShowModal(true);
-        setCategoryToUse(chosenCategory);
+        setGroupToUse(chosenGroup);
     };
 
     const renderCategoriesToUI = (): ReactNode => {
         if (allGroups.length === 0) return;
 
-        return allGroups.map(category => {
-            return <TouchableOpacity key={category} style={styles.buttonContainer}
-                                     onPress={() => openModalAndSetState(category)}>
-                <Text style={styles.text}>{category}</Text>
+        return allGroups.map(group => {
+            return <TouchableOpacity key={group} style={styles.buttonContainer}
+                                     onPress={() => openModalAndSetState(group)}>
+                <Text style={styles.text}>{group}</Text>
             </TouchableOpacity>;
         });
     };
