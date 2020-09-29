@@ -34,7 +34,7 @@ const Categories = (props) => {
 
         }
         setIsLoading(false);
-        console.log(response);
+        console.log(response.data);
     }
 
     const navigateToProperQuestions = (): void => {
