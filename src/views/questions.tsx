@@ -25,6 +25,7 @@ const Questions = (props) => {
 
         if (props.route && props.route.params.questions !== undefined) {
             const idToUse = props.route.params.id;
+            console.log(props.route.params.questions);
             updateQuestionsBeingUsed(props.route.params.questions);
 
             async function load() {
@@ -148,6 +149,7 @@ const Questions = (props) => {
             nextQuestion = savedQuestions[counterForQuestions];
         } else {
             isLastQuestionComing = questionsBeingUsed.length - counterForQuestions;
+            console.log(questionsBeingUsed);
             nextQuestion = questionsBeingUsed[counterForQuestions];
         }
 

@@ -51,8 +51,6 @@ const Categories = (props) => {
             }
         }
 
-        console.log(groupIdToFilterBy);
-
         const url = EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPID + groupIdToFilterBy;
         const response = await makeHttpsRequest(url, "GET");
 
@@ -63,6 +61,7 @@ const Categories = (props) => {
         props.navigation.navigate("Questions", {
             name: groupToUse,
             questions: questionsToUse,
+            id: groupIdToFilterBy
         });
     };
 

@@ -41,7 +41,7 @@ const QuestionView = (props) => {
     useEffect(() => {
         let correctAnswer: object, canWeViewNextQ;
         if (props.question !== undefined) {
-            correctAnswer = props.question.options.find((option) => option.isCorrect === true);
+            correctAnswer = props.question.options.find((option) => option.correct === true);
             canWeViewNextQ = props.isNextQuestionViewable();
         }
 
@@ -181,7 +181,7 @@ const QuestionView = (props) => {
     }
 
     function checkIfAnswerIsCorrect(event, choice) {
-        if (choice.isCorrect === true) {
+        if (choice.correct === true) {
             correctAnswer(event, choice);
         } else {
             wrongAnswer(event, choice);
