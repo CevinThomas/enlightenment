@@ -162,12 +162,11 @@ const QuestionView = (props) => {
 
     function updateQuestionProperty(event: any, choice: any): void {
         const allQuestions = questionsData.allQuestions;
-        const currentQuestionToUpdate = allQuestions.find(option => option.question === questionsData.currentQuestion.question);
+        const currentQuestionToUpdate = allQuestions.find(option => option.name === questionsData.currentQuestion.name);
 
         currentQuestionToUpdate.answered = IsAnswered.yes;
-        currentQuestionToUpdate.options.forEach(option => option.choice === choice.choice ? choice.chosen = IsAnswered.yes : null);
 
-        allQuestions.forEach(question => question.question === currentQuestionToUpdate.question ? currentQuestionToUpdate : null);
+        allQuestions.forEach(question => question.name === currentQuestionToUpdate.name ? currentQuestionToUpdate : null);
 
         setQuestionsData({
             ...questionsData,
