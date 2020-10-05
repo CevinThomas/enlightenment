@@ -25,7 +25,6 @@ const Questions = (props) => {
 
         if (props.route && props.route.params.questions !== undefined) {
             const idToUse = props.route.params.id;
-            console.log(props.route.params.questions);
             updateQuestionsBeingUsed(props.route.params.questions);
 
             async function load() {
@@ -64,7 +63,6 @@ const Questions = (props) => {
         if (counterForQuestions === numberOfQuestions) {
             return setDispalyScoreBoard(true);
         }
-
         return displayCorrectQuestion();
     }
 
@@ -74,7 +72,6 @@ const Questions = (props) => {
         } else {
             setCurrentQuestion(questionsBeingUsed[counterForQuestions]);
         }
-        setCounterForQuestions(counterForQuestions + 1);
     }
 
     const viewPreviousQuestions = (): void => {
@@ -94,6 +91,7 @@ const Questions = (props) => {
     function isNextQuestionAnswered(): boolean | void {
         let secondNextQuestion;
         const questions = calculateNextQuestion();
+        console.log(questions);
 
         if (questions.isLastQuestionComing > 1) {
             secondNextQuestion = questionsBeingUsed[counterForQuestions + 1];
@@ -120,9 +118,11 @@ const Questions = (props) => {
     function canWeViewNextQuestion(): boolean {
         let secondNextQuestion;
         const questions = calculateNextQuestion();
+        console.log(questions);
 
         if (questions.isLastQuestionComing > 1) {
             secondNextQuestion = questionsBeingUsed[counterForQuestions + 1];
+            console.log(secondNextQuestion);
         }
 
         if (currentQuestion.answered === IsAnswered.yes && questions.isLastQuestionComing === 1) {
@@ -149,9 +149,10 @@ const Questions = (props) => {
             nextQuestion = savedQuestions[counterForQuestions];
         } else {
             isLastQuestionComing = questionsBeingUsed.length - counterForQuestions;
-            console.log(questionsBeingUsed);
             nextQuestion = questionsBeingUsed[counterForQuestions];
         }
+
+        setCounterForQuestions(counterForQuestions + 1);
 
         return {
             isLastQuestionComing,

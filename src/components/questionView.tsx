@@ -200,7 +200,7 @@ const QuestionView = (props) => {
             <View style={styles.container}>
                 {props.scoreBoard !== true && questionsData.currentQuestion !== undefined ? <>
                         <View style={styles.counterContainer}>
-                            <Text style={styles.questionHeading}>{questionsData.currentQuestion.question}</Text>
+                            <Text style={styles.questionHeading}>{questionsData.currentQuestion.name}</Text>
                         </View>
                         <View style={styles.totalQuestions}>
                             <Text accessibilityLabel={"currentQuestionNumber"}
