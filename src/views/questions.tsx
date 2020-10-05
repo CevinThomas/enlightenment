@@ -72,6 +72,7 @@ const Questions = (props) => {
         } else {
             setCurrentQuestion(questionsBeingUsed[counterForQuestions]);
         }
+        setCounterForQuestions(counterForQuestions + 1);
     }
 
     const viewPreviousQuestions = (): void => {
@@ -122,7 +123,6 @@ const Questions = (props) => {
 
         if (questions.isLastQuestionComing > 1) {
             secondNextQuestion = questionsBeingUsed[counterForQuestions + 1];
-            console.log(secondNextQuestion);
         }
 
         if (currentQuestion.answered === IsAnswered.yes && questions.isLastQuestionComing === 1) {
@@ -151,8 +151,6 @@ const Questions = (props) => {
             isLastQuestionComing = questionsBeingUsed.length - counterForQuestions;
             nextQuestion = questionsBeingUsed[counterForQuestions];
         }
-
-        setCounterForQuestions(counterForQuestions + 1);
 
         return {
             isLastQuestionComing,

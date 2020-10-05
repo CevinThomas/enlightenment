@@ -265,7 +265,7 @@ const QuestionView = (props) => {
                         results={results}/>}
 
                 {guessesAndChoices.wrongAnswerGuessed ? null : <View style={styles.prevAndNextContainer}>
-                    {props.counter > 1 ? <View
+                    {props.counter > 1 && props.scoreBoard !== true ? <View
                         style={[styles.prevAndNext, {backgroundColor: "white"}, {width: questionsData.isNextQuestionViewable === false ? "100%" : "40%"}]}><Button
                         color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View> : null}
                     {questionsData.isNextQuestionViewable === true ? <View
