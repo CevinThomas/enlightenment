@@ -202,7 +202,7 @@ const QuestionView = (props) => {
                                 <Image style={styles.image}
                                        source={require("../../assets/images/gear-1119298_1920.png")}/>
                                 {props.toShowQuestionsModal === true ?
-                                    <ModalRemoveQuestions testFunc={props.updateQuestions}
+                                    <ModalRemoveQuestions updateFunc={props.updateQuestions}
                                                           id={questionsData.currentQuestion.groupId}
                                                           goBack={props.questionsModal} {...props}/> : null}
                             </TouchableOpacity>

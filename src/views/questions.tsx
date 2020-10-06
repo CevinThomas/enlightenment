@@ -148,7 +148,7 @@ const Questions = (props) => {
         };
     };
 
-    async function testUpdateQuestions(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>): void {
+    async function updateQuestions(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>): void {
         const questionsToBeSaved = allQuestions.filter(questions => {
             if (!removedQuestionsNames.includes(questions.name)) return questions;
         });
@@ -214,7 +214,7 @@ const Questions = (props) => {
                 <QuestionView
                     questionsModal={showRemoveQuestionsModal}
                     toShowQuestionsModal={removeQuestionsModal}
-                    updateQuestions={testUpdateQuestions}
+                    updateQuestions={updateQuestions}
                     originalQuestions={props.route.params.questions}
                     allQuestions={questionsBeingUsed}
                     counter={counterForQuestions}

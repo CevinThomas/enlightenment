@@ -101,18 +101,13 @@ class ModalRemoveQuestions extends Component {
                         <View style={styles.mainButtonContainer}>
 
                             <TouchableOpacity style={styles.buttonContainerTwo}
-                                              onPress={this.updateQuestions.bind(this)}>
+                                              onPress={() => this.props.updateFunc(this.state.allQuestions, this.state.removedQuestionsFullData, this.state.removedQuestions)}>
                                 <Text style={{color: GlobalStyles.darkColor}}>Update Questions</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.buttonContainerTwo}
                                               onPress={this.resetQuestions.bind(this)}>
                                 <Text style={{color: GlobalStyles.darkColor}}>Reset Questions</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={styles.buttonContainerTwo}
-                                              onPress={() => this.props.testFunc(this.state.allQuestions, this.state.removedQuestionsFullData, this.state.removedQuestions)}>
-                                <Text style={{color: GlobalStyles.darkColor}}>Test</Text>
                             </TouchableOpacity>
 
                         </View>
