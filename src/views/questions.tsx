@@ -177,7 +177,19 @@ const Questions = (props) => {
 
             updateQuestionsBeingUsed(questionsToBeSaved);
 
-            setCurrentQuestion(questionsBeingUsedRef.current[0]);
+            let allQuestionsAnswered = true;
+            for (let i = 0; i < questionsToBeSaved.length; i++) {
+                if (questionsToBeSaved[i].answered === IsAnswered.no) {
+                    allQuestionsAnswered = false;
+                    break;
+                }
+            }
+
+            if (allQuestionsAnswered === true) {
+                setDispalyScoreBoard(true);
+            } else {
+                setCurrentQuestion(questionsBeingUsedRef.current[0]);
+            }
 
             /*for (let i = 0; i < removedQuestions.length; i++) {
                 if (removedQuestions[i].name === currentQuestion.name) {
