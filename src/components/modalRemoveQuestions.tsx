@@ -9,6 +9,7 @@ class ModalRemoveQuestions extends Component {
         allQuestions: [],
         modalVisible: false,
         removedQuestions: [],
+        removedQuestionsFullData: [],
         questionsHaveBeenRemoved: false
     };
 
@@ -27,9 +28,14 @@ class ModalRemoveQuestions extends Component {
 
     removeQuestion(event, question) {
         let updatedRemovedQuestions = [...this.state.removedQuestions];
-        if (updatedRemovedQuestions.includes(question)) return;
-        updatedRemovedQuestions.push(question);
-        this.setState({removedQuestions: updatedRemovedQuestions});
+        if (updatedRemovedQuestions.includes(question.name)) return;
+        let updatedRemovedQuestionsFullInfo = [...this.state.removedQuestionsFullData];
+        updatedRemovedQuestionsFullInfo.push(question);
+        updatedRemovedQuestions.push(question.name);
+        this.setState({
+            removedQuestions: updatedRemovedQuestions,
+            removedQuestionsFullData: updatedRemovedQuestionsFullInfo
+        });
     }
 
 
@@ -82,7 +88,7 @@ class ModalRemoveQuestions extends Component {
                                 style={[styles.removeQuestion, {
                                     color: this.state.removedQuestions.includes(question.name) ? "white" : GlobalStyles.darkColor,
                                 }]}
-                                onPress={this.state.removedQuestions.includes(question.name) ? (event) => this.recallQuestion(event, question.name) : (event) => this.removeQuestion(event, question.name)}>{question.name}</Text>
+                                onPress={this.state.removedQuestions.includes(question.name) ? (event) => this.recallQuestion(event, question.name) : (event) => this.removeQuestion(event, question)}>{question.name}</Text>
                             </TouchableOpacity>;
                         }) : null}
                     </View>
@@ -102,6 +108,11 @@ class ModalRemoveQuestions extends Component {
                             <TouchableOpacity style={styles.buttonContainerTwo}
                                               onPress={this.resetQuestions.bind(this)}>
                                 <Text style={{color: GlobalStyles.darkColor}}>Reset Questions</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.buttonContainerTwo}
+                                              onPress={() => this.props.testFunc(this.state.allQuestions, this.state.removedQuestionsFullData, this.state.removedQuestions)}>
+                                <Text style={{color: GlobalStyles.darkColor}}>Test</Text>
                             </TouchableOpacity>
 
                         </View>

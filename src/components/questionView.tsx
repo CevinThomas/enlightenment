@@ -35,7 +35,6 @@ const QuestionView = (props) => {
 
     const [categories, setCategories] = useState<[]>([]);
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
-    const [removeQuestionsModal, setRemoveQuestionsModal] = useState(false);
 
     useEffect(() => {
         let correctAnswer: object, canWeViewNextQ;
@@ -186,10 +185,6 @@ const QuestionView = (props) => {
         }
     }
 
-    function showRemoveQuestionsModal(): void {
-        setRemoveQuestionsModal(!removeQuestionsModal);
-    }
-
     const {height, width} = Dimensions.get('window');
 
     return (
@@ -203,11 +198,13 @@ const QuestionView = (props) => {
                         <View style={styles.totalQuestions}>
                             <Text accessibilityLabel={"currentQuestionNumber"}
                                   style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
-                            <TouchableOpacity style={styles.button} onPress={showRemoveQuestionsModal}>
-                                <Image style={styles.image} source={require("../../assets/images/gear-1119298_1920.png")}/>
-                                {removeQuestionsModal === true ?
-                                    <ModalRemoveQuestions id={questionsData.currentQuestion.groupId}
-                                                          goBack={showRemoveQuestionsModal} {...props}/> : null}
+                            <TouchableOpacity style={styles.button} onPress={props.questionsModal}>
+                                <Image style={styles.image}
+                                       source={require("../../assets/images/gear-1119298_1920.png")}/>
+                                {props.toShowQuestionsModal === true ?
+                                    <ModalRemoveQuestions testFunc={props.updateQuestions}
+                                                          id={questionsData.currentQuestion.groupId}
+                                                          goBack={props.questionsModal} {...props}/> : null}
                             </TouchableOpacity>
                         </View>
 

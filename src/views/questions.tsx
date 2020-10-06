@@ -3,18 +3,20 @@ import {Alert, AsyncStorage, View} from "react-native";
 import QuestionView from "../components/questionView";
 import {resetQuestions, shuffle} from "../utils/functions";
 import {IsAnswered} from "../enums/isAnswered";
+import Question from "../interfaces/question";
 
 const Questions = (props) => {
 
-    const [counterForQuestions, setCounterForQuestions] = useState<number>(0);
+    const [counterForQuestions, setCounterForQuestions] = useState<number>(1);
     const [currentQuestion, setCurrentQuestion] = useState();
-    const [questionsBeingUsed, setQuestionsBeingUsed] = useState<[]>([]);
+    const [questionsBeingUsed, setQuestionsBeingUsed] = useState<Question[]>([]);
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
+    const [removeQuestionsModal, setRemoveQuestionsModal] = useState(false);
 
     const questionsBeingUsedRef = React.useRef(questionsBeingUsed);
 
-    const updateQuestionsBeingUsed = (questionsToSet: []): void => {
+    const updateQuestionsBeingUsed = (questionsToSet: Question[]): void => {
         questionsBeingUsedRef.current = questionsToSet;
         setQuestionsBeingUsed(questionsToSet);
     };
@@ -41,6 +43,7 @@ const Questions = (props) => {
                 resetQuestions(questionsBeingUsedRef.current);
                 shuffle(questionsBeingUsedRef.current);
                 questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
+                console.log(questionsBeingUsedRef.current);
                 displayFirstQuestion();
 
             }
@@ -53,7 +56,6 @@ const Questions = (props) => {
 
     function displayFirstQuestion(): void {
         setCurrentQuestion(questionsBeingUsedRef.current[0]);
-        setCounterForQuestions(counterForQuestions + 1);
     }
 
     function checkLengthOfQuestionsLeft(): void {
@@ -65,7 +67,7 @@ const Questions = (props) => {
     }
 
     function displayCorrectQuestion(): void {
-        setCurrentQuestion(questionsBeingUsed[counterForQuestions]);
+        setCurrentQuestion(questionsBeingUsedRef.current[counterForQuestions]);
         setCounterForQuestions(counterForQuestions + 1);
     }
 
@@ -128,11 +130,17 @@ const Questions = (props) => {
     }
 
 
-    const calculateNextQuestion = () => {
+    const calculateNextQuestion = (counter?: number) => {
+
         let isLastQuestionComing, nextQuestion;
 
+        if (counter !== undefined) {
+            isLastQuestionComing = questionsBeingUsed.length - counter;
+            nextQuestion = questionsBeingUsedRef.current[counter];
+        } else {
             isLastQuestionComing = questionsBeingUsed.length - counterForQuestions;
-            nextQuestion = questionsBeingUsed[counterForQuestions];
+            nextQuestion = questionsBeingUsedRef.current[counterForQuestions];
+        }
 
         return {
             isLastQuestionComing,
@@ -140,15 +148,67 @@ const Questions = (props) => {
         };
     };
 
+    async function testUpdateQuestions(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>): void {
+        const questionsToBeSaved = allQuestions.filter(questions => {
+            if (!removedQuestionsNames.includes(questions.name)) return questions;
+        });
+        if (questionsToBeSaved.length === 0) return Alert.alert("You cannot remove all questions.");
+        if (questionsToBeSaved.length === allQuestions.length) return Alert.alert("Either remove a question or go back.");
+        const questionsLength = allQuestions.length - 1;
+
+        for (let i = 0; i < allQuestions.length; i++) {
+            if (currentQuestion.name === allQuestions[i].name && i === questionsLength && removedQuestionsNames.includes(currentQuestion.name)) {
+                return Alert.alert("You are on the last question, please answer the question, and remove it in the next round.");
+            }
+        }
+
+        try {
+            let itemsRemovedThatHaveBeenAnswered = 0;
+            for (let i = 0; i < removedQuestions.length; i++) {
+                if (removedQuestions[i].answered === IsAnswered.yes) {
+                    itemsRemovedThatHaveBeenAnswered++;
+                }
+            }
+            let oldCounter = counterForQuestions;
+            while (oldCounter !== 1 && itemsRemovedThatHaveBeenAnswered !== 0) {
+                setCounterForQuestions(oldCounter - 1);
+                oldCounter--;
+            }
+
+            updateQuestionsBeingUsed(questionsToBeSaved);
+
+            setCurrentQuestion(questionsBeingUsedRef.current[0]);
+
+            /*for (let i = 0; i < removedQuestions.length; i++) {
+                if (removedQuestions[i].name === currentQuestion.name) {
+                    setCurrentQuestion(questions.nextQuestion)
+                }
+            }*/
+            setNumberOfQuestions(questionsToBeSaved.length);
+            await AsyncStorage.setItem(props.route.params.id.toString(), JSON.stringify(questionsToBeSaved));
+            showRemoveQuestionsModal();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    function showRemoveQuestionsModal(): void {
+        setRemoveQuestionsModal(!removeQuestionsModal);
+    }
+
     return (
         <View>
             <View>{currentQuestion !== undefined ?
                 <QuestionView
+                    questionsModal={showRemoveQuestionsModal}
+                    toShowQuestionsModal={removeQuestionsModal}
+                    updateQuestions={testUpdateQuestions}
                     originalQuestions={props.route.params.questions}
                     allQuestions={questionsBeingUsed}
                     counter={counterForQuestions}
                     totalQuestions={questionsBeingUsed.length}
-                    navigation={props.navigation} scoreBoard={dispalyScoreBoard}
+                    navigation={props.navigation}
+                    scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={checkLengthOfQuestionsLeft}
                     viewPreviousQuestion={viewPreviousQuestions}
                     viewNextQuestion={isNextQuestionAnswered}
