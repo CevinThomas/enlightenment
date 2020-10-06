@@ -28,31 +28,32 @@ const Questions = (props) => {
             const idToUse = props.route.params.id;
             updateQuestionsBeingUsed(props.route.params.questions);
 
-            async function load() {
-                const storedQuestions = await AsyncStorage.getItem(idToUse.toString());
-
-                if (storedQuestions !== null) {
-                    const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
-                    shuffle(storedAreNowReset);
-                    updateQuestionsBeingUsed(storedAreNowReset);
-                    setNumberOfQuestions(JSON.parse(storedQuestions).length);
-                    return displayFirstQuestion();
-                }
-
-                setNumberOfQuestions(questionsBeingUsedRef.current.length);
-                resetQuestions(questionsBeingUsedRef.current);
-                shuffle(questionsBeingUsedRef.current);
-                questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
-                console.log(questionsBeingUsedRef.current);
-                displayFirstQuestion();
-
-            }
-
-            load();
+            load(idToUse).then(r => r);
         } else {
             Alert.alert("Something went wrong with this category, please try again or another.");
         }
-    }, []);
+    }, [props.route.params.questions]);
+
+    async function load(idToUse: number) {
+        const storedQuestions = await AsyncStorage.getItem(idToUse.toString());
+
+        if (storedQuestions !== null) {
+            const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
+            shuffle(storedAreNowReset);
+            updateQuestionsBeingUsed(storedAreNowReset);
+            setNumberOfQuestions(JSON.parse(storedQuestions).length);
+            return displayFirstQuestion();
+        }
+
+        setCounterForQuestions(1);
+        setNumberOfQuestions(questionsBeingUsedRef.current.length);
+        resetQuestions(questionsBeingUsedRef.current);
+        console.log(questionsBeingUsedRef.current);
+        shuffle(questionsBeingUsedRef.current);
+        questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
+        displayFirstQuestion();
+
+    }
 
     function displayFirstQuestion(): void {
         setCurrentQuestion(questionsBeingUsedRef.current[0]);
@@ -204,6 +205,18 @@ const Questions = (props) => {
         }
     }
 
+    async function resetQuestionsHandler() {
+
+        try {
+            await AsyncStorage.setItem(props.route.params.id.toString(), "");
+            updateQuestionsBeingUsed(props.route.params.questions);
+            await load(props.route.params.id);
+            showRemoveQuestionsModal();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     function showRemoveQuestionsModal(): void {
         setRemoveQuestionsModal(!removeQuestionsModal);
     }
@@ -215,6 +228,7 @@ const Questions = (props) => {
                     questionsModal={showRemoveQuestionsModal}
                     toShowQuestionsModal={removeQuestionsModal}
                     updateQuestions={updateQuestions}
+                    resetQuestions={resetQuestionsHandler}
                     originalQuestions={props.route.params.questions}
                     allQuestions={questionsBeingUsed}
                     counter={counterForQuestions}

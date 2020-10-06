@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, AsyncStorage, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Alert, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
 import {Text} from "@ui-kitten/components";
 import GlobalStyles from "../utils/globalStyles";
 
@@ -46,29 +46,6 @@ class ModalRemoveQuestions extends Component {
         this.setState({removedQuestions: clonedRemovedArray});
     }
 
-    async updateQuestions() {
-        const questionsToBeSaved = this.props.allQuestions.filter(questions => {
-            if (!this.state.removedQuestions.includes(questions.name)) return questions;
-        });
-        if (questionsToBeSaved.length === 0) return Alert.alert("You cannot remove all questions.");
-
-        try {
-            await AsyncStorage.setItem(this.props.id.toString(), JSON.stringify(questionsToBeSaved));
-            this.props.navigation.navigate("Home");
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    async resetQuestions() {
-        try {
-            await AsyncStorage.setItem(this.props.id.toString(), "");
-            this.props.navigation.navigate("Home");
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
     render() {
         return (
             <Modal
@@ -106,7 +83,7 @@ class ModalRemoveQuestions extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.buttonContainerTwo}
-                                              onPress={this.resetQuestions.bind(this)}>
+                                              onPress={this.props.resetFunc}>
                                 <Text style={{color: GlobalStyles.darkColor}}>Reset Questions</Text>
                             </TouchableOpacity>
 
