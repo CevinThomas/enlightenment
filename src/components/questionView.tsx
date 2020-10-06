@@ -59,6 +59,7 @@ const QuestionView = (props) => {
 
     }, [props.question]);
 
+
     const updateCategories = (category: any, wasCorrect: boolean): any => {
 
         let previousStateCategories = [...results.stateWithCategories];
@@ -89,6 +90,20 @@ const QuestionView = (props) => {
             previousCategories
         };
     };
+
+    function beforeResetQuestionsHandler() {
+        setResults({
+            ...results,
+            wrongAnswer: []
+        });
+        setGuessesAndChoices({
+            rightAnswerGuessed: false,
+            wrongAnswerGuessed: false,
+            guessChoice: [],
+            guesses: []
+        });
+        props.resetQuestions();
+    }
 
     function wrongAnswer(event, choice) {
 
@@ -202,7 +217,7 @@ const QuestionView = (props) => {
                                 <Image style={styles.image}
                                        source={require("../../assets/images/gear-1119298_1920.png")}/>
                                 {props.toShowQuestionsModal === true ?
-                                    <ModalRemoveQuestions resetFunc={props.resetQuestions}
+                                    <ModalRemoveQuestions resetFunc={beforeResetQuestionsHandler}
                                                           updateFunc={props.updateQuestions}
                                                           id={questionsData.currentQuestion.groupId}
                                                           goBack={props.questionsModal} {...props}/> : null}

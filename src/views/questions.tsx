@@ -21,7 +21,6 @@ const Questions = (props) => {
         setQuestionsBeingUsed(questionsToSet);
     };
 
-
     useEffect(() => {
 
         if (props.route && props.route.params.questions !== undefined) {
@@ -48,7 +47,6 @@ const Questions = (props) => {
         setCounterForQuestions(1);
         setNumberOfQuestions(questionsBeingUsedRef.current.length);
         resetQuestions(questionsBeingUsedRef.current);
-        console.log(questionsBeingUsedRef.current);
         shuffle(questionsBeingUsedRef.current);
         questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
         displayFirstQuestion();
