@@ -7,6 +7,7 @@ import GestureRecognizer from "react-native-swipe-gestures";
 import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "./bottomBarLogo";
 import ModalRemoveQuestions from "./modalRemoveQuestions";
+import Question from "../interfaces/question";
 
 const QuestionView = (props) => {
 
@@ -103,6 +104,39 @@ const QuestionView = (props) => {
             guesses: []
         });
         props.resetQuestions();
+    }
+
+    function beforeUpdatingQuestionsHandler(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>) {
+        //TODO: If Removed Question is inside Correct Answers or Wrong Answers, remove from respective array
+
+        let allOptions = [];
+        for (let i = 0; i < removedQuestions.length; i++) {
+            allOptions.push(removedQuestions[i].options);
+        }
+
+        const correctAnswersFromState = [...results.correctAnswers];
+        const wrongAnswersFromState = [];
+
+        for (let i = 0; i < results.wrongAnswers.length; i++) {
+            wrongAnswersFromState.push(results.wrongAnswers[i].choice);
+        }
+
+        console.log("WRONG OPTIONS TO REMOVE: ", wrongAnswersFromState);
+        console.log("CORRECT OPTIONS TO REMOVE: ", correctAnswersFromState);
+
+        console.log("ALL REMOVED OPTIONS: ", allOptions);
+
+        for (let i = 0; i < allOptions.length; i++) {
+            if (results.correctAnswers.includes(allOptions[i].choice)) {
+                //correctAnswersToRemove.push(allOptions[i].choice);
+            }
+            console.log("CHOICES LOOPING: ", allOptions[i].choice);
+            if (results.wrongAnswers.includes(allOptions[i].choice)) {
+                //wrongAnswersToRemove.includes(allOptions[i].choice);
+            }
+        }
+
+        props.updateQuestions(allQuestions, removedQuestions, removedQuestionsNames);
     }
 
     function wrongAnswer(event, choice) {
@@ -218,7 +252,7 @@ const QuestionView = (props) => {
                                        source={require("../../assets/images/gear-1119298_1920.png")}/>
                                 {props.toShowQuestionsModal === true ?
                                     <ModalRemoveQuestions resetFunc={beforeResetQuestionsHandler}
-                                                          updateFunc={props.updateQuestions}
+                                                          updateFunc={beforeUpdatingQuestionsHandler}
                                                           id={questionsData.currentQuestion.groupId}
                                                           goBack={props.questionsModal} {...props}/> : null}
                             </TouchableOpacity>

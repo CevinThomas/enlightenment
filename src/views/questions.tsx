@@ -162,7 +162,8 @@ const Questions = (props) => {
         }
 
         try {
-            let itemsRemovedThatHaveBeenAnswered = 0;
+            //TODO: Some commented out code that relates to decrementing counterForQuestions dynamically, instead of starting user at start again.
+            /*let itemsRemovedThatHaveBeenAnswered = 0;
             for (let i = 0; i < removedQuestions.length; i++) {
                 if (removedQuestions[i].answered === IsAnswered.yes) {
                     itemsRemovedThatHaveBeenAnswered++;
@@ -172,7 +173,7 @@ const Questions = (props) => {
             while (oldCounter !== 1 && itemsRemovedThatHaveBeenAnswered !== 0) {
                 setCounterForQuestions(oldCounter - 1);
                 oldCounter--;
-            }
+            }*/
 
             updateQuestionsBeingUsed(questionsToBeSaved);
 
@@ -187,7 +188,8 @@ const Questions = (props) => {
             if (allQuestionsAnswered === true) {
                 setDispalyScoreBoard(true);
             } else {
-                setCurrentQuestion(questionsBeingUsedRef.current[0]);
+                setCounterForQuestions(1);
+                setCurrentQuestion(questionsToBeSaved[0]);
             }
 
             /*for (let i = 0; i < removedQuestions.length; i++) {
