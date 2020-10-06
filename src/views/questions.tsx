@@ -119,11 +119,9 @@ const Questions = (props) => {
     function canWeViewNextQuestion(): boolean {
         let secondNextQuestion;
         const questions = calculateNextQuestion();
-        //console.log(questions);
 
         if (questions.isLastQuestionComing > 1) {
             secondNextQuestion = questionsBeingUsed[counterForQuestions + 1];
-            //console.log("NEXT QUESTION: ", secondNextQuestion);
         }
 
         if (currentQuestion.answered === IsAnswered.yes && questions.isLastQuestionComing === 1) {
@@ -131,8 +129,6 @@ const Questions = (props) => {
         }
 
         if (currentQuestion.answered === IsAnswered.no) {
-            //console.log("CURRENT QUESTION: ", currentQuestion);
-            //console.log("0")
             return false;
         }
 

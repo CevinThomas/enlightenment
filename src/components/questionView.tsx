@@ -36,7 +36,6 @@ const QuestionView = (props) => {
     const [categories, setCategories] = useState<[]>([]);
     const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(false);
     const [removeQuestionsModal, setRemoveQuestionsModal] = useState(false);
-    const [fakeNumber, setFakeNumber] = useState(0);
 
     useEffect(() => {
         let correctAnswer: object, canWeViewNextQ;
@@ -160,7 +159,7 @@ const QuestionView = (props) => {
         }, 1000);
     }
 
-    function updateQuestionProperty(event: any, choice: any): void {
+    function updateQuestionProperty(): void {
         const allQuestions = questionsData.allQuestions;
         const currentQuestionToUpdate = allQuestions.find(option => option.name === questionsData.currentQuestion.name);
 
