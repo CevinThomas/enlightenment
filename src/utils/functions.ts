@@ -11,16 +11,16 @@ export function resetQuestions(allQuestions: []): [] {
     if (toReset !== undefined) {
         allQuestions.forEach(question => {
             if (question.answered === IsAnswered.yes) {
-                question.answered = IsAnswered.no
+                question.answered = IsAnswered.no;
                 return question.options.forEach(option => {
                     if (option.chosen === IsAnswered.yes) {
                         option.chosen = IsAnswered.no;
                     }
-                })
+                });
             }
-        })
-        return allQuestions;
+        });
     }
+    return allQuestions;
 }
 
 export async function makeHttpsRequest(url: string, method: string, dataToPost?: any): Promise<any> {

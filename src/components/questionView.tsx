@@ -206,7 +206,8 @@ const QuestionView = (props) => {
                             <TouchableOpacity style={styles.button} onPress={showRemoveQuestionsModal}>
                                 <Image style={styles.image} source={require("../../assets/images/gear-1119298_1920.png")}/>
                                 {removeQuestionsModal === true ?
-                                    <ModalRemoveQuestions goBack={showRemoveQuestionsModal} {...props}/> : null}
+                                    <ModalRemoveQuestions id={questionsData.currentQuestion.groupId}
+                                                          goBack={showRemoveQuestionsModal} {...props}/> : null}
                             </TouchableOpacity>
                         </View>
 

@@ -11,7 +11,6 @@ const Questions = (props) => {
     const [questionsBeingUsed, setQuestionsBeingUsed] = useState<[]>([]);
     const [dispalyScoreBoard, setDispalyScoreBoard] = useState<boolean>(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
-    const [savedQuestions, setSavedQuestions] = useState<[]>([]);
 
     const questionsBeingUsedRef = React.useRef(questionsBeingUsed);
 
@@ -33,13 +32,12 @@ const Questions = (props) => {
                 if (storedQuestions !== null) {
                     const storedAreNowReset = resetQuestions(JSON.parse(storedQuestions));
                     shuffle(storedAreNowReset);
-                    setSavedQuestions(storedAreNowReset);
-                    return setNumberOfQuestions(JSON.parse(storedQuestions).length);
-                } else {
-                    setSavedQuestions([]);
-                    setNumberOfQuestions(questionsBeingUsedRef.current.length);
+                    updateQuestionsBeingUsed(storedAreNowReset);
+                    setNumberOfQuestions(JSON.parse(storedQuestions).length);
+                    return displayFirstQuestion();
                 }
 
+                setNumberOfQuestions(questionsBeingUsedRef.current.length);
                 resetQuestions(questionsBeingUsedRef.current);
                 shuffle(questionsBeingUsedRef.current);
                 questionsBeingUsedRef.current.forEach(question => shuffle(question.options));
@@ -67,20 +65,12 @@ const Questions = (props) => {
     }
 
     function displayCorrectQuestion(): void {
-        if (savedQuestions.length !== 0) {
-            setCurrentQuestion(savedQuestions[counterForQuestions]);
-        } else {
-            setCurrentQuestion(questionsBeingUsed[counterForQuestions]);
-        }
+        setCurrentQuestion(questionsBeingUsed[counterForQuestions]);
         setCounterForQuestions(counterForQuestions + 1);
     }
 
     const viewPreviousQuestions = (): void => {
-        if (savedQuestions.length !== 0) {
-            setCurrentQuestion(savedQuestions[counterForQuestions - 2]);
-        } else {
-            setCurrentQuestion(questionsBeingUsed[counterForQuestions - 2]);
-        }
+        setCurrentQuestion(questionsBeingUsed[counterForQuestions - 2]);
         setCounterForQuestions(counterForQuestions - 1);
     };
 
@@ -92,7 +82,6 @@ const Questions = (props) => {
     function isNextQuestionAnswered(): boolean | void {
         let secondNextQuestion;
         const questions = calculateNextQuestion();
-        console.log(questions);
 
         if (questions.isLastQuestionComing > 1) {
             secondNextQuestion = questionsBeingUsed[counterForQuestions + 1];
@@ -142,14 +131,8 @@ const Questions = (props) => {
     const calculateNextQuestion = () => {
         let isLastQuestionComing, nextQuestion;
 
-        if (savedQuestions.length !== 0) {
-
-            isLastQuestionComing = savedQuestions.length - counterForQuestions;
-            nextQuestion = savedQuestions[counterForQuestions];
-        } else {
             isLastQuestionComing = questionsBeingUsed.length - counterForQuestions;
             nextQuestion = questionsBeingUsed[counterForQuestions];
-        }
 
         return {
             isLastQuestionComing,
@@ -161,9 +144,9 @@ const Questions = (props) => {
         <View>
             <View>{currentQuestion !== undefined ?
                 <QuestionView
-                    allQuestions={savedQuestions.length !== 0 ? savedQuestions : questionsBeingUsed}
+                    allQuestions={questionsBeingUsed}
                     counter={counterForQuestions}
-                    totalQuestions={savedQuestions.length !== 0 ? savedQuestions.length : questionsBeingUsed.length}
+                    totalQuestions={questionsBeingUsed.length}
                     navigation={props.navigation} scoreBoard={dispalyScoreBoard}
                     displayNextQuestion={checkLengthOfQuestionsLeft}
                     viewPreviousQuestion={viewPreviousQuestions}

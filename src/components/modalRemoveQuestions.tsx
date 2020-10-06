@@ -36,8 +36,10 @@ class ModalRemoveQuestions extends Component {
 
     async updateQuestions() {
         const questionsToBeSaved = this.props.allQuestions.filter(questions => {
-            if (!this.state.removedQuestions.includes(questions.question)) return questions;
+            if (!this.state.removedQuestions.includes(questions.name)) return questions;
         });
+        if (questionsToBeSaved.length === 0) return Alert.alert("You cannot remove all questions.");
+
         try {
             await AsyncStorage.setItem(this.props.id.toString(), JSON.stringify(questionsToBeSaved));
             this.props.navigation.navigate("Home");
@@ -69,12 +71,12 @@ class ModalRemoveQuestions extends Component {
 
                         {this.state.allQuestions !== undefined ? this.state.allQuestions.map(question => {
                             return <TouchableOpacity
-                                key={question.question}
-                                style={[styles.removeQuestionContainer, {backgroundColor: this.state.removedQuestions.includes(question.question) ? "red" : "white"}]}><Text
+                                key={question.name}
+                                style={[styles.removeQuestionContainer, {backgroundColor: this.state.removedQuestions.includes(question.name) ? "red" : "white"}]}><Text
                                 style={[styles.removeQuestion, {
-                                    color: this.state.removedQuestions.includes(question.question) ? "white" : GlobalStyles.darkColor,
+                                    color: this.state.removedQuestions.includes(question.name) ? "white" : GlobalStyles.darkColor,
                                 }]}
-                                onPress={this.state.removedQuestions.includes(question.question) ? (event) => this.recallQuestion(event, question.question) : (event) => this.removeQuestion(event, question.question)}>{question.question}</Text>
+                                onPress={this.state.removedQuestions.includes(question.name) ? (event) => this.recallQuestion(event, question.name) : (event) => this.removeQuestion(event, question.name)}>{question.name}</Text>
                             </TouchableOpacity>;
                         }) : null}
                     </View>
