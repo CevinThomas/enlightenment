@@ -175,18 +175,33 @@ const Questions = (props) => {
                 oldCounter--;
             }
 
-            updateQuestionsBeingUsed(questionsToBeSaved);
+            let allQuestionsAnswered = false;
+            for (let i = 0; i < questionsToBeSaved.length; i++) {
+                if (questionsToBeSaved[i].answered === IsAnswered.no) {
+                    return;
+                } else {
+                    allQuestionsAnswered = true;
+                }
+            }
 
-            setCurrentQuestion(questionsBeingUsedRef.current[0]);
+            updateQuestionsBeingUsed(questionsToBeSaved);
 
             /*for (let i = 0; i < removedQuestions.length; i++) {
                 if (removedQuestions[i].name === currentQuestion.name) {
                     setCurrentQuestion(questions.nextQuestion)
                 }
             }*/
+
             setNumberOfQuestions(questionsToBeSaved.length);
             await AsyncStorage.setItem(props.route.params.id.toString(), JSON.stringify(questionsToBeSaved));
             showRemoveQuestionsModal();
+
+            if (allQuestionsAnswered === true) {
+                setDispalyScoreBoard(true);
+            } else {
+                setCurrentQuestion(questionsBeingUsedRef.current[0]);
+            }
+
         } catch (e) {
             console.log(e);
         }
