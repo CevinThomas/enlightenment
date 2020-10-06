@@ -8,11 +8,17 @@ class ModalRemoveQuestions extends Component {
     state = {
         allQuestions: [],
         modalVisible: false,
-        removedQuestions: []
+        removedQuestions: [],
+        questionsHaveBeenRemoved: false
     };
 
     componentDidMount(): void {
         if (this.props.allQuestions !== undefined) {
+            if (this.props.allQuestions.length !== this.props.originalQuestions.length) {
+                this.setState({
+                    questionsHaveBeenRemoved: true
+                });
+            }
             this.setState({
                 allQuestions: this.props.allQuestions
             });
@@ -82,6 +88,10 @@ class ModalRemoveQuestions extends Component {
                     </View>
 
                     <View>
+                        {this.state.questionsHaveBeenRemoved ? <View style={{marginTop: 10}}>
+                            <Text style={{color: "red", textAlign: "center",}}>Questions have been removed</Text>
+                        </View> : null}
+
                         <View style={styles.mainButtonContainer}>
 
                             <TouchableOpacity style={styles.buttonContainerTwo}

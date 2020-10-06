@@ -61,7 +61,7 @@ const Categories = (props) => {
         props.navigation.navigate("Questions", {
             name: groupToUse,
             questions: questionsToUse,
-            id: groupIdToFilterBy
+            id: groupIdToFilterBy,
         });
     };
 

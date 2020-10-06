@@ -144,6 +144,7 @@ const Questions = (props) => {
         <View>
             <View>{currentQuestion !== undefined ?
                 <QuestionView
+                    originalQuestions={props.route.params.questions}
                     allQuestions={questionsBeingUsed}
                     counter={counterForQuestions}
                     totalQuestions={questionsBeingUsed.length}
