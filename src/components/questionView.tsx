@@ -112,8 +112,6 @@ const QuestionView = (props) => {
 
     function beforeUpdatingQuestionsHandler(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>) {
 
-        //console.log(removedQuestions);
-
         let categoriesInfo = [...results.stateWithCategories];
         console.log(categoriesInfo);
 
@@ -125,27 +123,31 @@ const QuestionView = (props) => {
 
         let whatToRemoveHash = {};
         for (let i = 0; i < removedQuestions.length; i++) {
-            if (whatToRemoveHash.hasOwnProperty(removedQuestions[i].category)) {
-                if (removedQuestions[i].answeredCorrectly === 1) {
-                    whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
-                    whatToRemoveHash[removedQuestions[i].category].correct++;
-                } else {
-                    whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
-                }
-
+            if (removedQuestions[i].answered === IsAnswered.no) {
             } else {
-                if (removedQuestions[i].answeredCorrectly === 1) {
-                    whatToRemoveHash[removedQuestions[i].category] = {
-                        totalQuestions: 1,
-                        correct: 1
-                    };
+                if (whatToRemoveHash.hasOwnProperty(removedQuestions[i].category)) {
+                    if (removedQuestions[i].answeredCorrectly === 1) {
+                        whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
+                        whatToRemoveHash[removedQuestions[i].category].correct++;
+                    } else {
+                        whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
+                    }
+
                 } else {
-                    whatToRemoveHash[removedQuestions[i].category] = {
-                        totalQuestions: 1,
-                        correct: 0
-                    };
+                    if (removedQuestions[i].answeredCorrectly === 1) {
+                        whatToRemoveHash[removedQuestions[i].category] = {
+                            totalQuestions: 1,
+                            correct: 1
+                        };
+                    } else {
+                        whatToRemoveHash[removedQuestions[i].category] = {
+                            totalQuestions: 1,
+                            correct: 0
+                        };
+                    }
                 }
             }
+
         }
 
         console.log(whatToRemoveHash);
