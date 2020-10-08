@@ -3,8 +3,6 @@ import {Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
 import MainLayout from "./mainLayout";
-import {useGlobalStateUpdate} from "../contexts/navigationContext";
-import {CHANGE_NAV} from "../constants/dispatch";
 
 const SignInSignUp = (props) => {
 
@@ -112,19 +110,17 @@ const SignInSignUp = (props) => {
 
         } else {
             const loginMessage = await props.authenticate(userCredentials.email, userCredentials.password);
-            console.log(loginMessage);
             if (loginMessage) setLoginErrorMessage(loginMessage);
             setIsLoading(false);
         }
     }
 
-    const updateGlobalState = useGlobalStateUpdate();
-
     return (
         <MainLayout>
             <View style={styles.container}>
-                <Button onPress={() => updateGlobalState({type: CHANGE_NAV})} style={{backgroundColor: "blue"}}>Switch
-                    Navigators</Button>
+                <View style={styles.headingContainer}>
+                    <Text style={styles.headingStyles}>{props.method === "login" ? "Login" : "Register"}</Text>
+                </View>
                 <View style={styles.mainContainer}>
                     {method === "signup" ? <View style={styles.inputContainer}>
                         <Input autoCapitalize={"none"} autoCorrect={false}
@@ -206,6 +202,9 @@ const SignInSignUp = (props) => {
 const {height} = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
+    headingStyles: {
+        color: "black"
+    },
     container: {
         height: height,
     },
