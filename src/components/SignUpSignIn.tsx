@@ -28,6 +28,9 @@ const SignInSignUp = (props) => {
 
     useEffect(() => {
         if (props.method !== "") setMethod(props.method);
+        return () => {
+
+        };
     }, [props.method]);
 
 

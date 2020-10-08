@@ -94,8 +94,12 @@ const QuestionView = (props) => {
 
     function beforeResetQuestionsHandler() {
         setResults({
-            ...results,
-            wrongAnswer: []
+            wrongAnswersWithExplanation: [],
+            wrongAnswers: [],
+            wrongAnswer: [],
+            correctAnswers: [],
+            timesCorrect: 0,
+            stateWithCategories: [],
         });
         setGuessesAndChoices({
             rightAnswerGuessed: false,
@@ -114,6 +118,8 @@ const QuestionView = (props) => {
             allOptions.push(removedQuestions[i].options);
         }
 
+        const allOptionsInOneArray = allOptions.flat();
+
         const correctAnswersFromState = [...results.correctAnswers];
         const wrongAnswersFromState = [];
 
@@ -124,17 +130,25 @@ const QuestionView = (props) => {
         console.log("WRONG OPTIONS TO REMOVE: ", wrongAnswersFromState);
         console.log("CORRECT OPTIONS TO REMOVE: ", correctAnswersFromState);
 
-        console.log("ALL REMOVED OPTIONS: ", allOptions);
-
-        for (let i = 0; i < allOptions.length; i++) {
-            if (results.correctAnswers.includes(allOptions[i].choice)) {
-                //correctAnswersToRemove.push(allOptions[i].choice);
+        for (let i = 0; i < allOptionsInOneArray.length; i++) {
+            if (wrongAnswersFromState.includes(allOptionsInOneArray[i].choice)) {
+                let indexToRemove = wrongAnswersFromState.indexOf(allOptionsInOneArray[i].choice);
+                wrongAnswersFromState.splice(indexToRemove, 1);
             }
-            console.log("CHOICES LOOPING: ", allOptions[i].choice);
-            if (results.wrongAnswers.includes(allOptions[i].choice)) {
-                //wrongAnswersToRemove.includes(allOptions[i].choice);
+            if (correctAnswersFromState.includes(allOptionsInOneArray[i].choice)) {
+                let indexToRemove = correctAnswersFromState.indexOf(allOptionsInOneArray[i].choice);
+                correctAnswersFromState.splice(indexToRemove, 1);
             }
         }
+
+        console.log("WRONG OPTIONS AFTER REMOVE: ", wrongAnswersFromState);
+        console.log("CORRECT OPTIONS AFTER REMOVE: ", correctAnswersFromState);
+
+        setResults({
+            ...results,
+            correctAnswers: correctAnswersFromState,
+            wrongAnswers: wrongAnswersFromState
+        });
 
         props.updateQuestions(allQuestions, removedQuestions, removedQuestionsNames);
     }
