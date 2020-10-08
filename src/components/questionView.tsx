@@ -113,8 +113,6 @@ const QuestionView = (props) => {
     function beforeUpdatingQuestionsHandler(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>) {
 
         let categoriesInfo = [...results.stateWithCategories];
-        console.log(categoriesInfo);
-
 
         let allOptions = [];
         for (let i = 0; i < removedQuestions.length; i++) {
@@ -150,8 +148,6 @@ const QuestionView = (props) => {
 
         }
 
-        console.log(whatToRemoveHash);
-
         for (let i = 0; i < categoriesInfo.length; i++) {
             if (whatToRemoveHash.hasOwnProperty(categoriesInfo[i].name)) {
                 const diff = whatToRemoveHash[categoriesInfo[i].name].totalQuestions - categoriesInfo[i].totalQuestions;
@@ -161,8 +157,6 @@ const QuestionView = (props) => {
                 categoriesInfo[i].timesCorrect = correctDiff;
             }
         }
-
-        console.log(categoriesInfo);
 
         const allOptionsInOneArray = allOptions.flat();
 
