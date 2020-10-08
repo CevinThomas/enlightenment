@@ -17,7 +17,7 @@ const Score = (props) => {
         setWrongAttempts(props.results.wrongAnswers.length);
         setCategoryAnswers(props.categoryAnswers);
         setPercentageCorrect(
-            (props.firstTry / props.totalQuestions) * 100
+            (props.results.correctAnswers.length / props.totalQuestions) * 100
         );
     }, []);
 

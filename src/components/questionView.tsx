@@ -99,7 +99,7 @@ const QuestionView = (props) => {
             wrongAnswer: [],
             correctAnswers: [],
             timesCorrect: 0,
-            stateWithCategories: [],
+            stateWithCategories: [...results.stateWithCategories],
         });
         setGuessesAndChoices({
             rightAnswerGuessed: false,
@@ -112,10 +112,37 @@ const QuestionView = (props) => {
 
     function beforeUpdatingQuestionsHandler(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>) {
 
+        console.log(removedQuestions);
+
+        let categoriesInfo = [...results.stateWithCategories];
+        console.log(categoriesInfo);
+
+
         let allOptions = [];
         for (let i = 0; i < removedQuestions.length; i++) {
             allOptions.push(removedQuestions[i].options);
         }
+
+        let whatToRemoveHash = {};
+        for (let i = 0; i < removedQuestions.length; i++) {
+            if (whatToRemoveHash.hasOwnProperty(removedQuestions[i].category)) {
+                whatToRemoveHash[removedQuestions[i].category]++;
+            } else {
+                whatToRemoveHash[removedQuestions[i].category] = 1;
+            }
+        }
+
+        console.log(whatToRemoveHash);
+
+        for (let i = 0; i < categoriesInfo.length; i++) {
+            if (whatToRemoveHash.hasOwnProperty(categoriesInfo[i].name)) {
+                const diff = whatToRemoveHash[categoriesInfo[i].name] - categoriesInfo[i].totalQuestions;
+                categoriesInfo[i].totalQuestions = diff;
+                //whatToRemoveHash[categoriesInfo[i].name] - categoriesInfo[i].totalQuestions;
+            }
+        }
+
+        console.log(categoriesInfo);
 
         const allOptionsInOneArray = allOptions.flat();
 
@@ -184,7 +211,7 @@ const QuestionView = (props) => {
 
     function correctAnswer(event, choice) {
 
-        updateQuestionProperty(event, choice);
+        updateQuestionProperty(choice);
 
         let guessedChoiceInformation = [choice.choice, choice.explanation];
         let previousCorrectAnswers = [...results.correctAnswers];
@@ -214,11 +241,15 @@ const QuestionView = (props) => {
         }, 1000);
     }
 
-    function updateQuestionProperty(): void {
+    function updateQuestionProperty(choice): void {
         const allQuestions = questionsData.allQuestions;
         const currentQuestionToUpdate = allQuestions.find(option => option.name === questionsData.currentQuestion.name);
 
         currentQuestionToUpdate.answered = IsAnswered.yes;
+
+        if (choice.correct === true) {
+            currentQuestionToUpdate.answeredCorrectly = IsAnswered.yes;
+        }
 
         allQuestions.forEach(question => question.name === currentQuestionToUpdate.name ? currentQuestionToUpdate : null);
 
