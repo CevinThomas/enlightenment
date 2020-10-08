@@ -15,6 +15,7 @@ const Login = (props) => {
         try {
             //TODO: Sign in to our API
             const response = await makeHttpsRequest(EnvVariables.API_ENDPOINTS.LOGIN, "POST", {email, password});
+            console.log("RESP", response);
             if (response.statusCode === 204) {
                 return response.message;
             } else if (response.statusCode === 200) {
@@ -25,6 +26,7 @@ const Login = (props) => {
             return response;
 
         } catch (e) {
+            console.log("ERROR: ", e);
             if (e.code === "NotAuthorizedException") return Alert.alert(e.message);
             if (e.code === "UserNotFoundException") return Alert.alert("No user exists with this email");
         }

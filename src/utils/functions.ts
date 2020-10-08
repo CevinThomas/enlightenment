@@ -26,7 +26,7 @@ export async function makeHttpsRequest(url: string, method: string, dataToPost?:
             method: "POST",
             mode: 'no-cors',
             body: JSON.stringify(dataToPost)
-        }).then(response => response.json()).then(response => response);
+        }).then(response => response.json()).then(response => response).catch(e => console.log(e));
     } else if (method === "GET") {
         const token = await SecureStore.getItemAsync("token");
         return fetch(url, {

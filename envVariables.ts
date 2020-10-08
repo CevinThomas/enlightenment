@@ -1,12 +1,12 @@
 const EnvVariables = {
     API_ENDPOINTS: {
-        LOGIN: "http://localhost:3000/login",
-        REGISTER: "http://localhost:3000/register",
-        GETCATEGORIES: "http://localhost:3000/questions/allCategories",
-        GETCATEGORY: "http://localhost:3000/questions?category=",
-        GETGROUPSBYCATEGORY: "http://localhost:3000/questions?categoryGroup=",
-        GETQUESTIONSBYGROUPNAME: "http://localhost:3000/questions?group=",
-        GETQUESTIONSBYGROUPID: "http://localhost:3000/questions?groupId="
+        LOGIN: "http://192.168.200.53:4000/login",
+        REGISTER: "http://192.168.200.53:4000/register",
+        GETCATEGORIES: "http://192.168.200.53:4000/questions/allCategories",
+        GETCATEGORY: "http://192.168.200.53:4000/questions?category=",
+        GETGROUPSBYCATEGORY: "http://192.168.200.53:4000/questions?categoryGroup=",
+        GETQUESTIONSBYGROUPNAME: "http://192.168.200.53:4000/questions?group=",
+        GETQUESTIONSBYGROUPID: "http://192.168.200.53:4000/questions?groupId="
     }
 };
 
