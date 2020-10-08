@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet, View} from "react-native";
 import {Text} from "@ui-kitten/components";
 import ButtonList from "../components/buttonList";
-import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
 import {makeHttpsRequest} from "../utils/functions";
 import EnvVariables from "../../envVariables";
 import Spinner from 'react-native-loading-spinner-overlay';
+import {widthPercentageToDP} from "react-native-responsive-screen";
 
 const Home = (props) => {
 
@@ -31,53 +31,62 @@ const Home = (props) => {
     }
 
     return (
-        <View style={styles.container}>
-            <Spinner visible={isLoading}/>
-            <Text style={styles.mainHeading}>Welcome future Beast!</Text>
-            <View style={styles.secondaryContainer}>
-                <Text style={styles.secondaryText}>This is place for you to be the fucking ultimate beast and
-                    advance
-                    your
-                    skills in the shit that is
-                    required. Please, pick a category.</Text>
-            </View>
+        <View style={styles.mainContainer}>
+            <View style={styles.container}>
+                <Spinner visible={isLoading}/>
+                <Text style={styles.mainHeading}>Welcome future Beast!</Text>
+                <View style={styles.secondaryContainer}>
+                    <Text style={styles.secondaryText}>This is place for you to be the fucking ultimate beast and
+                        advance
+                        your
+                        skills in the shit that is
+                        required. Please, pick a category.</Text>
+                </View>
 
-            <View style={styles.buttonContainer}>
-                <FlatList keyExtractor={(item, index) => index.toString()}
-                          data={allCategories}
-                          renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item}
-                                                              navigation={props.navigation}
-                                                              boxTitle={item}/>}/>
+                <View style={styles.buttonContainer}>
+                    <FlatList keyExtractor={(item, index) => index.toString()}
+                              data={allCategories}
+                              renderItem={({item}) => <ButtonList navigateFunc={navigateToQuestions} key={item}
+                                                                  navigation={props.navigation}
+                                                                  boxTitle={item}/>}/>
+                </View>
+                <BottomBarLogo/>
             </View>
-            <BottomBarLogo/>
         </View>
+
     );
 };
 
 const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+    mainContainer: {
+        flex: 1,
+        width: widthPercentageToDP("100%"),
+        backgroundColor: "#233A44"
+    },
     secondaryContainer: {
-        backgroundColor: "white",
+        backgroundColor: "#233A44",
         padding: 30,
         marginTop: 20,
         shadowOffset: {width: 0, height: 0},
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        borderWidth: 2,
+        borderColor: "#545A75"
     },
     container: {
         flex: 1,
-        backgroundColor: '#eee',
         alignItems: 'center',
         paddingTop: 30,
-        width: width * 0.9,
+        width: widthPercentageToDP("90%"),
         marginLeft: "auto",
         marginRight: "auto",
     },
     secondaryText: {
-        color: GlobalStyles.darkColor,
+        color: "white",
         fontSize: 14,
         lineHeight: 25
     },
@@ -92,7 +101,7 @@ const styles = StyleSheet.create({
     mainHeading: {
         fontSize: 25,
         fontFamily: "century-gothic",
-        color: GlobalStyles.darkColor
+        color: "white"
     }
 });
 

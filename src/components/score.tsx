@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {Text} from "@ui-kitten/components";
 import FadeIn from "./fadeIn";
-import GlobalStyles from "../utils/globalStyles";
 
 
 const Score = (props) => {
@@ -60,7 +59,7 @@ const Score = (props) => {
 
 
                 <TouchableOpacity onPress={() => props.navigation.navigate("Home")} style={styles.buttonContainer}>
-                    <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Do it
+                    <Text style={{color: "white", textAlign: "center"}}>Do it
                         again!
                     </Text>
                 </TouchableOpacity>
@@ -71,7 +70,7 @@ const Score = (props) => {
 
 const styles = StyleSheet.create({
     textContainer: {
-        backgroundColor: "white",
+        backgroundColor: "#233A44",
         marginTop: 15,
         padding: 15,
         borderRadius: 10,
@@ -79,28 +78,28 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
-
+        shadowOpacity: 0.1,
+        borderWidth: 2,
+        borderColor: "#545A75"
     },
     container: {
         padding: 20
     },
     headingContainer: {
-        borderBottomWidth: 1,
-        borderBottomColor: GlobalStyles.darkColor
+        borderBottomWidth: 2,
+        borderBottomColor: "#545A75"
     },
     mainheading: {
-        fontSize: 18,
-        color: GlobalStyles.darkColor,
-        textAlign: "center",
+        fontSize: 22,
+        color: "white",
         marginBottom: 20
     },
     titles: {
-        color: GlobalStyles.darkColor,
+        color: "white",
     },
     buttonContainer: {
         marginTop: 20,
-        backgroundColor: GlobalStyles.lightColor,
+        backgroundColor: "#233A44",
         borderRadius: 10,
         padding: 10,
         textAlign: "center",
@@ -108,7 +107,9 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        borderWidth: 2,
+        borderColor: "#545A75"
     }
 });
 

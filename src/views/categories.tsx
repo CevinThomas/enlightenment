@@ -1,7 +1,6 @@
 import React, {ReactNode, useEffect, useState} from 'react';
 import {Alert, Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import {Text} from "@ui-kitten/components";
-import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "../components/bottomBarLogo";
 import {makeHttpsRequest} from "../utils/functions";
 import QuestionOverlay from "../components/questionOverlay";
@@ -98,6 +97,7 @@ const {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
     outerContainer: {
         height: height * 0.9,
+        backgroundColor: "#233A44"
     },
     innerContainer: {
         width: width,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around"
     },
     buttonContainer: {
-        backgroundColor: "white",
+        backgroundColor: "#233A44",
         width: width,
         padding: 20,
         marginTop: 20,
@@ -117,11 +117,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: width * 0.8,
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        borderWidth: 2,
+        borderColor: "#545A75"
     },
     text: {
         textAlign: "center",
-        color: GlobalStyles.darkColor
+        color: "white"
     }
 })
 

@@ -42,8 +42,8 @@ export const BaseNavigator = () => {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name={"Home"} component={Home} options={{
-                    headerTitle: "Education",
-                    headerStyle: {backgroundColor: "#eee"},
+                    headerTitle: "",
+                    headerStyle: {backgroundColor: "#233A44", shadowColor: "transparent"},
                     headerTintColor: GlobalStyles.darkColor,
                     animationTypeForReplace: "pop"
                 }}/>
@@ -55,10 +55,10 @@ export const BaseNavigator = () => {
                     headerBackTitle: "Categories"
                 }}/>
                 <Stack.Screen name={"Categories"} component={Categories} options={{
-                    headerStyle: {backgroundColor: "#eee"},
-                    headerTintColor: GlobalStyles.darkColor,
+                    headerStyle: {backgroundColor: "#233A44", shadowColor: "transparent"},
+                    headerTintColor: "white",
                     headerTitle: "",
-                    headerBackTitle: "Start"
+                    headerBackTitle: "Home"
                 }}/>
             </Stack.Navigator>
         </NavigationContainer>
