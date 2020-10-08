@@ -111,7 +111,6 @@ const QuestionView = (props) => {
     }
 
     function beforeUpdatingQuestionsHandler(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>) {
-        //TODO: If Removed Question is inside Correct Answers or Wrong Answers, remove from respective array
 
         let allOptions = [];
         for (let i = 0; i < removedQuestions.length; i++) {
@@ -127,9 +126,6 @@ const QuestionView = (props) => {
             wrongAnswersFromState.push(results.wrongAnswers[i].choice);
         }
 
-        console.log("WRONG OPTIONS TO REMOVE: ", wrongAnswersFromState);
-        console.log("CORRECT OPTIONS TO REMOVE: ", correctAnswersFromState);
-
         for (let i = 0; i < allOptionsInOneArray.length; i++) {
             if (wrongAnswersFromState.includes(allOptionsInOneArray[i].choice)) {
                 let indexToRemove = wrongAnswersFromState.indexOf(allOptionsInOneArray[i].choice);
@@ -140,9 +136,6 @@ const QuestionView = (props) => {
                 correctAnswersFromState.splice(indexToRemove, 1);
             }
         }
-
-        console.log("WRONG OPTIONS AFTER REMOVE: ", wrongAnswersFromState);
-        console.log("CORRECT OPTIONS AFTER REMOVE: ", correctAnswersFromState);
 
         setResults({
             ...results,
