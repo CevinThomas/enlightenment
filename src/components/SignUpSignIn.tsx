@@ -3,6 +3,8 @@ import {Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View
 import {Button, Icon, Input, Spinner, Text} from "@ui-kitten/components";
 import UseValidateAuthFields from "../customHooks/useValidateAuthFields";
 import MainLayout from "./mainLayout";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
+import GlobalStyles from "../utils/globalStyles";
 
 const SignInSignUp = (props) => {
 
@@ -123,7 +125,8 @@ const SignInSignUp = (props) => {
                 </View>
                 <View style={styles.mainContainer}>
                     {method === "signup" ? <View style={styles.inputContainer}>
-                        <Input autoCapitalize={"none"} autoCorrect={false}
+                        <Input textStyle={styles.inputTextStyle} style={styles.input} autoCapitalize={"none"}
+                               autoCorrect={false}
                                onChangeText={nextValue => updateUserNameHandler(nextValue)} label={"Name"}
                                placeholder={"Enter your name"}/>
 
@@ -139,7 +142,8 @@ const SignInSignUp = (props) => {
                     </View> : null}
 
                     <View style={styles.inputContainer}>
-                        <Input autoCapitalize={"none"} autoCorrect={false}
+                        <Input textStyle={styles.inputTextStyle} status={"focused"} style={styles.input}
+                               autoCapitalize={"none"} autoCorrect={false}
                                onChangeText={nextValue => updateUserEmailHandler(nextValue)} label={"Email"}
                                placeholder={"Enter your email"}/>
 
@@ -155,7 +159,8 @@ const SignInSignUp = (props) => {
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Input autoCapitalize={"none"} autoCorrect={false} caption='Should contain at least 8 symbols'
+                        <Input textStyle={styles.inputTextStyle} style={styles.input} autoCapitalize={"none"}
+                               autoCorrect={false}
                                onChangeText={nextValue => updateUserPasswordHandler(nextValue)}
                                secureTextEntry={secureTextEntry} accessoryRight={renderIcon} label={"Password"}
                                placeholder={"Enter your password"}/>
@@ -188,7 +193,8 @@ const SignInSignUp = (props) => {
 
                     {method === "signup" ? null :
                         <TouchableOpacity onPress={() => props.navigation.navigate("Signup", {})}>
-                            <Text style={styles.signUpColor}>Don't have an account? Sign up here.</Text>
+                            <Text style={styles.signUpColor}>Don't have an account? <Text style={{color: "#F42B4B"}}>Sign
+                                up here.</Text></Text>
                         </TouchableOpacity>}
                 </View>
 
@@ -202,10 +208,23 @@ const SignInSignUp = (props) => {
 const {height} = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
-    headingStyles: {
+    inputTextStyle: {
         color: "black"
     },
+    input: {
+        backgroundColor: "#eee",
+        borderColor: "#e1e1e1",
+        color: "black"
+    },
+    headingContainer: {
+        marginTop: heightPercentageToDP("10%")
+    },
+    headingStyles: {
+        fontSize: widthPercentageToDP("15%"),
+        color: GlobalStyles.darkColor
+    },
     container: {
+        backgroundColor: "#eee",
         height: height,
     },
     mainContainer: {
@@ -220,7 +239,8 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     signUpColor: {
-        color: "black",
+        color: "#000000",
+        opacity: 0.7,
         marginTop: 20,
         textAlign: "center",
         fontSize: 14
@@ -231,7 +251,9 @@ const styles = StyleSheet.create({
         color: "green"
     },
     button: {
-        backgroundColor: "black"
+        color: GlobalStyles.darkColor,
+        backgroundColor: "#F42B4B",
+        borderRadius: 40
     },
     indicator: {
         justifyContent: 'center',
