@@ -12,6 +12,9 @@ export function resetQuestions(allQuestions: []): [] {
             if (question.answered === IsAnswered.yes) {
                 question.answered = IsAnswered.no;
             }
+            if (question.answeredCorrectly === IsAnswered.yes) {
+                question.answeredCorrectly = IsAnswered.no;
+            }
         });
     }
     return allQuestions;

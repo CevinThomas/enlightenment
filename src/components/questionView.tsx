@@ -112,7 +112,7 @@ const QuestionView = (props) => {
 
     function beforeUpdatingQuestionsHandler(allQuestions: Array<Question>, removedQuestions: Array<Question>, removedQuestionsNames: Array<string>) {
 
-        console.log(removedQuestions);
+        //console.log(removedQuestions);
 
         let categoriesInfo = [...results.stateWithCategories];
         console.log(categoriesInfo);
@@ -126,9 +126,25 @@ const QuestionView = (props) => {
         let whatToRemoveHash = {};
         for (let i = 0; i < removedQuestions.length; i++) {
             if (whatToRemoveHash.hasOwnProperty(removedQuestions[i].category)) {
-                whatToRemoveHash[removedQuestions[i].category]++;
+                if (removedQuestions[i].answeredCorrectly === 1) {
+                    whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
+                    whatToRemoveHash[removedQuestions[i].category].correct++;
+                } else {
+                    whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
+                }
+
             } else {
-                whatToRemoveHash[removedQuestions[i].category] = 1;
+                if (removedQuestions[i].answeredCorrectly === 1) {
+                    whatToRemoveHash[removedQuestions[i].category] = {
+                        totalQuestions: 1,
+                        correct: 1
+                    };
+                } else {
+                    whatToRemoveHash[removedQuestions[i].category] = {
+                        totalQuestions: 1,
+                        correct: 0
+                    };
+                }
             }
         }
 
@@ -136,9 +152,11 @@ const QuestionView = (props) => {
 
         for (let i = 0; i < categoriesInfo.length; i++) {
             if (whatToRemoveHash.hasOwnProperty(categoriesInfo[i].name)) {
-                const diff = whatToRemoveHash[categoriesInfo[i].name] - categoriesInfo[i].totalQuestions;
+                const diff = whatToRemoveHash[categoriesInfo[i].name].totalQuestions - categoriesInfo[i].totalQuestions;
+                const correctDiff = whatToRemoveHash[categoriesInfo[i].name].correct - categoriesInfo[i].timesCorrect;
+
                 categoriesInfo[i].totalQuestions = diff;
-                //whatToRemoveHash[categoriesInfo[i].name] - categoriesInfo[i].totalQuestions;
+                categoriesInfo[i].timesCorrect = correctDiff;
             }
         }
 
