@@ -8,6 +8,7 @@ import GlobalStyles from "../utils/globalStyles";
 import BottomBarLogo from "./bottomBarLogo";
 import ModalRemoveQuestions from "./modalRemoveQuestions";
 import Question from "../interfaces/question";
+import {widthPercentageToDP} from "react-native-responsive-screen";
 
 const QuestionView = (props) => {
 
@@ -291,90 +292,103 @@ const QuestionView = (props) => {
     return (
         <GestureRecognizer style={{height: height, width: width}} onSwipeLeft={() => props.viewNextQuestion()}
                            onSwipeRight={() => props.counter > 1 ? props.viewPreviousQuestion() : null}>
-            <View style={styles.container}>
-                {props.scoreBoard !== true && questionsData.currentQuestion !== undefined ? <>
-                        <View style={styles.counterContainer}>
-                            <Text style={styles.questionHeading}>{questionsData.currentQuestion.name}</Text>
-                        </View>
-                        <View style={styles.totalQuestions}>
-                            <Text accessibilityLabel={"currentQuestionNumber"}
-                                  style={styles.counter}>Question {props.counter} of {props.totalQuestions}</Text>
-                            <TouchableOpacity style={styles.button} onPress={props.questionsModal}>
-                                <Image style={styles.image}
-                                       source={require("../../assets/images/gear-1119298_1920.png")}/>
-                                {props.toShowQuestionsModal === true ?
-                                    <ModalRemoveQuestions resetFunc={beforeResetQuestionsHandler}
-                                                          updateFunc={beforeUpdatingQuestionsHandler}
-                                                          id={questionsData.currentQuestion.groupId}
-                                                          goBack={props.questionsModal} {...props}/> : null}
-                            </TouchableOpacity>
-                        </View>
+            <View style={styles.mainContainerTop}>
+                <View style={styles.container}>
+                    {props.scoreBoard !== true && questionsData.currentQuestion !== undefined ? <>
+                            <View style={styles.totalQuestions}>
+                                <Text accessibilityLabel={"currentQuestionNumber"}
+                                      style={styles.counter}>Question {props.counter}<Text
+                                    style={styles.secondCounter}>/{props.totalQuestions}</Text></Text>
+                                <TouchableOpacity style={styles.button} onPress={props.questionsModal}>
+                                    <Image style={styles.image}
+                                           source={require("../../assets/images/gear-1119298_1920.png")}/>
+                                    {props.toShowQuestionsModal === true ?
+                                        <ModalRemoveQuestions resetFunc={beforeResetQuestionsHandler}
+                                                              updateFunc={beforeUpdatingQuestionsHandler}
+                                                              id={questionsData.currentQuestion.groupId}
+                                                              goBack={props.questionsModal} {...props}/> : null}
+                                </TouchableOpacity>
+                            </View>
+                            <View>
+                                <Text style={styles.questionHeading}>{questionsData.currentQuestion.name}</Text>
+                            </View>
 
-                        {questionsData.currentQuestion.options !== undefined ? questionsData.currentQuestion.options.map(optionToChoose => {
-                            return <View key={optionToChoose.choice}
-                                         style={
-                                             [
-                                                 styles.viewContainer,
-                                                 {
-                                                     backgroundColor:
-                                                         displayCorrectAnswer === true && questionsData.rightAnswer.choice === optionToChoose.choice ? "green" :
-                                                             results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
+
+                            <View style={styles.buttonMainContainer}>
+                                {questionsData.currentQuestion.options !== undefined ? questionsData.currentQuestion.options.map(optionToChoose => {
+                                    return <View key={optionToChoose.choice}
+                                                 style={
+                                                     [
+                                                         styles.viewContainer,
+                                                         {
+                                                             borderColor: results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
                                                                  guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? "green" :
                                                                      questionsData.rightAnswer.choice === optionToChoose.choice && questionsData.currentQuestion.answered === IsAnswered.yes ? "green" :
-                                                                         guessesAndChoices.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === IsAnswered.yes ? "red" : "white"
-                                                 },
-                                             ]}>
+                                                                         guessesAndChoices.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === IsAnswered.yes ? "red" : "#545A75",
+                                                             backgroundColor:
+                                                                 displayCorrectAnswer === true && questionsData.rightAnswer.choice === optionToChoose.choice ? "green" :
+                                                                     results.wrongAnswer.includes(optionToChoose.choice) ? "red" :
+                                                                         guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? "green" :
+                                                                             questionsData.rightAnswer.choice === optionToChoose.choice && questionsData.currentQuestion.answered === IsAnswered.yes ? "green" :
+                                                                                 guessesAndChoices.guesses.includes(optionToChoose.choice) && questionsData.currentQuestion.answered === IsAnswered.yes ? "red" : "#233A44"
+                                                         },
+                                                     ]}>
 
-                                <Button
-                                    accessibilityLabel={"choiceButton"}
-                                    color={guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? "white" : "white" &&
-                                    results.wrongAnswer.includes(optionToChoose.choice) ? "white" : GlobalStyles.darkColor}
-                                    disabled={guessesAndChoices.rightAnswerGuessed && !
-                                        guessesAndChoices.guessChoice.includes(optionToChoose.choice) ||
-                                    guessesAndChoices.wrongAnswerGuessed ||
-                                    questionsData.currentQuestion.answered === IsAnswered.yes}
-                                    title={optionToChoose.choice}
-                                    onPress={guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? null : (option) => {
-                                        checkIfAnswerIsCorrect(option, optionToChoose);
-                                    }}/>
-                            </View>;
-                        }) : null}
+                                        <Button
+                                            accessibilityLabel={"choiceButton"}
+                                            color={guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? "white" : "white" &&
+                                            results.wrongAnswer.includes(optionToChoose.choice) ? "white" : "white"}
+                                            disabled={guessesAndChoices.rightAnswerGuessed && !
+                                                guessesAndChoices.guessChoice.includes(optionToChoose.choice) ||
+                                            guessesAndChoices.wrongAnswerGuessed ||
+                                            questionsData.currentQuestion.answered === IsAnswered.yes}
+                                            title={optionToChoose.choice}
+                                            onPress={guessesAndChoices.guessChoice.includes(optionToChoose.choice) ? null : (option) => {
+                                                checkIfAnswerIsCorrect(option, optionToChoose);
+                                            }}/>
+                                    </View>;
+                                }) : null}
+                            </View>
 
-                        {guessesAndChoices.wrongAnswerGuessed ?
-                            <React.Fragment>
-                                <View>
-                                    {<Text style={styles.errorMessage}>{questionsData.rightAnswer.explanation}</Text>}
-                                </View>
-                                <View style={styles.nextQuestion}>
-                                    <Button accessibilityLabel={"nextQuestion"} color={GlobalStyles.darkColor}
-                                            title={"Next Question!"}
-                                            onPress={() => props.displayNextQuestion(null, guessesAndChoices.guessChoice)}
-                                    />
-                                </View>
-                            </React.Fragment>
+                            {guessesAndChoices.wrongAnswerGuessed ?
+                                <React.Fragment>
+                                    <View style={styles.wrongAnswerContainer}>
+                                        <View>
+                                            {<Text
+                                                style={styles.errorMessage}>{questionsData.rightAnswer.explanation}</Text>}
+                                        </View>
+                                        <View style={styles.nextQuestion}>
+                                            <Button accessibilityLabel={"nextQuestion"} color={"white"}
+                                                    title={"Next Question!"}
+                                                    onPress={() => props.displayNextQuestion(null, guessesAndChoices.guessChoice)}
+                                            />
+                                        </View>
+                                    </View>
+                                </React.Fragment>
 
-                            : null}</> :
+                                : null}</> :
 
-                    <Score
-                        categoryAnswers={results.stateWithCategories}
-                        firstTry={results.timesCorrect}
-                        totalQuestions={props.totalQuestions}
-                        navigation={props.navigation}
-                        results={results}/>}
+                        <Score
+                            categoryAnswers={results.stateWithCategories}
+                            firstTry={results.timesCorrect}
+                            totalQuestions={props.totalQuestions}
+                            navigation={props.navigation}
+                            results={results}/>}
 
-                {guessesAndChoices.wrongAnswerGuessed ? null : <View style={styles.prevAndNextContainer}>
-                    {props.counter > 1 && props.scoreBoard !== true ? <View
-                        style={[styles.prevAndNext, {backgroundColor: "white"}, {width: questionsData.isNextQuestionViewable === false ? "100%" : "40%"}]}><Button
-                        color={"black"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View> : null}
-                    {questionsData.isNextQuestionViewable === true ? <View
-                        style={[styles.prevAndNext, {backgroundColor: "white"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button
-                        color={"black"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
-                </View>}
+                    {guessesAndChoices.wrongAnswerGuessed ? null :
+                        <View style={styles.prevAndNextMainContainer}><View style={styles.prevAndNextContainer}>
+                            {props.counter > 1 && props.scoreBoard !== true ? <View
+                                style={[styles.prevAndNext, {backgroundColor: "#233A44"}, {width: questionsData.isNextQuestionViewable === false ? "100%" : "40%"}]}><Button
+                                color={"white"} title={"Previous"} onPress={props.viewPreviousQuestion}/></View> : null}
+                            {questionsData.isNextQuestionViewable === true ? <View
+                                style={[styles.prevAndNext, {backgroundColor: "#233A44"}, {width: props.counter <= 1 ? "100%" : "40%"}]}><Button
+                                color={"white"} title={"Next"} onPress={props.viewNextQuestion}/></View> : null}
+                        </View></View>}
 
 
-
-            <BottomBarLogo/>
-        </View>
+                    <BottomBarLogo/>
+                </View>
+            </View>
         </GestureRecognizer>
 
     );
@@ -383,6 +397,26 @@ const QuestionView = (props) => {
 const {height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+    wrongAnswerContainer: {
+        flex: 0.4
+    },
+    mainContainerTop: {
+        width: widthPercentageToDP("100%"),
+        backgroundColor: "#233A44",
+    },
+    prevAndNextMainContainer: {
+        flex: 0.4
+    },
+    buttonMainContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    secondCounter: {
+        fontWeight: "200",
+        color: "white",
+        fontSize: 12
+    },
     button: {
         marginTop: 11,
         marginLeft: 10,
@@ -393,19 +427,18 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         width: 20,
         height: 20,
+        tintColor: "white"
     },
     prevAndNextContainer: {
         display: "flex",
         flexDirection: "row",
-        marginTop: 50,
-        width: 250,
         marginLeft: "auto",
         marginRight: "auto",
         justifyContent: "center",
     },
     viewContainer: {
         borderRadius: 10,
-        width: 250,
+        width: "100%",
         marginLeft: "auto",
         marginRight: "auto",
         padding: 5,
@@ -415,11 +448,15 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        borderWidth: 2,
+        borderColor: "#545A75"
     },
     totalQuestions: {
-      flexDirection: "row",
-      justifyContent: "center",
+        borderBottomWidth: 1,
+        borderBottomColor: "#545A75",
+        paddingBottom: 15,
+        flexDirection: "row",
         marginRight: 10
     },
     prevAndNext: {
@@ -431,45 +468,45 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         borderRadius: 10,
         padding: 2,
-        margin: 10
+        margin: 10,
+        borderWidth: 1,
+        borderColor: "#545A75"
     },
     container: {
         padding: 40,
         height: height * 0.9,
+        width: widthPercentageToDP("90%"),
+        marginLeft: "auto",
+        marginRight: "auto",
     },
     counter: {
         paddingBottom: 5,
         paddingTop: 15,
-        fontSize: 12,
+        fontSize: 16,
+        fontWeight: "900",
         textAlign: "center",
-        color: GlobalStyles.darkColor
+        color: "white"
     },
     buttonContainer: {
         backgroundColor: "blue",
         margin: 10,
         borderRadius: 10
     },
-    counterContainer: {
-        borderBottomWidth: 1,
-        borderBottomColor: "lightgrey",
-    },
     questionHeading: {
-        color: GlobalStyles.darkColor,
+        color: "white",
         fontSize: 24,
-        textAlign: "center",
         paddingBottom: 10,
-        marginTop: 20
+        marginTop: 15
     },
     errorMessage: {
         textAlign: "center",
-        paddingTop: 10,
-        color: GlobalStyles.darkColor
+        paddingTop: 5,
+        color: "white"
     },
     correctMessage: {},
     congratulationsMessage: {
         textAlign: "center",
         color: "green",
-        paddingTop: 10
     },
     nextQuestion: {
         backgroundColor: "white",
@@ -480,7 +517,10 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        borderWidth: 2,
+        borderColor: "#545A75",
+        backgroundColor: "#233A44"
     }
 });
 

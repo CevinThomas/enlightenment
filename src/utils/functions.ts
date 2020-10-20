@@ -25,6 +25,9 @@ export async function makeHttpsRequest(url: string, method: string, dataToPost?:
         return fetch(url, {
             method: "POST",
             mode: 'no-cors',
+            headers: {
+                "Content-type": "application/json"
+            },
             body: JSON.stringify(dataToPost)
         }).then(response => response.json()).then(response => response).catch(e => console.log(e));
     } else if (method === "GET") {

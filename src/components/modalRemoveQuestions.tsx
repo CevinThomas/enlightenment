@@ -61,9 +61,12 @@ class ModalRemoveQuestions extends Component {
                         {this.state.allQuestions !== undefined ? this.state.allQuestions.map(question => {
                             return <TouchableOpacity
                                 key={question.name}
-                                style={[styles.removeQuestionContainer, {backgroundColor: this.state.removedQuestions.includes(question.name) ? "red" : "white"}]}><Text
+                                style={[styles.removeQuestionContainer, {
+                                    backgroundColor: this.state.removedQuestions.includes(question.name) ? "red" : "#233A44",
+                                    borderColor: this.state.removedQuestions.includes(question.name) ? "transparent" : "#545A75"
+                                }]}><Text
                                 style={[styles.removeQuestion, {
-                                    color: this.state.removedQuestions.includes(question.name) ? "white" : GlobalStyles.darkColor,
+                                    color: "white",
                                 }]}
                                 onPress={this.state.removedQuestions.includes(question.name) ? (event) => this.recallQuestion(event, question.name) : (event) => this.removeQuestion(event, question)}>{question.name}</Text>
                             </TouchableOpacity>;
@@ -79,17 +82,17 @@ class ModalRemoveQuestions extends Component {
 
                             <TouchableOpacity style={styles.buttonContainerTwo}
                                               onPress={() => this.props.updateFunc(this.state.allQuestions, this.state.removedQuestionsFullData, this.state.removedQuestions)}>
-                                <Text style={{color: GlobalStyles.darkColor}}>Update Questions</Text>
+                                <Text style={{color: "white"}}>Update Questions</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.buttonContainerTwo}
                                               onPress={this.props.resetFunc}>
-                                <Text style={{color: GlobalStyles.darkColor}}>Reset Questions</Text>
+                                <Text style={{color: "white"}}>Reset Questions</Text>
                             </TouchableOpacity>
 
                         </View>
                         <TouchableOpacity onPress={this.props.goBack} style={styles.hideButtonContainer}>
-                            <Text style={{color: GlobalStyles.darkColor, textAlign: "center"}}>Go back</Text>
+                            <Text style={{color: "white", textAlign: "center"}}>Go back</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -111,21 +114,27 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        backgroundColor: "#233A44",
+        borderWidth: 2,
+        borderColor: "#545A75"
     },
     removeQuestionContainer: {
         borderRadius: 10,
         marginBottom: 15,
         shadowOffset: {width: 0, height: 0},
-        shadowColor: GlobalStyles.darkColor,
+        shadowColor: "#233A44",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
+        backgroundColor: "#233A44",
+        borderWidth: 2,
+        borderColor: "#545A75"
     },
     removeHeading: {
-        color: GlobalStyles.darkColor,
-        textAlign: "center",
-        marginBottom: 30,
+        color: "white",
+        fontSize: 22,
+        marginBottom: 50,
     },
     removeContainer: {
         display: "flex",
@@ -137,21 +146,25 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         paddingTop: 50,
-        paddingBottom: 50
+        paddingBottom: 50,
+        backgroundColor: "#233A44",
     },
     container: {
-        marginTop: 100,
+        flex: 1,
+        paddingTop: 100,
         padding: 0,
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        height: "100%",
+        backgroundColor: "#233A44"
     },
     buttonContainer: {
         marginTop: 0,
-        backgroundColor: GlobalStyles.lightColor,
+        backgroundColor: "#233A44",
         borderRadius: 10,
-        color:  GlobalStyles.darkColor,
+        color: GlobalStyles.darkColor,
         padding: 10,
-        textAlign: "center"
+        textAlign: "center",
     },
     removeQuestion: {
         fontSize: 12,
@@ -167,16 +180,18 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         elevation: 100,
         shadowRadius: 5,
-        shadowOpacity: 0.1
+        shadowOpacity: 0.1,
     },
     buttonContainerTwo: {
         marginTop: 10,
         marginBottom: 20,
-        backgroundColor: GlobalStyles.lightColor,
+        backgroundColor: "#233A44",
         borderRadius: 10,
         margin: 5,
-        color: GlobalStyles.darkColor,
+        color: "white",
         padding: 10,
+        borderWidth: 2,
+        borderColor: "#545A75"
 
     },
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Dimensions, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
 import {Text} from "@ui-kitten/components";
-import GlobalStyles from "../utils/globalStyles";
 
 
 const QuestionOverlay = (props) => {
@@ -28,6 +27,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#233A44"
     },
     questionsContainer: {
         flexDirection: "row",
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     textButton: {
-        backgroundColor: "white",
+        backgroundColor: "#233A44",
         padding: 20,
         width: width * 0.4,
         margin: 10,
@@ -47,10 +47,12 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         shadowOpacity: 0.1,
         borderRadius: 10,
+        borderWidth: 2,
+        borderColor: "#545A75"
     },
     text: {
         textAlign: "center",
-        color: GlobalStyles.darkColor
+        color: "white"
     }
 })
 

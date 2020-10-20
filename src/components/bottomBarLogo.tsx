@@ -21,12 +21,13 @@ const styles = StyleSheet.create({
         textAlign: "center",
         paddingBottom: 20,
         paddingTop: 10,
-        backgroundColor: "#eee"
+        backgroundColor: "#233A44"
     },
     image: {
         resizeMode: "contain",
         overflow: "visible",
         width: 100,
+        tintColor: "white"
     }
 })
 
