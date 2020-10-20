@@ -16,7 +16,8 @@ const Signup = (props) => {
             const response = await makeHttpsRequest(EnvVariables.API_ENDPOINTS.REGISTER, "POST", {
                 name,
                 email,
-                password
+                password,
+                role: "free"
             });
             console.log(response);
             if (response.statusCode !== 200) {
