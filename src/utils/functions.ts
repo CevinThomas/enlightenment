@@ -39,7 +39,6 @@ export async function makeHttpsRequest(url: string, method: string, dataToPost?:
                 Authorization: token,
                 "Content-type": "application/json"
             },
-            mode: "no-cors",
         }).then(response => response.json()).then(response => response).catch(e => console.log(e));
     }
 }

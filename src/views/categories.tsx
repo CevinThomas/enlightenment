@@ -26,9 +26,9 @@ const Categories = (props) => {
 
     async function retrieveGroupsByCategoryChosen() {
         setIsLoading(true);
-        const url = EnvVariables.API_ENDPOINTS.GETGROUPSBYCATEGORY + props.route.params.categoryChosen;
+        const url = EnvVariables.API_ENDPOINTS.GETGROUPSBYCATEGORY + "?group=" + props.route.params.categoryChosen;
         const response = await makeHttpsRequest(url, "GET");
-        if (response === "Unauthorized") {
+        if (response.message === "Unauthorized" || response.message === "Was not given a string.") {
             Alert.alert("Unauthorized, please login again");
             return updateGlobalState({type: CHANGE_NAV, payload: 0});
         } else {
