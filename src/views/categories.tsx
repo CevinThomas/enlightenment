@@ -50,7 +50,7 @@ const Categories = (props) => {
             }
         }
 
-        const url = EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPID + groupIdToFilterBy;
+        const url = EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPID + "?id=" + groupIdToFilterBy;
         const response = await makeHttpsRequest(url, "GET");
 
         //TODO: Check for error when making HTTPS request
