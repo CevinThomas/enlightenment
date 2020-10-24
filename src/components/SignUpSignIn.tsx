@@ -112,7 +112,7 @@ const SignInSignUp = (props) => {
 
         } else {
             const loginMessage = await props.authenticate(userCredentials.email, userCredentials.password);
-            if (loginMessage) setLoginErrorMessage(loginMessage);
+            if (loginMessage) setLoginErrorMessage(loginMessage.message);
             setIsLoading(false);
         }
     }

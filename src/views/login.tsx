@@ -15,6 +15,7 @@ const Login = (props) => {
         try {
             //TODO: Sign in to our API
             const response = await makeHttpsRequest(EnvVariables.API_ENDPOINTS.LOGIN, "POST", {email, password});
+            console.log(response);
             if (response.statusCode === 204) {
                 return response.message;
             } else if (response.statusCode === 200) {
