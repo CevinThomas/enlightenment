@@ -1,7 +1,7 @@
 import { Text } from "@ui-kitten/components";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import EnvVariables from "../../envVariables";
 import FadeIn from "./fadeIn";
 
@@ -48,7 +48,10 @@ const Score = (props) => {
       body: JSON.stringify(results),
     });
 
-    response.json().then((r) => console.log(r));
+    response.json().then((r) => {
+      if (r.statusCode === 200) return Alert.alert("Saved!");
+      Alert.alert("Could not save results, please contact support.");
+    });
   }
 
   return (
