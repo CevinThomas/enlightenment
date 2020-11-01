@@ -8,6 +8,8 @@ const EnvVariables = {
     GETQUESTIONSBYGROUPNAME: "http://192.168.200.53:4000/questions?group=",
     GETQUESTIONSBYGROUPID: "http://192.168.200.53:4000/questions/groupId",
     SAVERESULTS: "http://192.168.200.53:4000/questions/saveresults",
+    GETINVITES: "http://192.168.200.53:4000/invites/get",
+    HANDLEINVITES: "http://192.168.200.53:4000/invites/handle",
   },
 };
 
