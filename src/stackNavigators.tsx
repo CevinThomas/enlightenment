@@ -7,6 +7,7 @@ import Categories from "./views/categories";
 import EnterMfaCode from "./views/enterMfaCode";
 import History from "./views/history";
 import Home from "./views/home";
+import invites from "./views/invites";
 import Login from "./views/login";
 import Questions from "./views/questions";
 import Signup from "./views/signup";
@@ -23,8 +24,25 @@ export const DrawerStack = () => {
       <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen name="Home" component={BaseNavigator} />
         <Drawer.Screen name="History" component={History} />
+        <Drawer.Screen name="Invites" component={invites} />
       </Drawer.Navigator>
     </NavigationContainer>
+  );
+};
+
+export const InviteNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Invites" component={invites} />
+    </Stack.Navigator>
+  );
+};
+
+export const HistoryNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="History" component={History} />
+    </Stack.Navigator>
   );
 };
 
