@@ -46,6 +46,7 @@ const Home = (props) => {
 
         <View style={styles.buttonContainer}>
           <FlatList
+            style={{ flex: 1 }}
             keyExtractor={(item, index) => index.toString()}
             data={allCategories}
             renderItem={({ item }) => (
@@ -98,11 +99,8 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
   buttonContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
     flex: 1,
+    marginBottom: 80,
   },
 
   mainHeading: {

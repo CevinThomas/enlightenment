@@ -1,7 +1,6 @@
 import { Text } from "@ui-kitten/components";
 import { default as React, useEffect, useState } from "react";
 import {
-  Button,
   Dimensions,
   Image,
   StyleSheet,
@@ -421,20 +420,8 @@ const QuestionView = (props) => {
                               },
                             ]}
                           >
-                            <Button
-                              accessibilityLabel={"choiceButton"}
-                              color={
-                                guessesAndChoices.guessChoice.includes(
-                                  optionToChoose.choice
-                                )
-                                  ? "white"
-                                  : "white" &&
-                                    results.wrongAnswer.includes(
-                                      optionToChoose.choice
-                                    )
-                                  ? "white"
-                                  : "white"
-                              }
+                            <TouchableOpacity
+                              style={styles.choiceContainer}
                               disabled={
                                 (guessesAndChoices.rightAnswerGuessed &&
                                   !guessesAndChoices.guessChoice.includes(
@@ -444,7 +431,7 @@ const QuestionView = (props) => {
                                 questionsData.currentQuestion.answered ===
                                   IsAnswered.yes
                               }
-                              title={optionToChoose.choice}
+                              accessibilityLabel={"choiceButton"}
                               onPress={
                                 guessesAndChoices.guessChoice.includes(
                                   optionToChoose.choice
@@ -457,7 +444,11 @@ const QuestionView = (props) => {
                                       );
                                     }
                               }
-                            />
+                            >
+                              <Text style={styles.choiceOptionText}>
+                                {optionToChoose.choice}
+                              </Text>
+                            </TouchableOpacity>
                           </View>
                         );
                       }
@@ -476,17 +467,19 @@ const QuestionView = (props) => {
                       }
                     </View>
                     <View style={styles.nextQuestion}>
-                      <Button
-                        accessibilityLabel={"nextQuestion"}
-                        color={"white"}
-                        title={"Next Question!"}
+                      <TouchableOpacity
+                        style={{ padding: 10 }}
                         onPress={() =>
                           props.displayNextQuestion(
                             null,
                             guessesAndChoices.guessChoice
                           )
                         }
-                      />
+                      >
+                        <Text style={{ textAlign: "center" }}>
+                          Next Question!
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </React.Fragment>
@@ -519,11 +512,12 @@ const QuestionView = (props) => {
                       },
                     ]}
                   >
-                    <Button
-                      color={"white"}
-                      title={"Previous"}
+                    <TouchableOpacity
+                      style={{ padding: 5 }}
                       onPress={props.viewPreviousQuestion}
-                    />
+                    >
+                      <Text style={{ textAlign: "center" }}>Previous</Text>
+                    </TouchableOpacity>
                   </View>
                 ) : null}
                 {questionsData.isNextQuestionViewable === true ? (
@@ -534,11 +528,12 @@ const QuestionView = (props) => {
                       { width: props.counter <= 1 ? "100%" : "40%" },
                     ]}
                   >
-                    <Button
-                      color={"white"}
-                      title={"Next"}
+                    <TouchableOpacity
+                      style={{ padding: 5 }}
                       onPress={props.viewNextQuestion}
-                    />
+                    >
+                      <Text style={{ textAlign: "center" }}>Next</Text>
+                    </TouchableOpacity>
                   </View>
                 ) : null}
               </View>
@@ -555,6 +550,8 @@ const QuestionView = (props) => {
 const { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
+  choiceContainer: { padding: 10 },
+  choiceOptionText: { textAlign: "center" },
   wrongAnswerContainer: {
     flex: 0.4,
   },
