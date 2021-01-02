@@ -1,11 +1,13 @@
 import { default as React, useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import EnvVariables from "../../envVariables";
 import { makeHttpsRequest } from "../utils/functions";
 
 function History(props) {
   const [results, setResults] = useState([]);
   const [error, setError] = useState<string>("");
+  const [resultModal, setResultModal] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getResults()
@@ -25,7 +27,10 @@ function History(props) {
   function renderResults() {
     if (results.length !== 0) {
       return results.map((result, index) => (
-        <TouchableOpacity key={index}>
+        <TouchableOpacity
+          onPress={() => displayCorrectResult(index)}
+          key={index}
+        >
           <Text>{result.groupName}</Text>
         </TouchableOpacity>
       ));
@@ -38,15 +43,71 @@ function History(props) {
       .catch((e) => setError("No results found"));
   }
 
+  function displayCorrectResult(resultToShow: number) {
+    const resultToDisplay = results[resultToShow];
+    console.log(resultToDisplay);
+    setShowModal(true);
+    return setResultModal(resultToDisplay);
+  }
+
+  function closeModal() {
+    setShowModal(false);
+  }
+
+  function resetResultsModalData() {
+    setResultModal({});
+  }
+
+  function resetAndCloseModal() {
+    closeModal();
+    setResultModal({});
+  }
+
+  function deleteResult() {}
+
   return (
-    <View style={styles.container}>
-      {error !== "" ? <Text>{error}</Text> : renderResults()}
-      <View style={styles.refreshContainer}>
-        <TouchableOpacity onPress={refreshResults}>
-          <Text>Refresh Results</Text>
-        </TouchableOpacity>
+    <React.Fragment>
+      {resultModal.hasOwnProperty("groupName") === true ? (
+        <Modal
+          visible={showModal}
+          animationType="slide"
+          transparent={false}
+          onRequestClose={() => {
+            closeModal();
+            resetResultsModalData();
+          }}
+        >
+          <View>
+            <View>
+              <Text>{resultModal.groupName}</Text>
+              <Text>{resultModal.correct}</Text>
+              <Text>{resultModal.wrong}</Text>
+              <Text>{resultModal.percentage}</Text>
+              {resultModal.categories.map((category) => (
+                <Text key={category}>{category}</Text>
+              ))}
+            </View>
+            <View>
+              <TouchableOpacity onPress={resetAndCloseModal}>
+                <Text>Go Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={deleteResult}>
+                <Text>DELETE RESULT</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      ) : null}
+
+      <View style={styles.container}>
+        {error !== "" ? <Text>{error}</Text> : renderResults()}
+        <View style={styles.refreshContainer}>
+          <TouchableOpacity onPress={refreshResults}>
+            <Text>Refresh Results</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </React.Fragment>
   );
 }
 
