@@ -11,6 +11,7 @@ const EnvVariables = {
     GETINVITES: "http://192.168.200.52:4000/invites/get",
     HANDLEINVITES: "http://192.168.200.52:4000/invites/handle",
     GETRESULTS: "http://192.168.200.52:4000/questions/getresults",
+    DELETERESULTS: "http://192.168.200.52:4000/questions/deleteresult",
   },
 };
 

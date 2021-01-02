@@ -214,6 +214,28 @@ class PostRoutes {
     }
   }
 
+  public static async deleteResult(
+    email: string,
+    id: string
+  ): Promise<RouteResponseClass> {
+    const database = new DatabaseOperations();
+    await database.initiateConnection();
+    console.log("HEY");
+
+    try {
+      await database.deleteResults(email, id);
+      return new RouteResponseClass(200, "Delete successful", {});
+    } catch (e) {
+      return new RouteResponseClass(
+        500,
+        "Something went wrong with Deleting the results.",
+        {}
+      );
+    } finally {
+      await database.terminateConnection();
+    }
+  }
+
   public static async addQuestions(
     data: any,
     emailThatAddedQuestions: string

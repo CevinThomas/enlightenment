@@ -45,7 +45,6 @@ function History(props) {
 
   function displayCorrectResult(resultToShow: number) {
     const resultToDisplay = results[resultToShow];
-    console.log(resultToDisplay);
     setShowModal(true);
     return setResultModal(resultToDisplay);
   }
@@ -61,9 +60,17 @@ function History(props) {
   function resetAndCloseModal() {
     closeModal();
     setResultModal({});
+    refreshResults();
   }
 
-  function deleteResult() {}
+  async function deleteResult() {
+    const response = await makeHttpsRequest(
+      EnvVariables.API_ENDPOINTS.DELETERESULTS,
+      "POST",
+      { id: resultModal.id }
+    );
+    if (response.statusCode === 200) return resetAndCloseModal();
+  }
 
   return (
     <React.Fragment>

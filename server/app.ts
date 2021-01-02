@@ -122,6 +122,16 @@ app.post("/invites/handle", async (req: any, res: any) => {
   res.send(response);
 });
 
+app.post("/questions/deleteresult", async (req: any, res: any) => {
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await PostRoutes.deleteResult(
+    auth.getUserFromToken(),
+    req.body.id
+  );
+  res.send(response);
+});
+
 app.get("/questions/getresults", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();

@@ -18,6 +18,19 @@ class DatabaseOperations {
     return this.databaseClient.connect();
   }
 
+  public async deleteResults(email: string, id: string): Promise<any> {
+    const idToMatch = ObjectID(id);
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.USERSCOLLECTION)
+        .updateOne({ email: email }, { $pull: { results: { id: idToMatch } } });
+    } catch (e) {
+      console.log(e);
+      throw new Error("Something went wrong with the database Results Query");
+    }
+  }
+
   public async getResultProperty(email: string): Promise<any> {
     try {
       return await this.databaseClient
@@ -76,6 +89,8 @@ class DatabaseOperations {
   }
 
   public async saveResultsToDB(userEmail: string, results: any) {
+    const resultId = ObjectID();
+    results.id = resultId;
     try {
       return await this.databaseClient
         .db(process.env.DATABASENAME)
