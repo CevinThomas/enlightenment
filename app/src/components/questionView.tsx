@@ -556,6 +556,7 @@ const styles = StyleSheet.create({
     flex: 0.4,
   },
   mainContainerTop: {
+    flex: 1,
     width: widthPercentageToDP("100%"),
     backgroundColor: "#233A44",
   },
@@ -628,6 +629,7 @@ const styles = StyleSheet.create({
     borderColor: "#545A75",
   },
   container: {
+    flex: 1,
     padding: 40,
     height: height * 0.9,
     width: widthPercentageToDP("90%"),
