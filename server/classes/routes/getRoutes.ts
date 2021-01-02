@@ -46,6 +46,23 @@ class GetRoutes {
     }
   }
 
+  public static async getResults(email: string): Promise<RouteResponseClass> {
+    const database = new DatabaseOperations();
+    await database.initiateConnection();
+
+    try {
+      const results = await database.getResultProperty(email);
+      if (!results) {
+        return new RouteResponseClass(200, "No results found", {});
+      }
+      return new RouteResponseClass(200, "Here is the results.", { results });
+    } catch (e) {
+      return new RouteResponseClass(500, "Results could not be gathered", {});
+    } finally {
+      await database.terminateConnection();
+    }
+  }
+
   public static async getQuestionById(
     questionId: string
   ): Promise<RouteResponseClass> {

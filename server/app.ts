@@ -122,6 +122,13 @@ app.post("/invites/handle", async (req: any, res: any) => {
   res.send(response);
 });
 
+app.get("/questions/getresults", async (req: any, res: any) => {
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await GetRoutes.getResults(auth.getUserFromToken());
+  res.send(response);
+});
+
 app.get("/invites/get", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();

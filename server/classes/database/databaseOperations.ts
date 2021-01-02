@@ -18,6 +18,17 @@ class DatabaseOperations {
     return this.databaseClient.connect();
   }
 
+  public async getResultProperty(email: string): Promise<any> {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.USERSCOLLECTION)
+        .findOne({ email }, { projection: { results: 1 } });
+    } catch (e) {
+      throw new Error("Something went wrong with the database Results Query");
+    }
+  }
+
   public async insertUserToDatabase(user: User): Promise<any> {
     try {
       const operation = await this.databaseClient
