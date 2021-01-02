@@ -29,7 +29,6 @@ const port = process.env.PORT;
 const hostName = process.env.HOSTNAME;
 
 app.post("/login", async (req: any, res: any) => {
-  console.log("SERVER LOGIN");
   const response: RouteResponseClass = await PostRoutes.login(req.body);
   if (response.statusCode === 200) return res.status(200).send(response);
   if (response.statusCode === 400) return res.send(response);
