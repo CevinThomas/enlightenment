@@ -43,7 +43,6 @@ const QuestionsContainer = () => {
 
   function saveQuestion(): void {
     const addedQuestionsClone = [...addedQuestions];
-    console.log("QUESTION TO ADD:", questionsData);
     //TODO Validate questions before adding
     addedQuestionsClone.push(questionsData);
     setAddedQuestions(addedQuestionsClone);
@@ -60,8 +59,6 @@ const QuestionsContainer = () => {
       }
     }
 
-    console.log(clonedAddedQuestions);
-
     setAddedQuestions(clonedAddedQuestions);
 
     resetQuestionsData();
@@ -74,9 +71,7 @@ const QuestionsContainer = () => {
   }
 
   function editQuestion(id: number): void {
-    console.log("EDITING", id);
     const clonedSavedQuestions = [...addedQuestions];
-    console.log(clonedSavedQuestions);
     const questionToEdit = clonedSavedQuestions.filter(
       (question) => question.id === id
     );
