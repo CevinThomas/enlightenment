@@ -53,7 +53,7 @@ class GetRoutes {
     try {
       const results = await database.getResultProperty(email);
       if (!results) {
-        return new RouteResponseClass(200, "No results found", {});
+        return new RouteResponseClass(203, "No results found", {});
       }
       return new RouteResponseClass(200, "Here is the results.", { results });
     } catch (e) {
