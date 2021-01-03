@@ -176,19 +176,19 @@ const QuestionView = (props) => {
     const wrongAnswersFromState = [];
 
     for (let i = 0; i < results.wrongAnswers.length; i++) {
-      wrongAnswersFromState.push(results.wrongAnswers[i].choice);
+      wrongAnswersFromState.push(results.wrongAnswers[i].id);
     }
 
     for (let i = 0; i < allOptionsInOneArray.length; i++) {
-      if (wrongAnswersFromState.includes(allOptionsInOneArray[i].choice)) {
+      if (wrongAnswersFromState.includes(allOptionsInOneArray[i].id)) {
         let indexToRemove = wrongAnswersFromState.indexOf(
-          allOptionsInOneArray[i].choice
+          allOptionsInOneArray[i].id
         );
         wrongAnswersFromState.splice(indexToRemove, 1);
       }
-      if (correctAnswersFromState.includes(allOptionsInOneArray[i].choice)) {
+      if (correctAnswersFromState.includes(allOptionsInOneArray[i].id)) {
         let indexToRemove = correctAnswersFromState.indexOf(
-          allOptionsInOneArray[i].choice
+          allOptionsInOneArray[i].id
         );
         correctAnswersFromState.splice(indexToRemove, 1);
       }
@@ -220,7 +220,7 @@ const QuestionView = (props) => {
     const category = props.question.category;
 
     if (!previousGuesses.includes(choice.choice)) {
-      previousGuesses.push(choice.choice);
+      previousGuesses.push(choice.id);
     }
 
     const updatedCategories = updateCategories(category, false);
@@ -249,7 +249,7 @@ const QuestionView = (props) => {
 
     let guessedChoiceInformation = [choice.choice, choice.explanation];
     let previousCorrectAnswers = [...results.correctAnswers];
-    previousCorrectAnswers.push(choice.choice);
+    previousCorrectAnswers.push(choice.id);
 
     const category = props.question.category;
 
@@ -368,25 +368,25 @@ const QuestionView = (props) => {
                       (optionToChoose) => {
                         return (
                           <View
-                            key={optionToChoose.choice}
+                            key={optionToChoose.id}
                             style={[
                               styles.viewContainer,
                               {
                                 borderColor: results.wrongAnswer.includes(
-                                  optionToChoose.choice
+                                  optionToChoose.id
                                 )
                                   ? "red"
                                   : guessesAndChoices.guessChoice.includes(
-                                      optionToChoose.choice
+                                      optionToChoose.id
                                     )
                                   ? "green"
-                                  : questionsData.rightAnswer.choice ===
-                                      optionToChoose.choice &&
+                                  : questionsData.rightAnswer.id ===
+                                      optionToChoose.id &&
                                     questionsData.currentQuestion.answered ===
                                       IsAnswered.yes
                                   ? "green"
                                   : guessesAndChoices.guesses.includes(
-                                      optionToChoose.choice
+                                      optionToChoose.id
                                     ) &&
                                     questionsData.currentQuestion.answered ===
                                       IsAnswered.yes
@@ -394,24 +394,24 @@ const QuestionView = (props) => {
                                   : "#545A75",
                                 backgroundColor:
                                   displayCorrectAnswer === true &&
-                                  questionsData.rightAnswer.choice ===
-                                    optionToChoose.choice
+                                  questionsData.rightAnswer.id ===
+                                    optionToChoose.id
                                     ? "green"
                                     : results.wrongAnswer.includes(
-                                        optionToChoose.choice
+                                        optionToChoose.id
                                       )
                                     ? "red"
                                     : guessesAndChoices.guessChoice.includes(
-                                        optionToChoose.choice
+                                        optionToChoose.id
                                       )
                                     ? "green"
-                                    : questionsData.rightAnswer.choice ===
-                                        optionToChoose.choice &&
+                                    : questionsData.rightAnswer.id ===
+                                        optionToChoose.id &&
                                       questionsData.currentQuestion.answered ===
                                         IsAnswered.yes
                                     ? "green"
                                     : guessesAndChoices.guesses.includes(
-                                        optionToChoose.choice
+                                        optionToChoose.id
                                       ) &&
                                       questionsData.currentQuestion.answered ===
                                         IsAnswered.yes
@@ -425,7 +425,7 @@ const QuestionView = (props) => {
                               disabled={
                                 (guessesAndChoices.rightAnswerGuessed &&
                                   !guessesAndChoices.guessChoice.includes(
-                                    optionToChoose.choice
+                                    optionToChoose.id
                                   )) ||
                                 guessesAndChoices.wrongAnswerGuessed ||
                                 questionsData.currentQuestion.answered ===
@@ -434,7 +434,7 @@ const QuestionView = (props) => {
                               accessibilityLabel={"choiceButton"}
                               onPress={
                                 guessesAndChoices.guessChoice.includes(
-                                  optionToChoose.choice
+                                  optionToChoose.id
                                 )
                                   ? null
                                   : (option) => {
