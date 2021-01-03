@@ -5,10 +5,12 @@ import EnvVariables from "../../envVariables";
 import SignInSignUp from "../components/SignUpSignIn";
 import { CHANGE_NAV } from "../constants/dispatch";
 import { useGlobalStateUpdate } from "../contexts/navigationContext";
+import { useGlobalUserInformationStateUpdate } from "../contexts/userInformation";
 import { makeHttpsRequest } from "../utils/functions";
 
 const Login = (props) => {
   const updateGlobalState = useGlobalStateUpdate();
+  const updateUserState = useGlobalUserInformationStateUpdate();
 
   async function login(email: string, password: string): Promise<void> {
     try {
@@ -18,11 +20,15 @@ const Login = (props) => {
         "POST",
         { email, password }
       );
-      console.log(response);
+      console.log(response.data.licenceId);
       if (response.statusCode === 204) {
         return response.message;
       } else if (response.statusCode === 200) {
         await SecureStore.setItemAsync("token", response.data.token);
+        updateUserState({
+          type: "LICENCEID",
+          payload: response.data.licenceId,
+        });
         return updateGlobalState({ type: CHANGE_NAV });
       }
 

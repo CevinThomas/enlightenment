@@ -6,6 +6,7 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import EnvVariables from "../../envVariables";
 import BottomBarLogo from "../components/bottomBarLogo";
 import ButtonList from "../components/buttonList";
+import { useGlobalUserInformationState } from "../contexts/userInformation";
 import {
   capitalizeFirstLetterInArray,
   makeHttpsRequest,
@@ -13,6 +14,8 @@ import {
 
 const Home = (props) => {
   //TODO: This is obviously hard coded and will be replaced with backend functionality
+
+  const userInformationState = useGlobalUserInformationState();
 
   const [allCategories, setAllCategories] = useState<Array<string>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -22,6 +25,7 @@ const Home = (props) => {
   };
 
   useEffect(() => {
+    console.log(userInformationState);
     fetchCategories().then((r) => r);
   }, []);
 

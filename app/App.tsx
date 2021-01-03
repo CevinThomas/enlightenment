@@ -9,6 +9,7 @@ import { default as theme } from "./custom-theme.json";
 import { default as mapping } from "./mapping.json";
 import RootComponent from "./src/components/rootComponent";
 import { NavigationProvider } from "./src/contexts/navigationContext";
+import { UserInformationProvider } from "./src/contexts/userInformation";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -28,10 +29,6 @@ export default function App() {
     );
   }
 
-  const test = () => {
-    console.log("HELLO");
-  };
-
   //TODO: Check stored Token is valid when app starts? If not valid, then ask user to login, if valid, keep user logged in.
 
   return (
@@ -42,9 +39,11 @@ export default function App() {
         theme={{ ...eva.dark, ...theme }}
         {...eva}
       >
-        <NavigationProvider>
-          <RootComponent />
-        </NavigationProvider>
+        <UserInformationProvider>
+          <NavigationProvider>
+            <RootComponent />
+          </NavigationProvider>
+        </UserInformationProvider>
       </ApplicationProvider>
     </React.Fragment>
   );
