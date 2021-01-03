@@ -4,12 +4,10 @@ import React, { useEffect, useState } from "react";
 import {
   Alert,
   Platform,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 import EnvVariables from "../../envVariables";
 import FadeIn from "./fadeIn";
 
@@ -57,76 +55,71 @@ const Score = (props) => {
     });
 
     response.json().then((r) => {
-      if (r.statusCode === 200) return Alert.alert("Saved!");
+      if (r.statusCode === 200) {
+        return Alert.alert("Saved!");
+      }
       Alert.alert("Could not save results, please contact support.");
     });
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{ height: heightPercentageToDP("100%") }}>
-        <FadeIn>
-          <View style={styles.headingContainer}>
-            <Text style={styles.mainheading}>
-              Well done! This is how you did!
-            </Text>
-          </View>
+      <FadeIn>
+        <View style={styles.headingContainer}>
+          <Text style={styles.mainheading}>
+            Well done! This is how you did!
+          </Text>
+        </View>
 
-          <View style={styles.textContainer}>
-            <Text style={styles.titles}>
-              Total amount of questions: {props.totalQuestions}
-            </Text>
-          </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.titles}>
+            Total amount of questions: {props.totalQuestions}
+          </Text>
+        </View>
 
-          <View style={styles.textContainer}>
-            <Text style={styles.titles}>
-              Correct attempts: {correctAttempts}
-            </Text>
-          </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.titles}>Correct attempts: {correctAttempts}</Text>
+        </View>
 
-          <View style={styles.textContainer}>
-            <Text style={styles.titles}>Wrong attempts: {wrongAttempts}</Text>
-          </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.titles}>Wrong attempts: {wrongAttempts}</Text>
+        </View>
 
-          <View style={styles.textContainer}>
-            <Text style={styles.titles}>Percentage: {percentageCorrect}%</Text>
-          </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.titles}>Percentage: {percentageCorrect}%</Text>
+        </View>
 
-          <View style={styles.textContainer}>
-            <Text style={[styles.titles, { marginBottom: 10 }]}>
-              Categories used:
-            </Text>
+        <View style={styles.textContainer}>
+          <Text style={[styles.titles, { marginBottom: 10 }]}>
+            Categories used:
+          </Text>
 
-            {categoryAnswers.map((category) => {
-              return (
-                <View key={category.name}>
-                  <Text style={styles.titles}>
-                    {category.name} Scored: {category.timesCorrect} out of{" "}
-                    {category.totalQuestions}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
+          {categoryAnswers.map((category) => {
+            return (
+              <View key={category.name}>
+                <Text style={styles.titles}>
+                  {category.name} Scored: {category.timesCorrect} out of{" "}
+                  {category.totalQuestions}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
 
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate("Home")}
-            style={styles.buttonContainer}
-          >
-            <Text style={{ color: "white", textAlign: "center" }}>
-              Do it again!
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={saveResults}
-            style={styles.buttonContainer}
-          >
-            <Text style={{ color: "white", textAlign: "center" }}>
-              Save Results
-            </Text>
-          </TouchableOpacity>
-        </FadeIn>
-      </ScrollView>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("Home")}
+          style={styles.buttonContainer}
+        >
+          <Text style={{ color: "white", textAlign: "center" }}>
+            Do it again!
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={saveResults} style={styles.buttonContainer}>
+          <Text style={{ color: "white", textAlign: "center" }}>
+            Save Results
+          </Text>
+        </TouchableOpacity>
+      </FadeIn>
     </View>
   );
 };
@@ -146,7 +139,6 @@ const styles = StyleSheet.create({
     borderColor: "#545A75",
   },
   container: {
-    height: heightPercentageToDP("100%"),
     width: "100%",
     flex: 1,
     marginTop: Platform.OS === "android" ? -10 : 0,

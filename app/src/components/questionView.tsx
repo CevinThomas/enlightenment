@@ -496,7 +496,9 @@ const QuestionView = (props) => {
             />
           )}
 
-          {guessesAndChoices.wrongAnswerGuessed ? null : (
+          {guessesAndChoices.wrongAnswerGuessed &&
+          props.scoreBoard !== true &&
+          questionsData.currentQuestion !== undefined ? null : (
             <View style={styles.prevAndNextMainContainer}>
               <View style={styles.prevAndNextContainer}>
                 {props.counter > 1 && props.scoreBoard !== true ? (
