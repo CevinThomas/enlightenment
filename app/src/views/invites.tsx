@@ -1,5 +1,6 @@
 import { default as React, useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import EnvVariables from "../../envVariables";
 import { makeHttpsRequest } from "../utils/functions";
 
@@ -58,7 +59,12 @@ function invites(props) {
             ))}
           </View>
         ) : (
-          <Text>You have no invites</Text>
+          <View>
+            <Text>You have no invites</Text>
+            <TouchableOpacity onPress={retrieveInvites}>
+              <Text>Refresh</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
     </View>
