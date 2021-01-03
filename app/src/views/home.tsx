@@ -1,12 +1,15 @@
 import { Text } from "@ui-kitten/components";
 import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import EnvVariables from "../../envVariables";
 import BottomBarLogo from "../components/bottomBarLogo";
 import ButtonList from "../components/buttonList";
-import { makeHttpsRequest } from "../utils/functions";
+import {
+  capitalizeFirstLetterInArray,
+  makeHttpsRequest,
+} from "../utils/functions";
 
 const Home = (props) => {
   //TODO: This is obviously hard coded and will be replaced with backend functionality
@@ -28,7 +31,8 @@ const Home = (props) => {
       EnvVariables.API_ENDPOINTS.GETCATEGORIES,
       "GET"
     );
-    setAllCategories(response);
+    const capitalized = capitalizeFirstLetterInArray(response);
+    setAllCategories(capitalized);
     setIsLoading(false);
   }
 
@@ -64,8 +68,6 @@ const Home = (props) => {
     </View>
   );
 };
-
-const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   mainContainer: {

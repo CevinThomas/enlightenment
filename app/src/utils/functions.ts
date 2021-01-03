@@ -57,6 +57,13 @@ export async function makeHttpsRequest(
   }
 }
 
-export default function capitalizeFirstLetter(nameOfCategory: string) {
+export default function capitalizeFirstLetter(nameOfCategory: string): string {
   return nameOfCategory.charAt(0).toUpperCase() + nameOfCategory.slice(1);
+}
+
+export function capitalizeFirstLetterInArray(array: Array<string>) {
+  const arrayWithCapitalized = array.map((str) => {
+    return capitalizeFirstLetter(str);
+  });
+  return arrayWithCapitalized;
 }
