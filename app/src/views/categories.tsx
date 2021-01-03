@@ -13,7 +13,10 @@ import BottomBarLogo from "../components/bottomBarLogo";
 import QuestionOverlay from "../components/questionOverlay";
 import { CHANGE_NAV } from "../constants/dispatch";
 import { useGlobalStateUpdate } from "../contexts/navigationContext";
-import { makeHttpsRequest } from "../utils/functions";
+import capitalizeFirstLetter, {
+  capitalizeFirstLetterInArray,
+  makeHttpsRequest,
+} from "../utils/functions";
 
 const Categories = (props) => {
   const updateGlobalState = useGlobalStateUpdate();
@@ -42,7 +45,10 @@ const Categories = (props) => {
       Alert.alert("Unauthorized, please login again");
       return updateGlobalState({ type: CHANGE_NAV, payload: 0 });
     } else {
-      setAllGroups(response.data.uniqueGroups);
+      const capitalized = capitalizeFirstLetterInArray(
+        response.data.uniqueGroups
+      );
+      setAllGroups(capitalized);
       setAllQuestions(response.data.questions);
     }
     setIsLoading(false);
@@ -54,7 +60,8 @@ const Categories = (props) => {
     let groupIdToFilterBy: string;
 
     for (let i = 0; i < allQuestions.length; i++) {
-      if (allQuestions[i].groupName === groupToUse) {
+      const capitalized = capitalizeFirstLetter(allQuestions[i].groupName);
+      if (capitalized === groupToUse) {
         groupIdToFilterBy = allQuestions[i].groupId;
         break;
       }
