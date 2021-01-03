@@ -1,4 +1,6 @@
 export interface Options {
-    name: string;
-    correct: boolean;
+  choice: string;
+  correct: boolean;
+  explanation: string;
+  id: number;
 }

@@ -220,7 +220,6 @@ class PostRoutes {
   ): Promise<RouteResponseClass> {
     const database = new DatabaseOperations();
     await database.initiateConnection();
-    console.log("HEY");
 
     try {
       await database.deleteResults(email, id);
@@ -244,6 +243,7 @@ class PostRoutes {
     const questions = new Questions(data);
     questions.generateObjectIdForGroupId();
     questions.generateLowerCaseProperties();
+    questions.generateOptionsIds();
 
     const database = new DatabaseOperations();
     await database.initiateConnection();
