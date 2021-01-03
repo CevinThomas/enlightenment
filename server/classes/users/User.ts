@@ -42,6 +42,7 @@ class User {
       email: this.email,
       token: this.signedToken,
       role: this.role,
+      licenceId: this.licenceId,
     };
   }
 
