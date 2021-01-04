@@ -32,7 +32,7 @@ const Home = (props) => {
     setIsLoading(true);
     //TODO: Fetch with licenceId
     const response = await makeHttpsRequest(
-      EnvVariables.API_ENDPOINTS.GETCATEGORIESBYLICENCE,
+      EnvVariables.API_ENDPOINTS.GETAREABYLICENCE,
       "GET"
     );
     console.log(response);

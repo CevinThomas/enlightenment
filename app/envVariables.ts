@@ -9,6 +9,7 @@ const EnvVariables = {
     GETQUESTIONSBYGROUPID: "http://192.168.200.52:4000/questions/groupId",
     GETCATEGORIESBYLICENCE:
       "http://192.168.200.52:4000/questions/allCategoriesByLicence",
+    GETAREABYLICENCE: "http://192.168.200.52:4000/questions/allAreasByLicence",
     SAVERESULTS: "http://192.168.200.52:4000/questions/saveresults",
     GETINVITES: "http://192.168.200.52:4000/invites/get",
     HANDLEINVITES: "http://192.168.200.52:4000/invites/handle",

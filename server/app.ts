@@ -165,6 +165,13 @@ app.get("/questions/allCategoriesByLicence", async (req: any, res: any) => {
   res.send(response);
 });
 
+app.get("/questions/allAreasByLicence", async (req: any, res: any) => {
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await GetRoutes.getAreasByLicence(auth.getUserFromToken());
+  res.send(response);
+});
+
 app.get("/user/licence", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();

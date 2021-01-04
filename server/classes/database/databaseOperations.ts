@@ -262,12 +262,12 @@ class DatabaseOperations {
     }
   }
 
-  public async gatherAllCategoriesByLicence(licenceId: string) {
+  public async gatherAllAreasByLicence(licenceId: string) {
     try {
       return await this.databaseClient
         .db(process.env.DATABASENAME)
         .collection(process.env.QUESTIONSCOLLECTION)
-        .distinct("category", { licenceGroup: licenceId });
+        .distinct("areaName", { licenceGroup: licenceId });
     } catch (e) {
       throw new Error("Something went wrong with Gethering categories query");
     }

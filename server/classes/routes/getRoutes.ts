@@ -190,14 +190,14 @@ class GetRoutes {
     }
   }
 
-  public static async getCategoriesByLicence(userEmail: string) {
+  public static async getAreasByLicence(userEmail: string) {
     const database = new DatabaseOperations();
     await database.initiateConnection();
 
     try {
       const user = await database.queryUserByEmailDatabase(userEmail);
       if (!user) return new RouteResponseClass(203, "User not found", {});
-      const dbOperation = await database.gatherAllCategoriesByLicence(
+      const dbOperation = await database.gatherAllAreasByLicence(
         user.licenceId
       );
       return new RouteResponseClass(200, "Here are the categories", {
