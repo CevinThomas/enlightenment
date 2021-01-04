@@ -150,6 +150,8 @@ class DatabaseOperations {
       questions.questionsData.forEach((question: any) => {
         bulk.insert({
           name: question.name,
+          areaName: question.areaName,
+          subjectName: question.subjectName,
           category: question.category,
           //explanation: question.explanation,
           groupName: question.groupName,

@@ -14,12 +14,16 @@ const QuestionsContainer = () => {
     false
   );
   const [groupName, setGroupName] = useState<string>("");
+  const [areaName, setAreaName] = useState<string>("");
+  const [subjectName, setSubjectName] = useState<string>("");
 
   const [questionsData, setQuestionsData] = useState({
     id: 0,
     name: "",
     category: "",
     groupName: "",
+    areaName: "",
+    subjectName: "",
     groupId: 0,
     answered: 0,
     answeredCorrectly: 0,
@@ -84,6 +88,8 @@ const QuestionsContainer = () => {
 
     clonedAddedQuestions.forEach((question) => {
       question.groupName = groupName;
+      question.areaName = areaName;
+      question.subjectName = subjectName;
     });
 
     const cookies = new Cookies();
@@ -109,6 +115,8 @@ const QuestionsContainer = () => {
       name: "",
       category: "",
       groupName: "",
+      areaName: "",
+      subjectName: "",
       groupId: 0,
       answered: 0,
       answeredCorrectly: 0,
@@ -128,6 +136,14 @@ const QuestionsContainer = () => {
       ...questionsData,
       options: clonedOptions,
     });
+  }
+
+  function areaNameChange(e: any): void {
+    setAreaName(e.target.value);
+  }
+
+  function subjectNameChange(e: any): void {
+    setSubjectName(e.target.value);
   }
 
   function onNameChangeHandler(e: any): void {
@@ -171,6 +187,10 @@ const QuestionsContainer = () => {
     if (cookie.get("token") !== undefined) {
       return (
         <QuestionsView
+          subjectNameChange={subjectNameChange}
+          subjectName={subjectName}
+          areaNameChange={areaNameChange}
+          areaName={areaName}
           cancelUpdate={cancelUpdateEditingQuestion}
           updateQuestion={updateEditingQuestion}
           currentlyEditing={editingQuestionState}

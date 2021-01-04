@@ -14,6 +14,8 @@ const EditQuestionContainer = ({ match, location, history }: any) => {
     name: "",
     category: "",
     groupName: "",
+    areaName: "",
+    subjectName: "",
     groupId: 0,
     answered: 0,
     answeredCorrectly: 0,
