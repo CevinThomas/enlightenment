@@ -15,6 +15,7 @@ import { CHANGE_NAV } from "../constants/dispatch";
 import { useGlobalStateUpdate } from "../contexts/navigationContext";
 import capitalizeFirstLetter, {
   capitalizeFirstLetterInArray,
+  lowerCapitalizeFirstLetter,
   makeHttpsRequest,
 } from "../utils/functions";
 
@@ -26,16 +27,23 @@ const Categories = (props) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [groupToUse, setGroupToUse] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [onSubjects, setOnSubjects] = useState<boolean>(false);
+  const [onCategories, setOnCategories] = useState<boolean>(false);
 
   useEffect(() => {
-    retrieveGroupsByCategoryChosen().then((r) => r);
+    setOnSubjects(props.route.params.subjects);
+    if (props.route.params.subjects === true) {
+      retrieveSubjectsByAreaChosen().then((r) => r);
+    } else {
+      retrieveGroupsByCategoryChosen().then((r) => r);
+    }
   }, []);
 
-  async function retrieveGroupsByCategoryChosen() {
+  async function retrieveSubjectsByAreaChosen() {
     setIsLoading(true);
     const url =
-      EnvVariables.API_ENDPOINTS.GETGROUPSBYCATEGORY +
-      "?group=" +
+      EnvVariables.API_ENDPOINTS.GETSUBJECTSBYAREACHOSEN +
+      "?subject=" +
       props.route.params.categoryChosen;
     const response = await makeHttpsRequest(url, "GET");
     if (
@@ -46,12 +54,48 @@ const Categories = (props) => {
       return updateGlobalState({ type: CHANGE_NAV, payload: 0 });
     } else {
       const capitalized = capitalizeFirstLetterInArray(
-        response.data.uniqueGroups
+        response.data.dbOperation
       );
       setAllGroups(capitalized);
-      setAllQuestions(response.data.questions);
     }
     setIsLoading(false);
+  }
+
+  async function retrieveCategoriesBySubjectChosen(subject: string) {
+    if (onSubjects === true) {
+      console.log("HEY");
+      const lowerCasedSubject = lowerCapitalizeFirstLetter(subject);
+      setIsLoading(true);
+      const url =
+        EnvVariables.API_ENDPOINTS.GETCATEGORIESBYSUBJECTCHOSEN +
+        "?subject=" +
+        lowerCasedSubject;
+      const response = await makeHttpsRequest(url, "GET");
+      console.log(response);
+      if (
+        response.message === "Unauthorized" ||
+        response.message === "Was not given a string."
+      ) {
+        Alert.alert("Unauthorized, please login again");
+        return updateGlobalState({ type: CHANGE_NAV, payload: 0 });
+      } else if (onCategories === true) {
+        const lowerCasedSubject = lowerCapitalizeFirstLetter(subject);
+        const url =
+          EnvVariables.API_ENDPOINTS.GETCATEGORIESBYSUBJECTCHOSEN +
+          "?subject=" +
+          lowerCasedSubject;
+        const response = await makeHttpsRequest(url, "GET");
+        setOnSubjects(false);
+        setOnCategories(true);
+      }
+      setIsLoading(false);
+    } else {
+    }
+  }
+
+  function navigateToCategories(e: any): void {
+    console.log(e);
+    retrieveCategoriesBySubjectChosen(e);
   }
 
   const navigateToProperQuestions = async (): void => {
@@ -97,7 +141,15 @@ const Categories = (props) => {
         <TouchableOpacity
           key={group}
           style={styles.buttonContainer}
-          onPress={() => openModalAndSetState(group)}
+          onPress={() => {
+            if (onSubjects === true) {
+              return navigateToCategories(group);
+            } else if (onCategories === true) {
+              return navigateToCategories(group);
+            } else {
+              openModalAndSetState(group);
+            }
+          }}
         >
           <Text style={styles.text}>{group}</Text>
         </TouchableOpacity>

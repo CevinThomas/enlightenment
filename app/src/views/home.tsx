@@ -17,11 +17,15 @@ const Home = (props) => {
 
   const userInformationState = useGlobalUserInformationState();
 
-  const [allCategories, setAllCategories] = useState<Array<string>>([]);
+  const [allAreas, setAllAreas] = useState<Array<string>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navigateToQuestions = (e, buttonId) => {
-    props.navigation.navigate("Categories", { categoryChosen: buttonId });
+    console.log(buttonId);
+    props.navigation.navigate("CategoriesAndSubjects", {
+      categoryChosen: buttonId,
+      subjects: true,
+    });
   };
 
   useEffect(() => {
@@ -37,7 +41,7 @@ const Home = (props) => {
     );
     console.log(response);
     const capitalized = capitalizeFirstLetterInArray(response.data.dbOperation);
-    setAllCategories(capitalized);
+    setAllAreas(capitalized);
     setIsLoading(false);
   }
 
@@ -57,7 +61,7 @@ const Home = (props) => {
           <FlatList
             style={{ flex: 1 }}
             keyExtractor={(item, index) => index.toString()}
-            data={allCategories}
+            data={allAreas}
             renderItem={({ item }) => (
               <ButtonList
                 navigateFunc={navigateToQuestions}

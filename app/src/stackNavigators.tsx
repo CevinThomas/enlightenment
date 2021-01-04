@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import GlobalStyles from "./utils/globalStyles";
-import Categories from "./views/categories";
+import CategoriesAndSubjects from "./views/categories";
 import EnterMfaCode from "./views/enterMfaCode";
 import History from "./views/history";
 import Home from "./views/home";
@@ -77,8 +77,8 @@ export const BaseNavigator = () => {
         }}
       />
       <Stack.Screen
-        name={"Categories"}
-        component={Categories}
+        name={"CategoriesAndSubjects"}
+        component={CategoriesAndSubjects}
         options={{
           headerStyle: {
             backgroundColor: "#233A44",

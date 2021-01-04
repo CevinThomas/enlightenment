@@ -273,6 +273,40 @@ class DatabaseOperations {
     }
   }
 
+  public async gatherCategoriesBySubjectChosen(
+    subjectChosen: string,
+    licenceId: string
+  ) {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.QUESTIONSCOLLECTION)
+        .distinct("category", {
+          licenceGroup: licenceId,
+          subjectName: subjectChosen,
+        });
+    } catch (e) {
+      throw new Error("Something went wrong with gathering subjects query");
+    }
+  }
+
+  public async gatherSubjectsByAreaChosen(
+    areaChosen: string,
+    licenceId: string
+  ) {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.QUESTIONSCOLLECTION)
+        .distinct("subjectName", {
+          licenceGroup: licenceId,
+          areaName: areaChosen,
+        });
+    } catch (e) {
+      throw new Error("Something went wrong with gathering subjects query");
+    }
+  }
+
   public async gatherAllCategories() {
     try {
       const projection = { category: 1, _id: 0 };

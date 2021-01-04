@@ -156,11 +156,13 @@ app.get("/questions/allCategories", async (req: any, res: any) => {
   res.send(response);
 });
 
-app.get("/questions/allCategoriesByLicence", async (req: any, res: any) => {
+app.get("/questions/allCategoriesBySubject", async (req: any, res: any) => {
+  console.log(req.query);
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await GetRoutes.getCategoriesByLicence(
-    auth.getUserFromToken()
+  const response = await GetRoutes.getCategoriesBySubject(
+    auth.getUserFromToken(),
+    req.query.subject
   );
   res.send(response);
 });
@@ -169,6 +171,16 @@ app.get("/questions/allAreasByLicence", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
   const response = await GetRoutes.getAreasByLicence(auth.getUserFromToken());
+  res.send(response);
+});
+
+app.get("/questions/allSubjectsByArea", async (req: any, res: any) => {
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await GetRoutes.getSubjectsByArea(
+    req.query.subject,
+    auth.getUserFromToken()
+  );
   res.send(response);
 });
 

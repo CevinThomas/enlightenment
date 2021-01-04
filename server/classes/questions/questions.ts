@@ -17,9 +17,16 @@ class Questions {
 
   generateLowerCaseProperties() {
     this.questionsData.forEach(
-      (question: { category: string; groupName: string }) => {
+      (question: {
+        category: string;
+        groupName: string;
+        areaName: string;
+        subjectName: string;
+      }) => {
         question.category = question.category.toLowerCase();
         question.groupName = question.groupName.toLowerCase();
+        question.areaName = question.areaName.toLowerCase();
+        question.subjectName = question.subjectName.toLowerCase();
       }
     );
   }
