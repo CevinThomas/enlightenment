@@ -25,17 +25,18 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    console.log(userInformationState);
     fetchCategories().then((r) => r);
   }, []);
 
   async function fetchCategories(): Promise<void> {
     setIsLoading(true);
+    //TODO: Fetch with licenceId
     const response = await makeHttpsRequest(
-      EnvVariables.API_ENDPOINTS.GETCATEGORIES,
+      EnvVariables.API_ENDPOINTS.GETCATEGORIESBYLICENCE,
       "GET"
     );
-    const capitalized = capitalizeFirstLetterInArray(response);
+    console.log(response);
+    const capitalized = capitalizeFirstLetterInArray(response.data.dbOperation);
     setAllCategories(capitalized);
     setIsLoading(false);
   }

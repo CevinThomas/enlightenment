@@ -260,6 +260,17 @@ class DatabaseOperations {
     }
   }
 
+  public async gatherAllCategoriesByLicence(licenceId: string) {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.QUESTIONSCOLLECTION)
+        .distinct("category", { licenceGroup: licenceId });
+    } catch (e) {
+      throw new Error("Something went wrong with Gethering categories query");
+    }
+  }
+
   public async gatherAllCategories() {
     try {
       const projection = { category: 1, _id: 0 };

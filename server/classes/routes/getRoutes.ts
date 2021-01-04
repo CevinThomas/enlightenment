@@ -190,6 +190,30 @@ class GetRoutes {
     }
   }
 
+  public static async getCategoriesByLicence(userEmail: string) {
+    const database = new DatabaseOperations();
+    await database.initiateConnection();
+
+    try {
+      const user = await database.queryUserByEmailDatabase(userEmail);
+      if (!user) return new RouteResponseClass(203, "User not found", {});
+      const dbOperation = await database.gatherAllCategoriesByLicence(
+        user.licenceId
+      );
+      return new RouteResponseClass(200, "Here are the categories", {
+        dbOperation,
+      });
+    } catch {
+      return new RouteResponseClass(
+        500,
+        "Categories could not be gathered",
+        {}
+      );
+    } finally {
+      await database.terminateConnection();
+    }
+  }
+
   public static async getGroupsForCategory(requestParams: any) {
     //TODO: Validate categoryParam before initializing database connection
     let categoryParam: any;
