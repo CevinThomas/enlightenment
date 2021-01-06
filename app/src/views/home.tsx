@@ -21,10 +21,9 @@ const Home = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navigateToQuestions = (e, buttonId) => {
-    console.log(buttonId);
     props.navigation.navigate("CategoriesAndSubjects", {
       categoryChosen: buttonId,
-      subjects: true,
+      step: "subjects",
     });
   };
 
@@ -39,7 +38,6 @@ const Home = (props) => {
       EnvVariables.API_ENDPOINTS.GETAREABYLICENCE,
       "GET"
     );
-    console.log(response);
     const capitalized = capitalizeFirstLetterInArray(response.data.dbOperation);
     setAllAreas(capitalized);
     setIsLoading(false);

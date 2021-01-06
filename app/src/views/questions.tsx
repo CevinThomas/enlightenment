@@ -23,6 +23,7 @@ const Questions = (props) => {
   useEffect(() => {
     if (props.route && props.route.params.questions !== undefined) {
       const idToUse = props.route.params.id;
+      console.log(props.route.params);
       updateQuestionsBeingUsed(props.route.params.questions);
 
       load(idToUse).then((r) => r);

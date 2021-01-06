@@ -6,7 +6,7 @@ const url = require("url");
 class GetRoutes {
   constructor() {}
 
-  public static async getQuestionsByCategory(
+  /*public static async getQuestionsByCategory(
     requestParams: any
   ): Promise<RouteResponse> {
     let categoryParam: any;
@@ -44,7 +44,7 @@ class GetRoutes {
     } finally {
       await database.terminateConnection();
     }
-  }
+  }*/
 
   public static async getCategoriesBySubject(
     userEmail: string,
@@ -117,7 +117,10 @@ class GetRoutes {
     }
   }
 
-  public static async getQuestionsByGroupName(requestParams: any) {
+  public static async getQuestionsByGroupName(
+    requestParams: any,
+    userEmail: string
+  ) {
     let groupNameParam: any;
     const database = new DatabaseOperations();
     await database.initiateConnection();
@@ -136,8 +139,17 @@ class GetRoutes {
     //TODO: VALIDATE GROUPNAMEPARAM
 
     try {
-      const dbOperation = await database.gatherQuestionsByGroupName(
+      const user = await database.queryUserByEmailDatabase(userEmail);
+
+      if (!user) return new RouteResponseClass(203, "No user found.", {});
+
+      const dbOperationOne = await database.gatherGroupIdByGroupName(
         rejoinedSentence
+      );
+
+      const dbOperation = await database.gatherQuestionsByGroupName(
+        rejoinedSentence,
+        user.licenceId
       );
       const questions = await dbOperation.toArray();
       if (questions.length === 0)
@@ -146,11 +158,10 @@ class GetRoutes {
           "No questions found with that query.",
           {}
         );
-      return new RouteResponseClass(
-        200,
-        "Here are the requested Questions.",
-        questions
-      );
+      return new RouteResponseClass(200, "Here are the requested Questions.", {
+        questions: questions,
+        groupId: dbOperationOne,
+      });
     } catch (e) {
       console.log(e);
       return new RouteResponseClass(500, "Questions could not be gathered", {});
@@ -283,49 +294,40 @@ class GetRoutes {
     }
   }
 
-  public static async getGroupsForCategory(requestParams: any) {
+  public static async getGroupsForCategory(
+    requestParams: any,
+    userEmail: string,
+    subjectChosen: string
+  ) {
     //TODO: Validate categoryParam before initializing database connection
     let categoryParam: any;
     const database = new DatabaseOperations();
     await database.initiateConnection();
 
     categoryParam = requestParams;
-
     try {
       if (typeof categoryParam !== "string")
         return new RouteResponseClass(200, "Was not given a string.", {});
 
+      const user = await database.queryUserByEmailDatabase(userEmail);
+
+      if (!user) return new RouteResponseClass(203, "User not found.", {});
+
       const dbOperation = await database.gatherQuestionsByCategory(
-        categoryParam
+        categoryParam,
+        user.licenceId,
+        subjectChosen
       );
-      const questions = await dbOperation.toArray();
-      if (questions.length === 0)
-        return new RouteResponseClass(
-          200,
-          "No questions found with that query.",
-          {}
-        );
-
-      let uniqueGroups: Array<string> = [];
-
-      questions.forEach((question: { groupName: string }) => {
-        if (uniqueGroups.includes(question.groupName)) {
-        } else {
-          uniqueGroups.push(question.groupName);
-        }
-      });
 
       //TODO: Create a hash table with the groupName as key, and all questions under that as array
 
       return new RouteResponseClass(
         200,
         "Here are the requested Groups by Category, and their questions by category",
-        {
-          uniqueGroups,
-          questions,
-        }
+        { dbOperation }
       );
-    } catch {
+    } catch (e) {
+      console.log(e);
       return new RouteResponseClass(500, "Questions could not be gathered", {});
     } finally {
       await database.terminateConnection();

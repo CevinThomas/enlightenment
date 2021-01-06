@@ -180,12 +180,35 @@ class DatabaseOperations {
     }
   }
 
-  public async gatherQuestionsByCategory(value: string | number) {
+  public async gatherGroupIdByGroupName(groupName: string) {
     try {
       return await this.databaseClient
         .db(process.env.DATABASENAME)
         .collection(process.env.QUESTIONSCOLLECTION)
-        .find({ category: value });
+        .findOne(
+          { groupName: groupName },
+          { projection: { groupId: 1, _id: 0 } }
+        );
+    } catch (e) {
+      console.log(e);
+      throw new Error("Something went wrong with Gathering Questions Query");
+    }
+  }
+
+  public async gatherQuestionsByCategory(
+    category: string | number,
+    licenceId: string,
+    subjectChosen: string
+  ) {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.QUESTIONSCOLLECTION)
+        .distinct("groupName", {
+          category: category,
+          licenceGroup: licenceId,
+          subjectName: subjectChosen,
+        });
     } catch (e) {
       console.log(e);
       throw new Error("Something went wrong with Gathering Questions Query");
@@ -238,12 +261,12 @@ class DatabaseOperations {
     }
   }
 
-  public async gatherQuestionsByGroupName(value: string) {
+  public async gatherQuestionsByGroupName(value: string, licenceId: string) {
     try {
       return await this.databaseClient
         .db(process.env.DATABASENAME)
         .collection(process.env.QUESTIONSCOLLECTION)
-        .find({ groupName: value });
+        .find({ groupName: value, licenceGroup: licenceId });
     } catch (e) {
       throw new Error("Something went wrong with Gathering Questions Query");
     }

@@ -36,6 +36,7 @@ app.post("/login", async (req: any, res: any) => {
 });
 
 app.post("/login/cms", async (req: any, res: any) => {
+  console.log("HELLO");
   const response: RouteResponseClass = await PostRoutes.login(req.body);
   if (response.data !== undefined) {
     if (response.data.role === "admin")
@@ -157,7 +158,6 @@ app.get("/questions/allCategories", async (req: any, res: any) => {
 });
 
 app.get("/questions/allCategoriesBySubject", async (req: any, res: any) => {
-  console.log(req.query);
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
   const response = await GetRoutes.getCategoriesBySubject(
@@ -199,7 +199,12 @@ app.get("/questions/licence", async (req: any, res: any) => {
 });
 
 app.get("/questions/group", async (req: any, res: any) => {
-  const response = await GetRoutes.getQuestionsByGroupName(req.query);
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await GetRoutes.getQuestionsByGroupName(
+    req.query,
+    auth.getUserFromToken()
+  );
   res.send(response);
 });
 
@@ -208,13 +213,19 @@ app.get("/questions/groupId", async (req: any, res: any) => {
   res.send(response);
 });
 
-app.get("/questions/category", async (req: any, res: any) => {
+/*app.get("/questions/category", async (req: any, res: any) => {
   const response = await GetRoutes.getQuestionsByCategory(req.query);
   res.send(response);
-});
+});*/
 
 app.get("/questions/categoryGroup", async (req: any, res: any) => {
-  const response = await GetRoutes.getGroupsForCategory(req.query.group);
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await GetRoutes.getGroupsForCategory(
+    req.query.group,
+    auth.getUserFromToken(),
+    req.query.subject
+  );
   res.send(response);
 });
 
