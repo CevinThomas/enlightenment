@@ -1,7 +1,7 @@
 import * as eva from "@eva-design/eva";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import "react-native-gesture-handler";
@@ -14,7 +14,7 @@ import { UserInformationProvider } from "./src/contexts/userInformation";
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
-  const fetchFonts = () => {
+  const fetchFonts = async () => {
     return Font.loadAsync({
       "century-gothic": require("./assets/fonts/century-gothic-400.ttf"),
     });
@@ -25,6 +25,7 @@ export default function App() {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setFontLoaded(true)}
+        onError={() => console.log("WARNING")}
       />
     );
   }
