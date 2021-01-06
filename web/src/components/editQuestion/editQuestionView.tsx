@@ -7,7 +7,6 @@ import QuestionCrud from "../questionCrud";
 interface IProps {
   changeName: (e: any) => void;
   optionChange: (e: any) => void;
-  categoryChange: (e: any) => void;
   correctHandler: (e: any) => void;
   optionExplanation: (e: any) => void;
   updateQuestion: () => void;
@@ -28,7 +27,6 @@ const EditQuestionView = ({
   optionExplanation,
   optionChange,
   correctHandler,
-  categoryChange,
   updateQuestion,
   newQuestion,
   deleteQuestion,
@@ -39,7 +37,6 @@ const EditQuestionView = ({
         <QuestionCrud
           optionExplanation={optionExplanation}
           correctHandler={correctHandler}
-          categoryChange={categoryChange}
           optionChange={optionChange}
           changeName={changeName}
           questionData={newQuestion}

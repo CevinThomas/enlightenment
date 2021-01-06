@@ -16,6 +16,7 @@ const QuestionsContainer = () => {
   const [groupName, setGroupName] = useState<string>("");
   const [areaName, setAreaName] = useState<string>("");
   const [subjectName, setSubjectName] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
   const [questionsData, setQuestionsData] = useState({
     id: 0,
@@ -90,6 +91,7 @@ const QuestionsContainer = () => {
       question.groupName = groupName;
       question.areaName = areaName;
       question.subjectName = subjectName;
+      question.category = category;
     });
 
     const cookies = new Cookies();
@@ -146,6 +148,10 @@ const QuestionsContainer = () => {
     setSubjectName(e.target.value);
   }
 
+  function categoryNameChange(e: any): void {
+    setCategory(e.target.value);
+  }
+
   function onNameChangeHandler(e: any): void {
     setQuestionsData({
       ...questionsData,
@@ -159,13 +165,6 @@ const QuestionsContainer = () => {
     setQuestionsData({
       ...questionsData,
       options: clonedOptions,
-    });
-  }
-
-  function onCategoryChangeHandler(e: any): void {
-    setQuestionsData({
-      ...questionsData,
-      category: e.target.value,
     });
   }
 
@@ -201,7 +200,8 @@ const QuestionsContainer = () => {
           optionExplanation={onOptionExplanationHandlerChange}
           correctHandler={onCorrectChangeHandler}
           groupNameChange={onGroupNameChangeHandler}
-          categoryChange={onCategoryChangeHandler}
+          categoryNameChange={categoryNameChange}
+          categoryName={category}
           addedQuestions={addedQuestions}
           optionChange={onOptionChangeHandler}
           changeName={onNameChangeHandler}

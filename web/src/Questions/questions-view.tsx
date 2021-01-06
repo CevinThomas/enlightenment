@@ -27,19 +27,22 @@ const AreaNameInput = styled.input``;
 
 const SubjectNameInput = styled.input``;
 
+const CategoryNameInput = styled.input``;
+
 interface IProps {
   addedQuestions: Array<QuestionsData>;
   newQuestion: QuestionsData;
   groupName: string;
   areaName: string;
   subjectName: string;
+  categoryName: string;
   subjectNameChange: (e: any) => void;
   areaNameChange: (e: any) => void;
   submitQuestions: () => void;
   saveQuestion: () => void;
   changeName: (e: any) => void;
   optionChange: (e: any) => void;
-  categoryChange: (e: any) => void;
+  categoryNameChange: (e: any) => void;
   groupNameChange: (e: any) => void;
   correctHandler: (e: any) => void;
   optionExplanation: (e: any) => void;
@@ -52,13 +55,14 @@ interface IProps {
 
 const QuestionsView = ({
   areaName,
+  categoryNameChange,
+  categoryName,
   areaNameChange,
   newQuestion,
   saveQuestion,
   changeName,
   optionChange,
   addedQuestions,
-  categoryChange,
   groupNameChange,
   correctHandler,
   optionExplanation,
@@ -87,7 +91,6 @@ const QuestionsView = ({
             <QuestionCrud
               optionExplanation={optionExplanation}
               correctHandler={correctHandler}
-              categoryChange={categoryChange}
               optionChange={optionChange}
               changeName={changeName}
               questionData={newQuestion}
@@ -118,6 +121,12 @@ const QuestionsView = ({
               value={groupName}
               placeholder={"Group Name"}
             />
+            <CategoryNameInput
+              onChange={categoryNameChange}
+              value={categoryName}
+              placeholder={"Category"}
+            />
+
             {addedQuestions.length !== 0
               ? addedQuestions.map((question: QuestionsData) => {
                   return (
@@ -133,7 +142,6 @@ const QuestionsView = ({
             <QuestionCrud
               optionExplanation={optionExplanation}
               correctHandler={correctHandler}
-              categoryChange={categoryChange}
               optionChange={optionChange}
               changeName={changeName}
               questionData={newQuestion}

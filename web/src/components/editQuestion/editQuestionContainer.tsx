@@ -97,13 +97,6 @@ const EditQuestionContainer = ({ match, location, history }: any) => {
     });
   }
 
-  function onCategoryChangeHandler(e: any): void {
-    setQuestionsData({
-      ...questionsData,
-      category: e.target.value,
-    });
-  }
-
   function onOptionChangeHandler(e: any): void {
     const clonedOptions = questionsData.options;
     clonedOptions[e.target.id].choice = e.target.value;
@@ -143,7 +136,6 @@ const EditQuestionContainer = ({ match, location, history }: any) => {
           updateQuestion={updateQuestion}
           optionExplanation={onOptionExplanationHandlerChange}
           correctHandler={onCorrectChangeHandler}
-          categoryChange={onCategoryChangeHandler}
           optionChange={onOptionChangeHandler}
           changeName={onNameChangeHandler}
           newQuestion={questionsData}
