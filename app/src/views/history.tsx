@@ -1,5 +1,6 @@
 import { default as React, useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import EnvVariables from "../../envVariables";
 import { makeHttpsRequest } from "../utils/functions";
 
@@ -85,28 +86,84 @@ function History(props) {
             resetResultsModalData();
           }}
         >
-          <View>
-            <View>
-              <Text>{resultModal.groupName}</Text>
-              <Text>{resultModal.totalQuestions}</Text>
-              <Text>{resultModal.correct}</Text>
-              <Text>{resultModal.percentage}</Text>
-              {resultModal.categories.map((category) => (
-                <Text key={category}>{category}</Text>
-              ))}
-              {resultModal.individualQuestions.map((question) => (
-                <View key={question.questionId}>
-                  <Text>{question.questionName}</Text>
-                  <Text>{question.wasUserCorrect.toString()}</Text>
+          <View style={styles.modalContainer}>
+            <View style={styles.innerContainer}>
+              <View style={styles.topContainer}>
+                <Text style={[styles.text, styles.group]}>
+                  {resultModal.groupName}
+                </Text>
+                <View style={styles.dataContainer}>
+                  <View style={styles.questionAndCorrectContainer}>
+                    <Text style={[styles.text]}>
+                      Total Questions: {resultModal.totalQuestions}
+                    </Text>
+                    <Text style={[styles.text]}>
+                      Correct: {resultModal.correct}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      styles.questionAndCorrectContainer,
+                      { paddingTop: 10 },
+                    ]}
+                  >
+                    <Text style={[styles.text]}>
+                      Percentage: {resultModal.percentage}
+                    </Text>
+                    {resultModal.categories.map((category) => (
+                      <Text style={[styles.text]} key={category}>
+                        Category: {category}
+                      </Text>
+                    ))}
+                  </View>
                 </View>
-              ))}
+              </View>
+
+              <View style={styles.scrollViewContainer}>
+                <ScrollView style={styles.scrollView}>
+                  {resultModal.individualQuestions.map((question) => (
+                    <View
+                      style={styles.questionContainer}
+                      key={question.questionId}
+                    >
+                      <View style={styles.questionName}>
+                        <Text style={[styles.text]}>
+                          {question.questionName}
+                        </Text>
+                      </View>
+                      <View
+                        style={[
+                          styles.questionCorrect,
+                          {
+                            backgroundColor: question.wasUserCorrect
+                              ? "green"
+                              : "red",
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.text,
+                            { textAlign: "center", color: "white" },
+                          ]}
+                        >
+                          {question.wasUserCorrect.toString()}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
             </View>
-            <View>
-              <TouchableOpacity onPress={resetAndCloseModal}>
-                <Text>Go Back</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.button]}
+                onPress={resetAndCloseModal}
+              >
+                <Text style={[styles.buttonText]}>Go Back</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={deleteResult}>
-                <Text>DELETE RESULT</Text>
+              <TouchableOpacity style={[styles.button]} onPress={deleteResult}>
+                <Text style={[styles.buttonText]}>DELETE RESULT</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -126,6 +183,66 @@ function History(props) {
 }
 
 const styles = StyleSheet.create({
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+  },
+  button: {
+    borderWidth: 2,
+    borderColor: "#545A75",
+    padding: 20,
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    paddingTop: 50,
+  },
+  questionAndCorrectContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  dataContainer: {
+    paddingTop: 20,
+  },
+  group: {
+    fontSize: 24,
+    textAlign: "center",
+  },
+  text: {
+    color: "white",
+    fontSize: 20,
+  },
+  topContainer: {},
+  questionName: {
+    width: "50%",
+    padding: 20,
+    fontFamily: "century-gothic",
+  },
+  questionCorrect: {
+    backgroundColor: "black",
+    width: "50%",
+    padding: 20,
+    fontFamily: "century-gothic",
+  },
+  questionContainer: {
+    justifyContent: "space-between",
+    alignContent: "space-between",
+    flexDirection: "row",
+    flex: 1,
+  },
+  scrollViewContainer: {
+    paddingTop: 20,
+  },
+  scrollView: {},
+  innerContainer: {},
+  modalContainer: {
+    backgroundColor: "#233A44",
+    height: "100%",
+    paddingTop: 80,
+    flex: 1,
+    padding: 20,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
