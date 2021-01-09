@@ -45,6 +45,7 @@ function History(props) {
 
   function displayCorrectResult(resultToShow: number) {
     const resultToDisplay = results[resultToShow];
+    console.log(resultToDisplay);
     setShowModal(true);
     return setResultModal(resultToDisplay);
   }
@@ -87,11 +88,17 @@ function History(props) {
           <View>
             <View>
               <Text>{resultModal.groupName}</Text>
+              <Text>{resultModal.totalQuestions}</Text>
               <Text>{resultModal.correct}</Text>
-              <Text>{resultModal.wrong}</Text>
               <Text>{resultModal.percentage}</Text>
               {resultModal.categories.map((category) => (
                 <Text key={category}>{category}</Text>
+              ))}
+              {resultModal.individualQuestions.map((question) => (
+                <View key={question.questionId}>
+                  <Text>{question.questionName}</Text>
+                  <Text>{question.wasUserCorrect.toString()}</Text>
+                </View>
               ))}
             </View>
             <View>
