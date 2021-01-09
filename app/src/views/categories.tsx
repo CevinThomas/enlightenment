@@ -99,7 +99,10 @@ const Categories = (props) => {
       Alert.alert("Unauthorized, please login again");
       return updateGlobalState({ type: CHANGE_NAV, payload: 0 });
     } else {
-      setAllGroups(response.data.dbOperation);
+      const capitalized = capitalizeFirstLetterInArray(
+        response.data.dbOperation
+      );
+      setAllGroups(capitalized);
       if (step === "categories") {
         setStep("group");
       } else {
