@@ -519,6 +519,7 @@ const QuestionView = (props) => {
             </>
           ) : (
             <Score
+              subjectName={props.question.subjectName}
               groupName={props.groupName}
               categoryAnswers={results.stateWithCategories}
               firstTry={results.timesCorrect}

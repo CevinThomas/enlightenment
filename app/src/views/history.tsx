@@ -46,7 +46,6 @@ function History(props) {
 
   function displayCorrectResult(resultToShow: number) {
     const resultToDisplay = results[resultToShow];
-    console.log(resultToDisplay);
     setShowModal(true);
     return setResultModal(resultToDisplay);
   }
@@ -147,7 +146,9 @@ function History(props) {
                             { textAlign: "center", color: "white" },
                           ]}
                         >
-                          {question.wasUserCorrect.toString()}
+                          {question.wasUserCorrect.toString() === "true"
+                            ? "Correct"
+                            : "Wrong"}
                         </Text>
                       </View>
                     </View>
