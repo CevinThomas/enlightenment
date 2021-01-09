@@ -124,17 +124,16 @@ const Categories = (props) => {
     });
   }
 
-  const navigateToProperQuestions = async (): void => {
+  const navigateToProperQuestions = async (): Promise<void> => {
     setShowModal(false);
 
     const url =
       EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPNAME +
       "?group=" +
-      groupToUse;
+      lowerCapitalizeFirstLetter(groupToUse);
     const response = await makeHttpsRequest(url, "GET");
 
     //TODO: Check for error when making HTTPS request
-
     const questionsToUse = response.data.questions;
     const idToUse = response.data.groupId.groupId;
 
