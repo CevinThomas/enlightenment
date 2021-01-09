@@ -18,6 +18,7 @@ const Score = (props) => {
   const [categoryAnswers, setCategoryAnswers] = useState<[]>([]);
 
   useEffect(() => {
+    console.log(props.questionsAndStatus);
     setCorrectAnswers(props.results.correctAnswers.length);
     setWrongAttempts(props.results.wrongAnswers.length);
     setCategoryAnswers(props.categoryAnswers);
@@ -41,8 +42,9 @@ const Score = (props) => {
       groupName: props.groupName,
       categories: uniqueCategories,
       correct: correctAttempts,
-      wrong: wrongAttempts,
+      totalQuestions: props.totalQuestions,
       percentage: Math.floor(percentageCorrect) + "%",
+      individualQuestions: props.questionsAndStatus,
     };
 
     const response = await fetch(`${EnvVariables.API_ENDPOINTS.SAVERESULTS}`, {

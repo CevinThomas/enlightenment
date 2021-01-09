@@ -3,6 +3,7 @@ import { Alert, AsyncStorage, View } from "react-native";
 import QuestionView from "../components/questionView";
 import { IsAnswered } from "../enums/isAnswered";
 import Question from "../interfaces/question";
+import QuestionsWithStatus from "../interfaces/questionsWithStatus";
 import { resetQuestions, shuffle } from "../utils/functions";
 
 const Questions = (props) => {
@@ -23,7 +24,6 @@ const Questions = (props) => {
   useEffect(() => {
     if (props.route && props.route.params.questions !== undefined) {
       const idToUse = props.route.params.id;
-      console.log(props.route.params);
       updateQuestionsBeingUsed(props.route.params.questions);
 
       load(idToUse).then((r) => r);
@@ -158,16 +158,28 @@ const Questions = (props) => {
     };
   };
 
+  async function removeQuestionFromQuestionsAndStatus(
+    savedQuestions: Array<QuestionsWithStatus>,
+    removedQuestionsNames: Array<string>
+  ): Promise<Array<QuestionsWithStatus>> {
+    return savedQuestions.filter((question) => {
+      if (!removedQuestionsNames.includes(question.questionName))
+        return question;
+    });
+  }
+
   async function updateQuestions(
     allQuestions: Array<Question>,
-    removedQuestions: Array<Question>,
+    savedQuestions: Array<QuestionsWithStatus>,
     removedQuestionsNames: Array<string>
-  ): void {
+  ) {
     const questionsToBeSaved = allQuestions.filter((questions) => {
       if (!removedQuestionsNames.includes(questions.name)) return questions;
     });
-    if (questionsToBeSaved.length === 0)
+    if (questionsToBeSaved.length === 0) {
       return Alert.alert("You cannot remove all questions.");
+    }
+
     if (questionsToBeSaved.length === allQuestions.length)
       return Alert.alert("Either remove a question or go back.");
     const questionsLength = allQuestions.length - 1;
@@ -228,6 +240,11 @@ const Questions = (props) => {
       showRemoveQuestionsModal();
     } catch (e) {
       console.log(e);
+    } finally {
+      return removeQuestionFromQuestionsAndStatus(
+        savedQuestions,
+        removedQuestionsNames
+      );
     }
   }
 
@@ -267,6 +284,9 @@ const Questions = (props) => {
             viewNextQuestion={isNextQuestionAnswered}
             isNextQuestionViewable={canWeViewNextQuestion}
             question={currentQuestion}
+            removeQuestionFromQuestionsAndStatus={
+              removeQuestionFromQuestionsAndStatus
+            }
           />
         ) : null}
       </View>

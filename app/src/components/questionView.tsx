@@ -40,6 +40,8 @@ const QuestionView = (props) => {
     stateWithCategories: [],
   });
 
+  const [questionsAndStatus, setQuestionsAndStatus] = useState([]);
+
   const [categories, setCategories] = useState<[]>([]);
   const [displayCorrectAnswer, setDisplayCorrectAnswer] = useState<boolean>(
     false
@@ -114,6 +116,7 @@ const QuestionView = (props) => {
       guessChoice: [],
       guesses: [],
     });
+    setQuestionsAndStatus([]);
     props.resetQuestions();
   }
 
@@ -199,15 +202,38 @@ const QuestionView = (props) => {
       correctAnswers: correctAnswersFromState,
       wrongAnswers: wrongAnswersFromState,
     });
-
-    props.updateQuestions(
+    const updatedQuestionsAndStatus = props.updateQuestions(
       allQuestions,
-      removedQuestions,
+      questionsAndStatus,
       removedQuestionsNames
+    );
+
+    updatedQuestionsAndStatus.then((questions) =>
+      setQuestionsAndStatus(questions)
     );
   }
 
+  async function addQuestionAndStatus(
+    name: string,
+    questionId: string,
+    correct: boolean
+  ): Promise<void> {
+    const alreadySavedQuestions = [...questionsAndStatus];
+    alreadySavedQuestions.push({
+      questionId: questionId,
+      questionName: name,
+      wasUserCorrect: correct,
+    });
+    setQuestionsAndStatus(alreadySavedQuestions);
+  }
+
   function wrongAnswer(event, choice) {
+    addQuestionAndStatus(
+      questionsData.currentQuestion.name,
+      questionsData.currentQuestion._id,
+      choice.correct
+    );
+
     updateQuestionProperty(event, choice);
 
     let previousGuesses = [...guessesAndChoices.guesses];
@@ -245,6 +271,12 @@ const QuestionView = (props) => {
   }
 
   function correctAnswer(event, choice) {
+    addQuestionAndStatus(
+      questionsData.currentQuestion.name,
+      questionsData.currentQuestion._id,
+      choice.correct
+    );
+
     updateQuestionProperty(choice);
 
     let guessedChoiceInformation = [choice.choice, choice.explanation];
@@ -493,6 +525,7 @@ const QuestionView = (props) => {
               totalQuestions={props.totalQuestions}
               navigation={props.navigation}
               results={results}
+              questionsAndStatus={questionsAndStatus}
             />
           )}
 
