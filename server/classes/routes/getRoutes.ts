@@ -102,16 +102,21 @@ class GetRoutes {
         };
       });
       let uniqueSubjectNames: Array<string> = [];
+      let uniqueAreaNames: Array<string> = [];
 
       propertiesWeWant.forEach((result: NewResults) => {
         if (!uniqueSubjectNames.includes(result.subjectName)) {
           uniqueSubjectNames.push(result.subjectName);
+        }
+        if (!uniqueAreaNames.includes(results.areaName)) {
+          uniqueAreaNames.push(results.areaName);
         }
       });
 
       return new RouteResponseClass(200, "Here is the results.", {
         results: propertiesWeWant,
         uniqueSubjectNames: uniqueSubjectNames,
+        uniqueAreaNames: uniqueAreaNames,
       });
     } catch (e) {
       console.log(e);

@@ -284,6 +284,7 @@ const Questions = (props) => {
             viewNextQuestion={isNextQuestionAnswered}
             isNextQuestionViewable={canWeViewNextQuestion}
             question={currentQuestion}
+            areaName={props.route.params.areaName}
             removeQuestionFromQuestionsAndStatus={
               removeQuestionFromQuestionsAndStatus
             }

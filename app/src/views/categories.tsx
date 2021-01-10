@@ -5,7 +5,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import EnvVariables from "../../envVariables";
@@ -16,7 +16,7 @@ import { useGlobalStateUpdate } from "../contexts/navigationContext";
 import {
   capitalizeFirstLetterInArray,
   lowerCapitalizeFirstLetter,
-  makeHttpsRequest,
+  makeHttpsRequest
 } from "../utils/functions";
 
 const Categories = (props) => {
@@ -30,15 +30,18 @@ const Categories = (props) => {
   const [onSubjects, setOnSubjects] = useState<boolean>(false);
   const [step, setStep] = useState<string>("");
   const [subject, setSubject] = useState("");
+  const [areaName, setAreaName] = useState<string>("");
 
   useEffect(() => {
     setStep(props.route.params.step);
     if (props.route.params.step === "subjects") {
+      console.log(props.route.params.areaChosen);
+      setAreaName(props.route.params.areaChosen);
       retrieveSubjectsByAreaChosen().then((r) => r);
     } else {
       setSubject(props.route.params.subjectChosen);
       retrieveCorrectStepData(
-        props.route.params.categoryChosen,
+        props.route.params.areaChosen,
         props.route.params.step,
         props.route.params.subjectChosen
       ).then((r) => r);
@@ -50,7 +53,7 @@ const Categories = (props) => {
     const url =
       EnvVariables.API_ENDPOINTS.GETSUBJECTSBYAREACHOSEN +
       "?subject=" +
-      props.route.params.categoryChosen;
+      props.route.params.areaChosen;
     const response = await makeHttpsRequest(url, "GET");
     if (
       response.message === "Unauthorized" ||
@@ -118,9 +121,10 @@ const Categories = (props) => {
     subjectChosen: string
   ): void {
     return props.navigation.push("CategoriesAndSubjects", {
-      categoryChosen: e,
+      areaChosen: e,
       step: nextStep,
       subjectChosen: subjectChosen,
+      areaName: props.route.params.areaName,
     });
   }
 
@@ -137,10 +141,13 @@ const Categories = (props) => {
     const questionsToUse = response.data.questions;
     const idToUse = response.data.groupId.groupId;
 
+    console.log("HELLO", areaName);
+
     props.navigation.navigate("Questions", {
       name: groupToUse,
       questions: questionsToUse,
       id: idToUse,
+      areaName: props.route.params.areaName,
     });
   };
 

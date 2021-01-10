@@ -5,7 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import GestureRecognizer from "react-native-swipe-gestures";
@@ -524,6 +524,7 @@ const QuestionView = (props) => {
             </>
           ) : (
             <Score
+              areaName={props.areaName}
               subjectName={props.question.subjectName}
               groupName={props.groupName}
               categoryAnswers={results.stateWithCategories}

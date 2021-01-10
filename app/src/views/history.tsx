@@ -12,12 +12,14 @@ function History(props) {
   const [uniqueSubjectNames, setUniqueSubjectNames] = useState<Array<string>>(
     []
   );
+  const [uniqueAreaNames, setUniqueAreaNames] = useState<Array<string>>([]);
 
   useEffect(() => {
     getResults()
       .then((results) => {
         setResults(results.results);
         setUniqueSubjectNames(results.uniqueSubjectNames);
+        setUniqueAreaNames(results.uniqueAreaNames);
       })
       .catch((e) => setError("No results found"));
   }, []);
@@ -27,6 +29,7 @@ function History(props) {
       EnvVariables.API_ENDPOINTS.GETRESULTS,
       "GET"
     );
+    console.log(results.data);
     if (results.data.statusCode !== 200) return results.data;
     throw new Error("No Results recieved");
   }

@@ -22,8 +22,9 @@ const Home = (props) => {
 
   const navigateToQuestions = (e, buttonId) => {
     props.navigation.navigate("CategoriesAndSubjects", {
-      categoryChosen: buttonId,
+      areaChosen: buttonId,
       step: "subjects",
+      areaName: buttonId,
     });
   };
 
