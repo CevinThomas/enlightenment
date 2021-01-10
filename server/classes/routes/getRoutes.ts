@@ -99,6 +99,7 @@ class GetRoutes {
           category: results.categories[0],
           groupName: results.groupName,
           individualQuestions: results.individualQuestions,
+          areaName: results.areaName,
         };
       });
       let uniqueSubjectNames: Array<string> = [];

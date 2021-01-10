@@ -10,6 +10,7 @@ export interface NewResults {
   category: string;
   groupName: string;
   individualQuestions: Array<IndividualQuestions>;
+  areaName: string;
 }
 
 export default interface Results {
@@ -21,4 +22,5 @@ export default interface Results {
   individualQuestions: Array<IndividualQuestions>;
   subjectName: string;
   id: string;
+  areaName: string;
 }
