@@ -39,14 +39,16 @@ function History(props) {
             <Text>{uniqueSubject}</Text>
           </View>
           {results.map((result, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => displayCorrectResult(index)}
-                key={index}
-              >
-                <Text>{result.groupName}</Text>
-              </TouchableOpacity>
-            );
+            if (result.subjectName === uniqueSubject) {
+              return (
+                <TouchableOpacity
+                  onPress={() => displayCorrectResult(index)}
+                  key={index}
+                >
+                  <Text>{result.groupName}</Text>
+                </TouchableOpacity>
+              );
+            }
           })}
         </View>
       );
@@ -259,6 +261,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     paddingTop: 20,
+    maxHeight: "85%",
   },
   scrollView: {},
   innerContainer: {},
