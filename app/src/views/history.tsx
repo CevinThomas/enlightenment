@@ -9,10 +9,16 @@ function History(props) {
   const [error, setError] = useState<string>("");
   const [resultModal, setResultModal] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [uniqueSubjectNames, setUniqueSubjectNames] = useState<Array<string>>(
+    []
+  );
 
   useEffect(() => {
     getResults()
-      .then((results) => setResults(results))
+      .then((results) => {
+        setResults(results.results);
+        setUniqueSubjectNames(results.uniqueSubjectNames);
+      })
       .catch((e) => setError("No results found"));
   }, []);
 
@@ -21,20 +27,23 @@ function History(props) {
       EnvVariables.API_ENDPOINTS.GETRESULTS,
       "GET"
     );
-    if (results.data.statusCode !== 200) return results.data.results.results;
+    console.log(results.data);
+    if (results.data.statusCode !== 200) return results.data;
     throw new Error("No Results recieved");
   }
 
   function renderResults() {
     if (results.length !== 0) {
-      return results.map((result, index) => (
-        <TouchableOpacity
-          onPress={() => displayCorrectResult(index)}
-          key={index}
-        >
-          <Text>{result.groupName}</Text>
-        </TouchableOpacity>
-      ));
+      return results.map((result, index) => {
+        return (
+          <TouchableOpacity
+            onPress={() => displayCorrectResult(index)}
+            key={index}
+          >
+            <Text>{result.groupName}</Text>
+          </TouchableOpacity>
+        );
+      });
     }
   }
 
@@ -109,11 +118,11 @@ function History(props) {
                     <Text style={[styles.text]}>
                       Percentage: {resultModal.percentage}
                     </Text>
-                    {resultModal.categories.map((category) => (
-                      <Text style={[styles.text]} key={category}>
-                        Category: {category}
+                    <Text>
+                      <Text style={[styles.text]}>
+                        Category: {resultModal.category}
                       </Text>
-                    ))}
+                    </Text>
                   </View>
                 </View>
               </View>

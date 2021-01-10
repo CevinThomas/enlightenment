@@ -77,8 +77,6 @@ app.post("/questions/saveresults", async (req: any, res: any) => {
   )
     return res.send(auth.getValidateMessage());
 
-  console.log(req.body);
-
   const response = await PostRoutes.saveResults(
     auth.getUserFromToken(),
     req.body

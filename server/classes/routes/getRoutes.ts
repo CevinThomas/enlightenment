@@ -1,3 +1,4 @@
+import Results, { NewResults } from "../../interfaces/results";
 import DatabaseOperations from "../database/databaseOperations";
 import RouteResponseClass from "./routeResponseClass";
 
@@ -91,8 +92,29 @@ class GetRoutes {
       if (!results) {
         return new RouteResponseClass(203, "No results found", {});
       }
-      return new RouteResponseClass(200, "Here is the results.", { results });
+      const propertiesWeWant = results.results.map((results: Results) => {
+        return {
+          id: results.id,
+          subjectName: results.subjectName,
+          category: results.categories[0],
+          groupName: results.groupName,
+          individualQuestions: results.individualQuestions,
+        };
+      });
+      let uniqueSubjectNames: Array<string> = [];
+
+      propertiesWeWant.forEach((result: NewResults) => {
+        if (!uniqueSubjectNames.includes(result.subjectName)) {
+          uniqueSubjectNames.push(result.subjectName);
+        }
+      });
+
+      return new RouteResponseClass(200, "Here is the results.", {
+        results: propertiesWeWant,
+        uniqueSubjectNames: uniqueSubjectNames,
+      });
     } catch (e) {
+      console.log(e);
       return new RouteResponseClass(500, "Results could not be gathered", {});
     } finally {
       await database.terminateConnection();
