@@ -27,29 +27,39 @@ function History(props) {
       EnvVariables.API_ENDPOINTS.GETRESULTS,
       "GET"
     );
-    console.log(results.data);
     if (results.data.statusCode !== 200) return results.data;
     throw new Error("No Results recieved");
   }
 
-  function renderResults() {
+  function renderResults(uniqueSubject: string) {
     if (results.length !== 0) {
-      return results.map((result, index) => {
-        return (
-          <TouchableOpacity
-            onPress={() => displayCorrectResult(index)}
-            key={index}
-          >
-            <Text>{result.groupName}</Text>
-          </TouchableOpacity>
-        );
-      });
+      const UI = (
+        <View>
+          <View>
+            <Text>{uniqueSubject}</Text>
+          </View>
+          {results.map((result, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => displayCorrectResult(index)}
+                key={index}
+              >
+                <Text>{result.groupName}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      );
+      return UI;
     }
   }
 
   function refreshResults() {
     getResults()
-      .then((results) => setResults(results))
+      .then((results) => {
+        setResults(results.results);
+        setUniqueSubjectNames(results.uniqueSubjectNames);
+      })
       .catch((e) => setError("No results found"));
   }
 
@@ -181,7 +191,13 @@ function History(props) {
       ) : null}
 
       <View style={styles.container}>
-        {error !== "" ? <Text>{error}</Text> : renderResults()}
+        {error !== "" ? (
+          <Text>{error}</Text>
+        ) : (
+          uniqueSubjectNames.map((uniqueSubject, index) => {
+            return renderResults(uniqueSubject);
+          })
+        )}
         <View style={styles.refreshContainer}>
           <TouchableOpacity onPress={refreshResults}>
             <Text>Refresh Results</Text>

@@ -412,7 +412,9 @@ const QuestionView = (props) => {
                                       optionToChoose.id
                                     )
                                   ? "green"
-                                  : questionsData.rightAnswer.id ===
+                                  : questionsData.rightAnswer.id !==
+                                      undefined &&
+                                    questionsData.rightAnswer.id ===
                                       optionToChoose.id &&
                                     questionsData.currentQuestion.answered ===
                                       IsAnswered.yes
@@ -426,6 +428,7 @@ const QuestionView = (props) => {
                                   : "#545A75",
                                 backgroundColor:
                                   displayCorrectAnswer === true &&
+                                  questionsData.rightAnswer.id !== undefined &&
                                   questionsData.rightAnswer.id ===
                                     optionToChoose.id
                                     ? "green"
@@ -437,7 +440,9 @@ const QuestionView = (props) => {
                                         optionToChoose.id
                                       )
                                     ? "green"
-                                    : questionsData.rightAnswer.id ===
+                                    : questionsData.rightAnswer.id !==
+                                        undefined &&
+                                      questionsData.rightAnswer.id ===
                                         optionToChoose.id &&
                                       questionsData.currentQuestion.answered ===
                                         IsAnswered.yes
