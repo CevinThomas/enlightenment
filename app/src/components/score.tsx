@@ -15,23 +15,23 @@ const Score = (props) => {
   const [percentageCorrect, setPercentageCorrect] = useState(0);
   const [correctAttempts, setCorrectAnswers] = useState<number>(0);
   const [wrongAttempts, setWrongAttempts] = useState<number>(0);
-  const [categoryAnswers, setCategoryAnswers] = useState<[]>([]);
+  const [tagAnswers, setTagAnswers] = useState<[]>([]);
 
   useEffect(() => {
     setCorrectAnswers(props.results.correctAnswers.length);
     setWrongAttempts(props.results.wrongAnswers.length);
-    setCategoryAnswers(props.categoryAnswers);
+    setTagAnswers(props.tagAnswers);
     setPercentageCorrect(
       (props.results.correctAnswers.length / props.totalQuestions) * 100
     );
   }, []);
 
   async function saveResults() {
-    let uniqueCategories = [];
+    let uniqueTags = [];
 
-    for (let i = 0; i < categoryAnswers.length; i++) {
-      if (!uniqueCategories.includes(categoryAnswers[i])) {
-        uniqueCategories.push(categoryAnswers[i]["name"]);
+    for (let i = 0; i < tagAnswers.length; i++) {
+      if (!uniqueTags.includes(tagAnswers[i])) {
+        uniqueTags.push(tagAnswers[i]["name"]);
       }
     }
 
@@ -47,6 +47,7 @@ const Score = (props) => {
       individualQuestions: props.questionsAndStatus,
       subjectName: props.subjectName,
       areaName: props.areaName,
+      tags: uniqueTags,
     };
 
     const response = await fetch(`${EnvVariables.API_ENDPOINTS.SAVERESULTS}`, {
@@ -94,16 +95,13 @@ const Score = (props) => {
         </View>
 
         <View style={styles.textContainer}>
-          <Text style={[styles.titles, { marginBottom: 10 }]}>
-            Categories used:
-          </Text>
+          <Text style={[styles.titles, { marginBottom: 10 }]}>Tag score:</Text>
 
-          {categoryAnswers.map((category) => {
+          {tagAnswers.map((tag) => {
             return (
-              <View key={category.name}>
+              <View key={tag.name}>
                 <Text style={styles.titles}>
-                  {category.name} Scored: {category.timesCorrect} out of{" "}
-                  {category.totalQuestions}
+                  {tag.name}: {tag.timesCorrect} out of {tag.totalQuestions}
                 </Text>
               </View>
             );

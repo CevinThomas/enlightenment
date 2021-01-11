@@ -100,6 +100,10 @@ class GetRoutes {
           groupName: results.groupName,
           individualQuestions: results.individualQuestions,
           areaName: results.areaName,
+          tags: results.tags,
+          totalQuestions: results.totalQuestions,
+          correct: results.correct,
+          percentage: results.percentage,
         };
       });
       let uniqueSubjectNames: Array<string> = [];

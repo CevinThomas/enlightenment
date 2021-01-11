@@ -32,6 +32,7 @@ function History(props) {
       EnvVariables.API_ENDPOINTS.GETRESULTS,
       "GET"
     );
+    console.log(results.data.results);
     if (results.data.statusCode !== 200) return results.data;
     throw new Error("No Results recieved");
   }
@@ -220,6 +221,20 @@ function History(props) {
                         Category: {resultModal.category}
                       </Text>
                     </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", paddingTop: 15 }}>
+                    {resultModal.tags.length !== 0 ? (
+                      <View style={{ flexDirection: "row" }}>
+                        <Text style={styles.text}>Tags: </Text>
+                        <View style={{ flexDirection: "row" }}>
+                          {resultModal.tags.map((tag) => (
+                            <Text style={{ paddingRight: 5, color: "white" }}>
+                              {tag},
+                            </Text>
+                          ))}
+                        </View>
+                      </View>
+                    ) : null}
                   </View>
                 </View>
               </View>

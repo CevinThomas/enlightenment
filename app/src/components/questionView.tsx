@@ -5,7 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import GestureRecognizer from "react-native-swipe-gestures";
@@ -37,7 +37,7 @@ const QuestionView = (props) => {
     wrongAnswer: [],
     correctAnswers: [],
     timesCorrect: 0,
-    stateWithCategories: [],
+    tags: [],
   });
 
   const [questionsAndStatus, setQuestionsAndStatus] = useState([]);
@@ -71,32 +71,32 @@ const QuestionView = (props) => {
     });
   }, [props.question]);
 
-  const updateCategories = (category: any, wasCorrect: boolean): any => {
-    let previousStateCategories = [...results.stateWithCategories];
+  const updateTags = (tag: any, wasCorrect: boolean): any => {
+    let savedTags = [...results.tags];
     let previousCategories = categories;
     let timesCorrectValue = 0;
 
     if (wasCorrect === true) timesCorrectValue = 1;
 
-    if (categories.includes(category)) {
-      previousStateCategories.forEach((item) => {
-        if (item.name === category) {
+    if (categories.includes(tag)) {
+      savedTags.forEach((item) => {
+        if (item.name === tag) {
           item.totalQuestions++;
           if (wasCorrect === true) item.timesCorrect++;
         }
       });
     } else {
-      previousCategories.push(category);
-      const freshCategoryCounter = {
-        name: category,
+      previousCategories.push(tag);
+      const freshTagCounter = {
+        name: tag,
         timesCorrect: timesCorrectValue,
         totalQuestions: 1,
       };
-      previousStateCategories.push(freshCategoryCounter);
+      savedTags.push(freshTagCounter);
     }
 
     return {
-      previousStateCategories,
+      savedTags,
       previousCategories,
     };
   };
@@ -108,7 +108,7 @@ const QuestionView = (props) => {
       wrongAnswer: [],
       correctAnswers: [],
       timesCorrect: 0,
-      stateWithCategories: [...results.stateWithCategories],
+      tags: [...results.tags],
     });
     setGuessesAndChoices({
       rightAnswerGuessed: false,
@@ -125,7 +125,7 @@ const QuestionView = (props) => {
     removedQuestions: Array<Question>,
     removedQuestionsNames: Array<string>
   ) {
-    let categoriesInfo = [...results.stateWithCategories];
+    let categoriesInfo = [...results.tags];
 
     let allOptions = [];
     for (let i = 0; i < removedQuestions.length; i++) {
@@ -136,21 +136,21 @@ const QuestionView = (props) => {
     for (let i = 0; i < removedQuestions.length; i++) {
       if (removedQuestions[i].answered === IsAnswered.no) {
       } else {
-        if (whatToRemoveHash.hasOwnProperty(removedQuestions[i].category)) {
+        if (whatToRemoveHash.hasOwnProperty(removedQuestions[i].tags)) {
           if (removedQuestions[i].answeredCorrectly === 1) {
-            whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
-            whatToRemoveHash[removedQuestions[i].category].correct++;
+            whatToRemoveHash[removedQuestions[i].tags].totalQuestions++;
+            whatToRemoveHash[removedQuestions[i].tags].correct++;
           } else {
-            whatToRemoveHash[removedQuestions[i].category].totalQuestions++;
+            whatToRemoveHash[removedQuestions[i].tags].totalQuestions++;
           }
         } else {
           if (removedQuestions[i].answeredCorrectly === 1) {
-            whatToRemoveHash[removedQuestions[i].category] = {
+            whatToRemoveHash[removedQuestions[i].tags] = {
               totalQuestions: 1,
               correct: 1,
             };
           } else {
-            whatToRemoveHash[removedQuestions[i].category] = {
+            whatToRemoveHash[removedQuestions[i].tags] = {
               totalQuestions: 1,
               correct: 0,
             };
@@ -243,13 +243,13 @@ const QuestionView = (props) => {
       explanation: choice.explanation,
     });
 
-    const category = props.question.category;
+    const tag = props.question.tags;
 
     if (!previousGuesses.includes(choice.choice)) {
       previousGuesses.push(choice.id);
     }
 
-    const updatedCategories = updateCategories(category, false);
+    const updatedCategories = updateTags(tag, false);
 
     setGuessesAndChoices({
       ...guessesAndChoices,
@@ -262,7 +262,7 @@ const QuestionView = (props) => {
       wrongAnswersWithExplanation: updatedWrongAnswers,
       wrongAnswers: updatedWrongAnswers,
       wrongAnswer: [choice.choice],
-      stateWithCategories: updatedCategories.previousStateCategories,
+      tags: updatedCategories.savedTags,
     });
 
     setCategories(updatedCategories.previousCategories);
@@ -283,9 +283,9 @@ const QuestionView = (props) => {
     let previousCorrectAnswers = [...results.correctAnswers];
     previousCorrectAnswers.push(choice.id);
 
-    const category = props.question.category;
+    const tag = props.question.tags;
 
-    const updatedCategories = updateCategories(category, true);
+    const updatedCategories = updateTags(tag, true);
 
     setGuessesAndChoices({
       ...guessesAndChoices,
@@ -297,7 +297,7 @@ const QuestionView = (props) => {
       ...results,
       correctAnswers: previousCorrectAnswers,
       timesCorrect: results.timesCorrect + 1,
-      stateWithCategories: updatedCategories.previousStateCategories,
+      tags: updatedCategories.savedTags,
     });
 
     setCategories(updatedCategories.previousCategories);
@@ -524,11 +524,11 @@ const QuestionView = (props) => {
             </>
           ) : (
             <Score
-            categoryChosen={props.categoryChosen}
+              categoryChosen={props.categoryChosen}
               areaName={props.areaName}
               subjectName={props.question.subjectName}
               groupName={props.groupName}
-              categoryAnswers={results.stateWithCategories}
+              tagAnswers={results.tags}
               firstTry={results.timesCorrect}
               totalQuestions={props.totalQuestions}
               navigation={props.navigation}

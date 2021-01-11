@@ -23,4 +23,5 @@ export default interface Results {
   subjectName: string;
   id: string;
   areaName: string;
+  tags: Array<string>;
 }
