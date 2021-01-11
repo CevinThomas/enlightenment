@@ -9,17 +9,16 @@ function History(props) {
   const [error, setError] = useState<string>("");
   const [resultModal, setResultModal] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [uniqueSubjectNames, setUniqueSubjectNames] = useState<Array<string>>(
-    []
-  );
+  const [uniqueAreaAndSubjects, setUniqueAreaAndSubjects] = useState<
+    Array<{ areaName: string; subjects: Array<string> }>
+  >([]);
   const [uniqueAreaNames, setUniqueAreaNames] = useState<Array<string>>([]);
 
   useEffect(() => {
     getResults()
       .then((results) => {
         setResults(results.results);
-        setUniqueSubjectNames(results.uniqueSubjectNames);
-        setUniqueAreaNames(results.uniqueAreaNames);
+        setUniqueAreaAndSubjects(results.uniqueAreaAndSubjects);
       })
       .catch((e) => setError("No results found"));
   }, []);
@@ -33,24 +32,60 @@ function History(props) {
     throw new Error("No Results recieved");
   }
 
-  function renderResults(uniqueSubject: string) {
+  function renderGroupNames(
+    groupNames: Array<{ groupName: string; id: string }>
+  ) {
+    if (groupNames.length !== 0) {
+      const UI = (
+        <View>
+          {groupNames.map((groupName) => {
+            if (groupName !== undefined) {
+              return (
+                <TouchableOpacity
+                  key={groupName.id}
+                  onPress={() => displayCorrectResult(groupName.id)}
+                >
+                  <Text>
+                    GROUPNAME:
+                    {groupName.groupName !== undefined
+                      ? groupName.groupName
+                      : null}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }
+          })}
+        </View>
+      );
+      return UI;
+    }
+  }
+
+  function renderResults(uniqueSubject: {
+    areaName: string;
+    subjects: Array<string>;
+  }) {
     if (results.length !== 0) {
       const UI = (
         <View>
           <View>
-            <Text>{uniqueSubject}</Text>
+            <Text>{uniqueSubject.areaName}</Text>
           </View>
-          {results.map((result, index) => {
-            if (result.subjectName === uniqueSubject) {
-              return (
-                <TouchableOpacity
-                  onPress={() => displayCorrectResult(index)}
-                  key={index}
-                >
-                  <Text>{result.groupName}</Text>
-                </TouchableOpacity>
-              );
-            }
+          {uniqueSubject.subjects.map((subject) => {
+            const groupNames = results.map((result) => {
+              if (
+                result.subjectName === subject &&
+                result.areaName === uniqueSubject.areaName
+              ) {
+                return { groupName: result.groupName, id: result.id };
+              }
+            });
+            return (
+              <View key={subject}>
+                <Text>SUBJECT: {subject}</Text>
+                {renderGroupNames(groupNames)}
+              </View>
+            );
           })}
         </View>
       );
@@ -62,13 +97,15 @@ function History(props) {
     getResults()
       .then((results) => {
         setResults(results.results);
-        setUniqueSubjectNames(results.uniqueSubjectNames);
+        setUniqueAreaAndSubjects(results.uniqueAreaAndSubjects);
       })
       .catch((e) => setError("No results found"));
   }
 
-  function displayCorrectResult(resultToShow: number) {
-    const resultToDisplay = results[resultToShow];
+  function displayCorrectResult(resultToShow: string) {
+    const resultToDisplay = results.find(
+      (result) => result.id === resultToShow
+    );
     setShowModal(true);
     return setResultModal(resultToDisplay);
   }
@@ -198,7 +235,7 @@ function History(props) {
         {error !== "" ? (
           <Text>{error}</Text>
         ) : (
-          uniqueSubjectNames.map((uniqueSubject, index) => {
+          uniqueAreaAndSubjects.map((uniqueSubject, index) => {
             return renderResults(uniqueSubject);
           })
         )}

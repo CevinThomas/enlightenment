@@ -132,12 +132,9 @@ class GetRoutes {
         }
       });
 
-      console.log(uniqueAreaNameWithSubjects);
-
       return new RouteResponseClass(200, "Here is the results.", {
         results: propertiesWeWant,
-        uniqueSubjectNames: uniqueSubjectNames,
-        uniqueAreaNames: uniqueAreaNames,
+        uniqueAreaAndSubjects: uniqueAreaNameWithSubjects,
       });
     } catch (e) {
       console.log(e);
