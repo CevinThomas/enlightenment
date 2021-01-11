@@ -1,6 +1,6 @@
 import { Text } from "@ui-kitten/components";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import EnvVariables from "../../envVariables";
@@ -19,6 +19,7 @@ const Home = (props) => {
 
   const [allAreas, setAllAreas] = useState<Array<string>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const navigateToQuestions = (e, buttonId) => {
     props.navigation.navigate("CategoriesAndSubjects", {
@@ -29,10 +30,10 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    fetchCategories().then((r) => r);
+    fetchAreas().then((r) => r);
   }, []);
 
-  async function fetchCategories(): Promise<void> {
+  async function fetchAreas(): Promise<void> {
     setIsLoading(true);
     //TODO: Fetch with licenceId
     const response = await makeHttpsRequest(
@@ -42,6 +43,11 @@ const Home = (props) => {
     const capitalized = capitalizeFirstLetterInArray(response.data.dbOperation);
     setAllAreas(capitalized);
     setIsLoading(false);
+  }
+
+  function refreshList() {
+    setIsRefreshing(true);
+    fetchAreas().then((r) => setIsRefreshing(false));
   }
 
   return (
@@ -58,6 +64,12 @@ const Home = (props) => {
 
         <View style={styles.buttonContainer}>
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={refreshList}
+              />
+            }
             style={{ flex: 1 }}
             keyExtractor={(item, index) => index.toString()}
             data={allAreas}
