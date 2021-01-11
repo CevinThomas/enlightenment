@@ -105,14 +105,34 @@ class GetRoutes {
       let uniqueSubjectNames: Array<string> = [];
       let uniqueAreaNames: Array<string> = [];
 
+      const uniqueAreaNameWithSubjects: Array<{
+        areaName: string;
+        subjects: Array<string>;
+      }> = [];
+
       propertiesWeWant.forEach((result: NewResults) => {
-        if (!uniqueSubjectNames.includes(result.subjectName)) {
+        if (!uniqueAreaNames.includes(result.areaName)) {
+          uniqueAreaNameWithSubjects.push({
+            areaName: result.areaName,
+            subjects: [result.subjectName],
+          });
+          uniqueAreaNames.push(result.areaName);
           uniqueSubjectNames.push(result.subjectName);
         }
-        if (!uniqueAreaNames.includes(results.areaName)) {
-          uniqueAreaNames.push(results.areaName);
+
+        if (
+          uniqueAreaNames.includes(result.areaName) &&
+          !uniqueSubjectNames.includes(result.subjectName)
+        ) {
+          const elementToUpdate = uniqueAreaNameWithSubjects.find(
+            (area) => area.areaName === result.areaName
+          );
+          elementToUpdate?.subjects.push(result.subjectName);
+          uniqueSubjectNames.push(result.subjectName);
         }
       });
+
+      console.log(uniqueAreaNameWithSubjects);
 
       return new RouteResponseClass(200, "Here is the results.", {
         results: propertiesWeWant,

@@ -29,7 +29,6 @@ function History(props) {
       EnvVariables.API_ENDPOINTS.GETRESULTS,
       "GET"
     );
-    console.log(results.data);
     if (results.data.statusCode !== 200) return results.data;
     throw new Error("No Results recieved");
   }
