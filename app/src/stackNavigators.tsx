@@ -2,6 +2,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import Icon from "react-native-vector-icons/Octicons";
 import GlobalStyles from "./utils/globalStyles";
 import CategoriesAndSubjects from "./views/categories";
 import EnterMfaCode from "./views/enterMfaCode";
@@ -11,6 +12,16 @@ import invites from "./views/invites";
 import Login from "./views/login";
 import Questions from "./views/questions";
 import Signup from "./views/signup";
+
+const MenuIcon = (navigation) => (
+  <Icon
+    style={{marginRight: 20}}
+    name="three-bars"
+    size={30}
+    color="white"
+    onPress={() => navigation.toggleDrawer()}
+  />
+);
 
 const Stack = createStackNavigator();
 
@@ -23,30 +34,56 @@ export const DrawerStack = () => {
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen name="Home" component={BaseNavigator} />
-        <Drawer.Screen name="History" component={History} />
-        <Drawer.Screen name="Invites" component={invites} />
+        <Drawer.Screen name="History" component={HistoryNavigator} />
+        <Drawer.Screen name="Invites" component={InviteNavigator} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 };
 
-export const InviteNavigator = () => {
+export const InviteNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Invites" component={invites} />
+      <Stack.Screen
+        name="Invites"
+        component={invites}
+        options={{
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: "#233A44",
+            shadowColor: "transparent",
+          },
+          headerTintColor: GlobalStyles.darkColor,
+          animationTypeForReplace: "pop",
+          headerRight: () => MenuIcon(navigation),
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
-export const HistoryNavigator = () => {
+export const HistoryNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="History" component={History} />
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: "#233A44",
+            shadowColor: "transparent",
+          },
+          headerTintColor: GlobalStyles.darkColor,
+          animationTypeForReplace: "pop",
+          headerRight: () => MenuIcon(navigation),
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
-export const BaseNavigator = () => {
+export const BaseNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -60,6 +97,7 @@ export const BaseNavigator = () => {
           },
           headerTintColor: GlobalStyles.darkColor,
           animationTypeForReplace: "pop",
+          headerRight: () => MenuIcon(navigation),
         }}
       />
       <Stack.Screen
@@ -87,6 +125,7 @@ export const BaseNavigator = () => {
           headerTintColor: "white",
           headerTitle: "",
           headerBackTitle: " ",
+          headerRight: () => MenuIcon(navigation),
         }}
       />
     </Stack.Navigator>
