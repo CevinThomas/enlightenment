@@ -20,7 +20,6 @@ const Login = (props) => {
         "POST",
         { email, password }
       );
-      console.log(response.data.licenceId);
       if (response.statusCode === 204) {
         return response.message;
       } else if (response.statusCode === 200) {

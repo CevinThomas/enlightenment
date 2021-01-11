@@ -2,6 +2,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import {TouchableOpacity, Text} from "react-native"
 import Icon from "react-native-vector-icons/Octicons";
 import GlobalStyles from "./utils/globalStyles";
 import CategoriesAndSubjects from "./views/categories";
@@ -12,6 +13,16 @@ import invites from "./views/invites";
 import Login from "./views/login";
 import Questions from "./views/questions";
 import Signup from "./views/signup";
+import Logout from "./components/logout"
+import { CHANGE_NAV } from "./constants/dispatch";
+
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+import { useGlobalStateUpdate } from "./contexts/navigationContext";
+
 
 const MenuIcon = (navigation) => (
   <Icon
@@ -23,19 +34,32 @@ const MenuIcon = (navigation) => (
   />
 );
 
+
+
+
 const Stack = createStackNavigator();
 
 const AuthStack = createStackNavigator();
 
 const Drawer = createDrawerNavigator();
 
+function CustomDrawerContent(props) {
+  const updateGlobalState = useGlobalStateUpdate();
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem label="Sign out" onPress={() => updateGlobalState({ type: CHANGE_NAV })} />
+    </DrawerContentScrollView>
+  );
+}
+
 export const DrawerStack = () => {
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} initialRouteName="Home">
         <Drawer.Screen name="Home" component={BaseNavigator} />
         <Drawer.Screen name="History" component={HistoryNavigator} />
-        <Drawer.Screen name="Invites" component={InviteNavigator} />
+        <Drawer.Screen name="Invites" component={InviteNavigator} />      
       </Drawer.Navigator>
     </NavigationContainer>
   );
