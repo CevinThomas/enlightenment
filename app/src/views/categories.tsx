@@ -5,7 +5,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import EnvVariables from "../../envVariables";
@@ -16,7 +16,7 @@ import { useGlobalStateUpdate } from "../contexts/navigationContext";
 import {
   capitalizeFirstLetterInArray,
   lowerCapitalizeFirstLetter,
-  makeHttpsRequest
+  makeHttpsRequest,
 } from "../utils/functions";
 
 const Categories = (props) => {
@@ -31,11 +31,14 @@ const Categories = (props) => {
   const [step, setStep] = useState<string>("");
   const [subject, setSubject] = useState("");
   const [areaName, setAreaName] = useState<string>("");
+  const [categoryChosen, setCategoryChosen] = useState<string>("");
 
   useEffect(() => {
+    if (props.route.params.categoryChosen !== undefined) {
+      setCategoryChosen(props.route.params.categoryChosen);
+    }
     setStep(props.route.params.step);
     if (props.route.params.step === "subjects") {
-      console.log(props.route.params.areaChosen);
       setAreaName(props.route.params.areaChosen);
       retrieveSubjectsByAreaChosen().then((r) => r);
     } else {
@@ -118,10 +121,12 @@ const Categories = (props) => {
   function navigateToCategories(
     e: any,
     nextStep: string,
-    subjectChosen: string
+    subjectChosen: string,
+    categoryChosen?: string
   ): void {
     return props.navigation.push("CategoriesAndSubjects", {
       areaChosen: e,
+      categoryChosen: categoryChosen,
       step: nextStep,
       subjectChosen: subjectChosen,
       areaName: props.route.params.areaName,
@@ -141,13 +146,12 @@ const Categories = (props) => {
     const questionsToUse = response.data.questions;
     const idToUse = response.data.groupId.groupId;
 
-    console.log("HELLO", areaName);
-
     props.navigation.navigate("Questions", {
       name: groupToUse,
       questions: questionsToUse,
       id: idToUse,
       areaName: props.route.params.areaName,
+      categoryChosen: categoryChosen,
     });
   };
 
@@ -168,7 +172,7 @@ const Categories = (props) => {
             if (step === "categories") {
               return navigateToCategories(group, "categories", group);
             } else if (step === "group") {
-              return navigateToCategories(group, "group", subject);
+              return navigateToCategories(group, "group", subject, group);
             } else if (step === "questions") {
               openModalAndSetState(group);
             }

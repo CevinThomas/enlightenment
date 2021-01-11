@@ -524,6 +524,7 @@ const QuestionView = (props) => {
             </>
           ) : (
             <Score
+            categoryChosen={props.categoryChosen}
               areaName={props.areaName}
               subjectName={props.question.subjectName}
               groupName={props.groupName}

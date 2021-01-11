@@ -268,6 +268,7 @@ const Questions = (props) => {
       <View>
         {currentQuestion !== undefined ? (
           <QuestionView
+            categoryChosen={props.route.params.categoryChosen}
             groupName={props.route.params.name}
             questionsModal={showRemoveQuestionsModal}
             toShowQuestionsModal={removeQuestionsModal}

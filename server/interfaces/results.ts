@@ -15,7 +15,7 @@ export interface NewResults {
 
 export default interface Results {
   groupName: string;
-  categories: Array<string>;
+  category: string;
   correct: number;
   totalQuestions: number;
   percentage: string;

@@ -18,7 +18,6 @@ const Score = (props) => {
   const [categoryAnswers, setCategoryAnswers] = useState<[]>([]);
 
   useEffect(() => {
-    console.log(props.areaName);
     setCorrectAnswers(props.results.correctAnswers.length);
     setWrongAttempts(props.results.wrongAnswers.length);
     setCategoryAnswers(props.categoryAnswers);
@@ -40,7 +39,8 @@ const Score = (props) => {
 
     const results = {
       groupName: props.groupName,
-      categories: uniqueCategories,
+      category: props.categoryChosen,
+      //categories: uniqueCategories,
       correct: correctAttempts,
       totalQuestions: props.totalQuestions,
       percentage: Math.floor(percentageCorrect) + "%",

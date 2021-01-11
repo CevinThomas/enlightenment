@@ -96,7 +96,7 @@ class GetRoutes {
         return {
           id: results.id,
           subjectName: results.subjectName,
-          category: results.categories[0],
+          category: results.category,
           groupName: results.groupName,
           individualQuestions: results.individualQuestions,
           areaName: results.areaName,
