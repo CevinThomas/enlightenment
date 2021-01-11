@@ -1,8 +1,12 @@
 import { default as React, useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import EnvVariables from "../../envVariables";
-import { makeHttpsRequest } from "../utils/functions";
+import capitalizeFirstLetter, { makeHttpsRequest } from "../utils/functions";
 
 function History(props) {
   const [results, setResults] = useState([]);
@@ -37,16 +41,32 @@ function History(props) {
   ) {
     if (groupNames.length !== 0) {
       const UI = (
-        <View>
+        <View
+          style={{
+            paddingLeft: widthPercentageToDP("2%"),
+            paddingBottom: heightPercentageToDP("2%"),
+          }}
+        >
           {groupNames.map((groupName) => {
             if (groupName !== undefined) {
               return (
                 <TouchableOpacity
+                  style={[
+                    {
+                      marginBottom: heightPercentageToDP("1%"),
+                      alignSelf: "flex-start",
+                      padding: 10,
+                      borderWidth: 1,
+                      borderColor: "#545A75",
+                      borderRadius: 10,
+                    },
+                  ]}
                   key={groupName.id}
                   onPress={() => displayCorrectResult(groupName.id)}
                 >
-                  <Text>
-                    GROUPNAME:
+                  <Text
+                    style={[styles.text, styles.buttonText, { fontSize: 15 }]}
+                  >
                     {groupName.groupName !== undefined
                       ? groupName.groupName
                       : null}
@@ -67,9 +87,28 @@ function History(props) {
   }) {
     if (results.length !== 0) {
       const UI = (
-        <View>
-          <View>
-            <Text>{uniqueSubject.areaName}</Text>
+        <View style={[{ paddingBottom: heightPercentageToDP("4%") }]}>
+          <View
+            style={[
+              styles.area,
+              {
+                borderBottomWidth: 2,
+                borderColor: "white",
+                borderBottomColor: "white",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontWeight: "bold",
+                  fontSize: 24,
+                },
+              ]}
+            >
+              {capitalizeFirstLetter(uniqueSubject.areaName)}
+            </Text>
           </View>
           {uniqueSubject.subjects.map((subject) => {
             const groupNames = results.map((result) => {
@@ -82,7 +121,14 @@ function History(props) {
             });
             return (
               <View key={subject}>
-                <Text>SUBJECT: {subject}</Text>
+                <Text
+                  style={[
+                    styles.text,
+                    { fontSize: 18, paddingBottom: heightPercentageToDP("1%") },
+                  ]}
+                >
+                  {capitalizeFirstLetter(subject)}
+                </Text>
                 {renderGroupNames(groupNames)}
               </View>
             );
@@ -240,8 +286,10 @@ function History(props) {
           })
         )}
         <View style={styles.refreshContainer}>
-          <TouchableOpacity onPress={refreshResults}>
-            <Text>Refresh Results</Text>
+          <TouchableOpacity style={styles.button} onPress={refreshResults}>
+            <Text style={[styles.buttonText, { textAlign: "center" }]}>
+              Refresh Results
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -250,6 +298,13 @@ function History(props) {
 }
 
 const styles = StyleSheet.create({
+  area: {
+    marginBottom: heightPercentageToDP("1%"),
+    alignSelf: "flex-start",
+  },
+  text: {
+    color: "white",
+  },
   buttonText: {
     color: "white",
     fontSize: 20,
@@ -313,8 +368,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#233A44",
+    height: heightPercentageToDP("100%"),
+    width: widthPercentageToDP("100%"),
+    paddingTop: heightPercentageToDP("8%"),
+    paddingLeft: widthPercentageToDP("5%"),
+    paddingRight: widthPercentageToDP("5%"),
   },
   refreshContainer: {
     marginTop: 10,
