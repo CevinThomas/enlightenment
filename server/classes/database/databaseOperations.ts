@@ -160,6 +160,7 @@ class DatabaseOperations {
           licenceGroup: licenceId,
           answered: question.answered,
           answeredCorrectly: question.answeredCorrectly,
+          tags: question.tags,
         });
       });
       return bulk.execute();

@@ -25,6 +25,7 @@ const EditQuestionContainer = ({ match, location, history }: any) => {
       { choice: "", correct: false, explanation: "", id: 2 },
       { choice: "", correct: false, explanation: "", id: 3 },
     ],
+    tags: "",
   });
 
   useEffect(() => {
@@ -88,6 +89,13 @@ const EditQuestionContainer = ({ match, location, history }: any) => {
     });
   }
 
+  function onTagChangeHandler(e: any): void {
+    setQuestionsData({
+      ...questionsData,
+      tags: e.target.value,
+    });
+  }
+
   function onCorrectChangeHandler(e: any): void {
     const clonedOptions = questionsData.options;
     clonedOptions[e.target.id].correct = e.target.checked;
@@ -132,6 +140,7 @@ const EditQuestionContainer = ({ match, location, history }: any) => {
     if (cookie.get("token") !== undefined) {
       return (
         <EditQuestionView
+          tagChange={onTagChangeHandler}
           deleteQuestion={deleteQuestionHandler}
           updateQuestion={updateQuestion}
           optionExplanation={onOptionExplanationHandlerChange}

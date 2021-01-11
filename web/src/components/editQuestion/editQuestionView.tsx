@@ -11,6 +11,7 @@ interface IProps {
   optionExplanation: (e: any) => void;
   updateQuestion: () => void;
   deleteQuestion: () => void;
+  tagChange: (e: any) => void;
   newQuestion: QuestionsData;
 }
 
@@ -23,6 +24,7 @@ const UpdateButton = styled.button``;
 const DeleteButton = styled.button``;
 
 const EditQuestionView = ({
+  tagChange,
   changeName,
   optionExplanation,
   optionChange,
@@ -40,6 +42,7 @@ const EditQuestionView = ({
           optionChange={optionChange}
           changeName={changeName}
           questionData={newQuestion}
+          tagChange={tagChange}
         />
       ) : null}
 

@@ -7,15 +7,19 @@ const Container = styled.div``;
 
 const QuestionName = styled.input``;
 
+const QuestionTags = styled.input``;
+
 interface IProps {
   questionData: QuestionsData;
   changeName: (e: any) => void;
   optionChange: (e: any) => void;
   correctHandler: (e: any) => void;
   optionExplanation: (e: any) => void;
+  tagChange: (e: any) => void;
 }
 
 const QuestionCrud = ({
+  tagChange,
   questionData,
   changeName,
   optionChange,
@@ -28,6 +32,11 @@ const QuestionCrud = ({
         onChange={changeName}
         value={questionData.name}
         placeholder={"Name of Question"}
+      />
+      <QuestionTags
+        placeholder={"Tag"}
+        value={questionData.tags}
+        onChange={tagChange}
       />
       {questionData.options.length !== 0
         ? questionData.options.map((option: Options) => {

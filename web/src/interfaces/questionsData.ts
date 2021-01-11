@@ -17,4 +17,5 @@ export interface QuestionsData {
   answered: number;
   answeredCorrectly: number;
   options: Array<Options>;
+  tags: string;
 }

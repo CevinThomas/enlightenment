@@ -51,9 +51,11 @@ interface IProps {
   currentlyEditing: boolean;
   updateQuestion: (id: number) => void;
   cancelUpdate: (id: number) => void;
+  tagChange: (e: any) => void;
 }
 
 const QuestionsView = ({
+  tagChange,
   areaName,
   categoryNameChange,
   categoryName,
@@ -94,6 +96,7 @@ const QuestionsView = ({
               optionChange={optionChange}
               changeName={changeName}
               questionData={newQuestion}
+              tagChange={tagChange}
             />
             <SavedUpdatedQuestion
               onClick={() => updateQuestion(newQuestion.id)}
@@ -140,6 +143,7 @@ const QuestionsView = ({
                 })
               : null}
             <QuestionCrud
+              tagChange={tagChange}
               optionExplanation={optionExplanation}
               correctHandler={correctHandler}
               optionChange={optionChange}

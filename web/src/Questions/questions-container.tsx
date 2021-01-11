@@ -34,6 +34,7 @@ const QuestionsContainer = () => {
       { choice: "", correct: false, explanation: "", id: 2 },
       { choice: "", correct: false, explanation: "", id: 3 },
     ],
+    tags: "",
   });
 
   const counterForQuestions = useRef<number>(0);
@@ -128,6 +129,7 @@ const QuestionsContainer = () => {
         { choice: "", correct: false, explanation: "", id: 2 },
         { choice: "", correct: false, explanation: "", id: 3 },
       ],
+      tags: "",
     });
   }
 
@@ -156,6 +158,13 @@ const QuestionsContainer = () => {
     setQuestionsData({
       ...questionsData,
       name: e.target.value,
+    });
+  }
+
+  function onTagChangeHandler(e: any): void {
+    setQuestionsData({
+      ...questionsData,
+      tags: e.target.value,
     });
   }
 
@@ -207,6 +216,7 @@ const QuestionsContainer = () => {
           changeName={onNameChangeHandler}
           saveQuestion={saveQuestion}
           newQuestion={questionsData}
+          tagChange={onTagChangeHandler}
         />
       );
     } else {
