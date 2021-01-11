@@ -73,7 +73,7 @@ export const BaseNavigator = () => {
           headerTintColor: "white",
           headerTitle: "",
           gestureEnabled: false,
-          headerBackTitle: "Categories",
+          headerBackTitle: " ",
         }}
       />
       <Stack.Screen
@@ -86,7 +86,7 @@ export const BaseNavigator = () => {
           },
           headerTintColor: "white",
           headerTitle: "",
-          headerBackTitle: "Home",
+          headerBackTitle: " ",
         }}
       />
     </Stack.Navigator>
