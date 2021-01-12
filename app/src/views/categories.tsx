@@ -13,7 +13,7 @@ import BottomBarLogo from "../components/bottomBarLogo";
 import QuestionOverlay from "../components/questionOverlay";
 import { CHANGE_NAV } from "../constants/dispatch";
 import { useGlobalStateUpdate } from "../contexts/navigationContext";
-import {
+import capitalizeFirstLetter, {
   capitalizeFirstLetterInArray,
   lowerCapitalizeFirstLetter,
   makeHttpsRequest,
@@ -105,9 +105,18 @@ const Categories = (props) => {
       Alert.alert("Unauthorized, please login again");
       return updateGlobalState({ type: CHANGE_NAV, payload: 0 });
     } else {
-      const capitalized = capitalizeFirstLetterInArray(
-        response.data.dbOperation
-      );
+      let capitalized;
+      if (step === "group") {
+        capitalized = response.data.dbOperation.map((group) => {
+          return {
+            groupName: capitalizeFirstLetter(group.groupName),
+            id: group.groupId,
+          };
+        });
+      } else {
+        capitalized = capitalizeFirstLetterInArray(response.data.dbOperation);
+      }
+
       setAllGroups(capitalized);
       if (step === "categories") {
         setStep("group");
@@ -134,10 +143,8 @@ const Categories = (props) => {
   }
 
   const navigateToProperQuestions = async (): Promise<void> => {
-    setShowModal(false);
-
     const url =
-      EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPNAME +
+      EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPID +
       "?group=" +
       lowerCapitalizeFirstLetter(groupToUse);
     const response = await makeHttpsRequest(url, "GET");
@@ -145,6 +152,8 @@ const Categories = (props) => {
     //TODO: Check for error when making HTTPS request
     const questionsToUse = response.data.questions;
     const idToUse = response.data.groupId.groupId;
+
+    setShowModal(false);
 
     props.navigation.navigate("Questions", {
       name: groupToUse,
@@ -156,6 +165,7 @@ const Categories = (props) => {
   };
 
   const openModalAndSetState = (chosenGroup: string): void => {
+    //TODO: Fetch chosenGroup from DB to display Description, image, and then the two buttons
     setShowModal(true);
     setGroupToUse(chosenGroup);
   };
@@ -166,7 +176,7 @@ const Categories = (props) => {
     return allGroups.map((group) => {
       return (
         <TouchableOpacity
-          key={group}
+          key={typeof group === "string" ? group : group.id}
           style={styles.buttonContainer}
           onPress={() => {
             if (step === "categories") {
@@ -178,7 +188,9 @@ const Categories = (props) => {
             }
           }}
         >
-          <Text style={styles.text}>{group}</Text>
+          <Text style={styles.text}>
+            {typeof group === "string" ? group : group.groupName}
+          </Text>
         </TouchableOpacity>
       );
     });

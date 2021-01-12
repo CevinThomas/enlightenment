@@ -36,7 +36,6 @@ app.post("/login", async (req: any, res: any) => {
 });
 
 app.post("/login/cms", async (req: any, res: any) => {
-  console.log("HELLO");
   const response: RouteResponseClass = await PostRoutes.login(req.body);
   if (response.data !== undefined) {
     if (response.data.role === "admin")

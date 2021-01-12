@@ -60,7 +60,6 @@ class GetRoutes {
 
       const user = await database.queryUserByEmailDatabase(userEmail);
       if (!user) return new RouteResponseClass(203, "User not found", {});
-      console.log(user.licenceId);
 
       const dbOperation = await database.gatherCategoriesBySubjectChosen(
         subject,
@@ -314,7 +313,6 @@ class GetRoutes {
     const database = new DatabaseOperations();
     await database.initiateConnection();
 
-    console.log(areaChosen);
     try {
       if (typeof areaChosen !== "string")
         return new RouteResponseClass(200, "Was not given a string.", {});
@@ -362,18 +360,29 @@ class GetRoutes {
 
       if (!user) return new RouteResponseClass(203, "User not found.", {});
 
-      const dbOperation = await database.gatherQuestionsByCategory(
+      const arrayOfQuestions = await database.gatherQuestionsByCategory(
         categoryParam,
         user.licenceId,
         subjectChosen
       );
+
+      const finalArray = await arrayOfQuestions.toArray();
+
+      const seen = {};
+      const dbOperation = finalArray.filter(group => {
+        if (!seen.hasOwnProperty(group.groupId)) {
+          seen[group.groupId] = true;
+          return group;
+        } 
+        return;
+      })
 
       //TODO: Create a hash table with the groupName as key, and all questions under that as array
 
       return new RouteResponseClass(
         200,
         "Here are the requested Groups by Category, and their questions by category",
-        { dbOperation }
+        {dbOperation}
       );
     } catch (e) {
       console.log(e);
@@ -384,6 +393,7 @@ class GetRoutes {
   }
 
   public static async getQuestionsByGroupId(requestParams: any) {
+    console.log("HEY")
     let groupIdParam: any;
     const database = new DatabaseOperations();
     await database.initiateConnection();

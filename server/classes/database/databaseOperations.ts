@@ -197,7 +197,7 @@ class DatabaseOperations {
   }
 
   public async gatherQuestionsByCategory(
-    category: string | number,
+    category: string,
     licenceId: string,
     subjectChosen: string
   ) {
@@ -205,11 +205,11 @@ class DatabaseOperations {
       return await this.databaseClient
         .db(process.env.DATABASENAME)
         .collection(process.env.QUESTIONSCOLLECTION)
-        .distinct("groupName", {
+        .find({
           category: category,
           licenceGroup: licenceId,
           subjectName: subjectChosen,
-        });
+        }).project({groupName: 1, groupId: 1, _id: 0});
     } catch (e) {
       console.log(e);
       throw new Error("Something went wrong with Gathering Questions Query");
