@@ -5,7 +5,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import EnvVariables from "../../envVariables";
@@ -16,7 +16,7 @@ import { useGlobalStateUpdate } from "../contexts/navigationContext";
 import capitalizeFirstLetter, {
   capitalizeFirstLetterInArray,
   lowerCapitalizeFirstLetter,
-  makeHttpsRequest,
+  makeHttpsRequest
 } from "../utils/functions";
 
 const Categories = (props) => {
@@ -164,10 +164,18 @@ const Categories = (props) => {
     });
   };
 
-  const openModalAndSetState = (chosenGroup: string): void => {
+  const openModalAndSetState = async (chosenGroup: {
+    groupName: string;
+    groupId: string;
+  }): Promise<void> => {
+    console.log(chosenGroup);
     //TODO: Fetch chosenGroup from DB to display Description, image, and then the two buttons
+    const url =
+      EnvVariables.API_ENDPOINTS.GETGROUPINFO + "?group=" + chosenGroup.id;
+    const response = await makeHttpsRequest(url, "GET");
+    console.log(response.data);
     setShowModal(true);
-    setGroupToUse(chosenGroup);
+    setGroupToUse(response.data);
   };
 
   const renderCategoriesToUI = (): ReactNode => {
@@ -201,6 +209,7 @@ const Categories = (props) => {
       <Spinner visible={isLoading} />
       {showModal === true ? (
         <QuestionOverlay
+        groupData={groupToUse}
           navigateToQuestionsFunction={navigateToProperQuestions}
         />
       ) : null}

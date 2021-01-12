@@ -138,6 +138,18 @@ class DatabaseOperations {
     }
   }
 
+  public async getGroupInfo(group: string) {
+    const idToFilterBy = ObjectID(group);
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.GROUPSCOLLECTION)
+        .findOne({ groupId: idToFilterBy });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   public async insertGroupIntoDatabase(group: any) {
     try {
       return await this.databaseClient

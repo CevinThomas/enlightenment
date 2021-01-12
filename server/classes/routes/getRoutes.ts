@@ -369,20 +369,20 @@ class GetRoutes {
       const finalArray = await arrayOfQuestions.toArray();
 
       const seen = {};
-      const dbOperation = finalArray.filter(group => {
+      const dbOperation = finalArray.filter((group) => {
         if (!seen.hasOwnProperty(group.groupId)) {
           seen[group.groupId] = true;
           return group;
-        } 
+        }
         return;
-      })
+      });
 
       //TODO: Create a hash table with the groupName as key, and all questions under that as array
 
       return new RouteResponseClass(
         200,
         "Here are the requested Groups by Category, and their questions by category",
-        {dbOperation}
+        { dbOperation }
       );
     } catch (e) {
       console.log(e);
@@ -393,7 +393,7 @@ class GetRoutes {
   }
 
   public static async getQuestionsByGroupId(requestParams: any) {
-    console.log("HEY")
+    console.log("HEY");
     let groupIdParam: any;
     const database = new DatabaseOperations();
     await database.initiateConnection();
@@ -410,6 +410,23 @@ class GetRoutes {
       );
     } catch (e) {
       return new RouteResponseClass(500, "Questions could not be gathered", {});
+    } finally {
+      await database.terminateConnection();
+    }
+  }
+
+  public static async getGroupInfo(group: string) {
+    console.log(group);
+
+    const database = new DatabaseOperations();
+    await database.initiateConnection();
+
+    try {
+      const groupInfo = await database.getGroupInfo(group);
+      return new RouteResponseClass(200, "Here is the group.", groupInfo);
+    } catch (e) {
+      return new RouteResponseClass(500, "There was an error", {});
+      console.log(e);
     } finally {
       await database.terminateConnection();
     }

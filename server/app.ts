@@ -96,6 +96,11 @@ app.post("/questions/delete", async (req: any, res: any) => {
   res.send(response);
 });
 
+app.get("/groups/group", async (req: any, res: any) => {
+  const response = await GetRoutes.getGroupInfo(req.query.group);
+  res.send(response);
+});
+
 app.post("/add/questions", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
