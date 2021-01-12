@@ -256,35 +256,6 @@ class GetRoutes {
     }
   }
 
-  public static async getQuestionsByLicence(requestParams: string) {
-    const database = new DatabaseOperations();
-    await database.initiateConnection();
-
-    const licenceParam = requestParams;
-
-    //TODO: KEEP IT DRY WITH ABOVE ROUTE
-    try {
-      const dbOperation = await database.gatherQuestionsByLicence(licenceParam);
-      const questions = await dbOperation.toArray();
-      if (questions.length === 0)
-        return new RouteResponseClass(
-          200,
-          "No questions found with that query.",
-          {}
-        );
-      return new RouteResponseClass(
-        200,
-        "Here are the requested Questions",
-        questions
-      );
-    } catch (e) {
-      console.log(e);
-      return new RouteResponseClass(500, "Questions could not be gathered", {});
-    } finally {
-      await database.terminateConnection();
-    }
-  }
-
   public static async getAreasByLicence(userEmail: string) {
     const database = new DatabaseOperations();
     await database.initiateConnection();
@@ -393,7 +364,6 @@ class GetRoutes {
   }
 
   public static async getQuestionsByGroupId(requestParams: any) {
-    console.log("HEY");
     let groupIdParam: any;
     const database = new DatabaseOperations();
     await database.initiateConnection();

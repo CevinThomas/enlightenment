@@ -5,7 +5,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import EnvVariables from "../../envVariables";
@@ -16,7 +16,7 @@ import { useGlobalStateUpdate } from "../contexts/navigationContext";
 import capitalizeFirstLetter, {
   capitalizeFirstLetterInArray,
   lowerCapitalizeFirstLetter,
-  makeHttpsRequest
+  makeHttpsRequest,
 } from "../utils/functions";
 
 const Categories = (props) => {
@@ -146,19 +146,18 @@ const Categories = (props) => {
     const url =
       EnvVariables.API_ENDPOINTS.GETQUESTIONSBYGROUPID +
       "?group=" +
-      lowerCapitalizeFirstLetter(groupToUse);
+      lowerCapitalizeFirstLetter(groupToUse.groupId);
     const response = await makeHttpsRequest(url, "GET");
 
     //TODO: Check for error when making HTTPS request
-    const questionsToUse = response.data.questions;
-    const idToUse = response.data.groupId.groupId;
+    const questionsToUse = response.data;
 
     setShowModal(false);
 
     props.navigation.navigate("Questions", {
       name: groupToUse,
       questions: questionsToUse,
-      id: idToUse,
+      id: groupToUse.groupId,
       areaName: props.route.params.areaName,
       categoryChosen: categoryChosen,
     });
@@ -209,7 +208,7 @@ const Categories = (props) => {
       <Spinner visible={isLoading} />
       {showModal === true ? (
         <QuestionOverlay
-        groupData={groupToUse}
+          groupData={groupToUse}
           navigateToQuestionsFunction={navigateToProperQuestions}
         />
       ) : null}
