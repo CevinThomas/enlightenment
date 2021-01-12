@@ -17,6 +17,7 @@ const QuestionsContainer = () => {
   const [areaName, setAreaName] = useState<string>("");
   const [subjectName, setSubjectName] = useState<string>("");
   const [category, setCategory] = useState<string>("");
+  const [groupDescription, setGroupDescription] = useState<string>("");
 
   const [questionsData, setQuestionsData] = useState({
     id: 0,
@@ -99,7 +100,15 @@ const QuestionsContainer = () => {
 
     const response = await Axios.post(
       `${EnvVariables.API_ENDPOINTS.ADDQUESTIONS}`,
-      clonedAddedQuestions,
+      {
+        questions: clonedAddedQuestions,
+        group: {
+          groupName: clonedAddedQuestions[0].groupName,
+          groupId: clonedAddedQuestions[0].groupId,
+          licenceGroup: null,
+          groupDescription: groupDescription,
+        },
+      },
       {
         headers: {
           Authorization: cookies.get("token"),
@@ -144,6 +153,10 @@ const QuestionsContainer = () => {
 
   function areaNameChange(e: any): void {
     setAreaName(e.target.value);
+  }
+
+  function groupDescriptionChange(e: any): void {
+    setGroupDescription(e.target.value);
   }
 
   function subjectNameChange(e: any): void {
@@ -195,6 +208,8 @@ const QuestionsContainer = () => {
     if (cookie.get("token") !== undefined) {
       return (
         <QuestionsView
+          groupDescriptionChange={groupDescriptionChange}
+          groupDescription={groupDescription}
           subjectNameChange={subjectNameChange}
           subjectName={subjectName}
           areaNameChange={areaNameChange}

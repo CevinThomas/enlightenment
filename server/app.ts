@@ -105,7 +105,8 @@ app.post("/add/questions", async (req: any, res: any) => {
   )
     return res.send(auth.getValidateMessage());
   const response: RouteResponseClass = await PostRoutes.addQuestions(
-    req.body,
+    req.body.questions,
+    req.body.group,
     auth.getUserFromToken()
   );
   return res.send(response);

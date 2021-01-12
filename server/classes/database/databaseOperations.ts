@@ -138,6 +138,17 @@ class DatabaseOperations {
     }
   }
 
+  public async insertGroupIntoDatabase(group: any) {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.GROUPSCOLLECTION)
+        .insertOne(group);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   public async insertQuestionsIntoDatabase(
     questions: Questions,
     licenceId: string
@@ -209,7 +220,8 @@ class DatabaseOperations {
           category: category,
           licenceGroup: licenceId,
           subjectName: subjectChosen,
-        }).project({groupName: 1, groupId: 1, _id: 0});
+        })
+        .project({ groupName: 1, groupId: 1, _id: 0 });
     } catch (e) {
       console.log(e);
       throw new Error("Something went wrong with Gathering Questions Query");

@@ -237,6 +237,7 @@ class PostRoutes {
 
   public static async addQuestions(
     data: any,
+    group: any,
     emailThatAddedQuestions: string
   ): Promise<RouteResponse> {
     //TODO: Validate questions
@@ -257,6 +258,11 @@ class PostRoutes {
 
       if (doesUserHavePermissions.retrieveAccess() !== true)
         return new RouteResponseClass(203, "Access denied", {});
+
+      group.licenceGroup = doesUserHavePermissions.retrieveLicenceId();
+      group.groupId = questions.questionsData[0].groupId;
+
+      await database.insertGroupIntoDatabase(group);
 
       await database.insertQuestionsIntoDatabase(
         questions,

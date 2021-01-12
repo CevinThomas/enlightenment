@@ -29,6 +29,8 @@ const SubjectNameInput = styled.input``;
 
 const CategoryNameInput = styled.input``;
 
+const GroupDescriptionInput = styled.input``;
+
 interface IProps {
   addedQuestions: Array<QuestionsData>;
   newQuestion: QuestionsData;
@@ -36,6 +38,7 @@ interface IProps {
   areaName: string;
   subjectName: string;
   categoryName: string;
+  groupDescription: string;
   subjectNameChange: (e: any) => void;
   areaNameChange: (e: any) => void;
   submitQuestions: () => void;
@@ -52,9 +55,12 @@ interface IProps {
   updateQuestion: (id: number) => void;
   cancelUpdate: (id: number) => void;
   tagChange: (e: any) => void;
+  groupDescriptionChange: (e: any) => void;
 }
 
 const QuestionsView = ({
+  groupDescription,
+  groupDescriptionChange,
   tagChange,
   areaName,
   categoryNameChange,
@@ -128,6 +134,11 @@ const QuestionsView = ({
               onChange={categoryNameChange}
               value={categoryName}
               placeholder={"Category"}
+            />
+            <GroupDescriptionInput
+              onChange={groupDescriptionChange}
+              value={groupDescription}
+              placeholder={"Description"}
             />
 
             {addedQuestions.length !== 0
