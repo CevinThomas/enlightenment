@@ -28,7 +28,27 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const bodyParser = require("body-parser");
 const multer = require("multer");
-const upload = multer();
+const aws = require("aws-sdk");
+const uuid = require("uuid");
+
+const upload = multer({
+  fileFilter: (req: any, file: any, cb: any) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+    }
+  },
+});
+const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
 
 const cors = require("cors");
 app.use(
@@ -220,10 +240,22 @@ app.post(
   "/uploads/profilePicture",
   upload.single("avatar"),
   async (req: any, res: any) => {
-    console.log(req.file);
     const auth = new Authentication(req.headers["authorization"]);
     auth.validateToken();
-    const response = await uploadProfilePicture();
+
+    const myFile = req.file.originalname.split(".");
+    const fileType = myFile[myFile.length - 1];
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `${uuid()}.${fileType}`,
+      Body: req.file.buffer,
+    };
+
+    const response = await uploadProfilePicture(
+      params,
+      s3,
+      auth.getUserFromToken()
+    );
     return res.send(response);
   }
 );

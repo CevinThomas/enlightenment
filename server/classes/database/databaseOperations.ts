@@ -18,6 +18,20 @@ class DatabaseOperations {
     return this.databaseClient.connect();
   }
 
+  public async uploadProfilePicture(
+    userEmail: string,
+    imageUrl: { imageUrl: string }
+  ) {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.USERSCOLLECTION)
+        .updateOne({ email: userEmail }, { $set: { imageUrl: imageUrl } });
+    } catch (error) {
+      throw new Error("Something went wrong with");
+    }
+  }
+
   public async deleteResults(email: string, id: string): Promise<any> {
     const idToMatch = ObjectID(id);
     try {
