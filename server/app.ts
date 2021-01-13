@@ -1,5 +1,4 @@
 import Authentication from "./auth/Authentication";
-import PostRoutes from "./classes/routes/postRoutes";
 import RouteResponseClass from "./classes/routes/routeResponseClass";
 
 const getAreasByLicence = require("./routes/get/areas/getAreasByLicence");
@@ -11,6 +10,16 @@ const getSubjectsByArea = require("./routes/get/subjects/getSubjectsByArea");
 const getGroupsByCategory = require("./routes/get/groups/getGroupsByCategory");
 const getGroupInfo = require("./routes/get/groups/getGroupInfo");
 const getQuestionsByGroupId = require("./routes/get/questions/getQuestionsByGroupId");
+
+const register = require("./routes/post/register/register");
+const login = require("./routes/post/login/login");
+const inviteUser = require("./routes/post/user/inviteUser");
+const saveResults = require("./routes/post/results/saveResults");
+const acceptOrDeclinceInvite = require("./routes/post/user/acceptOrDeclineInvite");
+const deleteQuestion = require("./routes/post/questions/deleteQuestion");
+const updateQuestion = require("./routes/post/questions/updateQuestion");
+const deleteResult = require("./routes/post/results/deleteResults");
+const addQuestions = require("./routes/post/questions/addQuestions");
 
 const express = require("express");
 const path = require("path");
@@ -38,14 +47,14 @@ const port = process.env.PORT;
 const hostName = process.env.HOSTNAME;
 
 app.post("/login", async (req: any, res: any) => {
-  const response: RouteResponseClass = await PostRoutes.login(req.body);
+  const response: RouteResponseClass = await login(req.body);
   if (response.statusCode === 200) return res.status(200).send(response);
   if (response.statusCode === 400) return res.send(response);
   return res.send(response);
 });
 
 app.post("/login/cms", async (req: any, res: any) => {
-  const response: RouteResponseClass = await PostRoutes.login(req.body);
+  const response: RouteResponseClass = await login(req.body);
   if (response.data !== undefined) {
     if (response.data.role === "admin")
       return res
@@ -60,7 +69,7 @@ app.post("/login/cms", async (req: any, res: any) => {
 });
 
 app.post("/register", async (req: any, res: any) => {
-  const response: RouteResponseClass = await PostRoutes.register(req.body);
+  const response: RouteResponseClass = await register(req.body);
   if (response.statusCode === 200) return res.send(response);
   if (response.statusCode === 400) return res.send(response.data);
   return res.send(response);
@@ -69,14 +78,14 @@ app.post("/register", async (req: any, res: any) => {
 app.post("/invite/user", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await PostRoutes.inviteUser(
+  const response = await inviteUser(
     req.body.emailToInvite,
     auth.getUserFromToken()
   );
   return res.send(response);
 });
 
-app.post("/questions/saveresults", async (req: any, res: any) => {
+app.post("/results/save", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
   if (
@@ -85,23 +94,17 @@ app.post("/questions/saveresults", async (req: any, res: any) => {
   )
     return res.send(auth.getValidateMessage());
 
-  const response = await PostRoutes.saveResults(
-    auth.getUserFromToken(),
-    req.body
-  );
+  const response = await saveResults(auth.getUserFromToken(), req.body);
   return res.send(response);
 });
 
 app.post("/questions/update", async (req: any, res: any) => {
-  const response = await PostRoutes.updateQuestion(
-    req.query.questionId,
-    req.body
-  );
+  const response = await updateQuestion(req.query.questionId, req.body);
   res.send(response);
 });
 
 app.post("/questions/delete", async (req: any, res: any) => {
-  const response = await PostRoutes.deleteQuestion(req.query.questionId);
+  const response = await deleteQuestion(req.query.questionId);
   res.send(response);
 });
 
@@ -117,7 +120,7 @@ app.get("/groups/getGroupInfo", async (req: any, res: any) => {
   res.send(response);
 });
 
-app.post("/add/questions", async (req: any, res: any) => {
+app.post("/questions/add", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
   if (
@@ -125,7 +128,7 @@ app.post("/add/questions", async (req: any, res: any) => {
     auth.getValidateMessage() === "No token found"
   )
     return res.send(auth.getValidateMessage());
-  const response: RouteResponseClass = await PostRoutes.addQuestions(
+  const response: RouteResponseClass = addQuestions(
     req.body.questions,
     req.body.group,
     auth.getUserFromToken()
@@ -133,10 +136,10 @@ app.post("/add/questions", async (req: any, res: any) => {
   return res.send(response);
 });
 
-app.post("/invites/handle", async (req: any, res: any) => {
+app.post("/user/handleInvite", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await PostRoutes.acceptOrDeclinceInvite(
+  const response = await acceptOrDeclinceInvite(
     auth.getUserFromToken(),
     req.body.invite,
     req.body.accepted
@@ -144,13 +147,10 @@ app.post("/invites/handle", async (req: any, res: any) => {
   res.send(response);
 });
 
-app.post("/questions/deleteresult", async (req: any, res: any) => {
+app.post("/results/delete", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await PostRoutes.deleteResult(
-    auth.getUserFromToken(),
-    req.body.id
-  );
+  const response = await deleteResult(auth.getUserFromToken(), req.body.id);
   res.send(response);
 });
 

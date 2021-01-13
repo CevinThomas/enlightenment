@@ -7,7 +7,7 @@ const EnvVariables = {
     GETGROUPSBYCATEGORY: "http://192.168.200.54:4000/questions?categoryGroup=",
     GETQUESTIONSBYGROUPNAME: "http://192.168.200.54:4000/questions?group=",
     GETQUESTIONSBYGROUPID: "http://192.168.200.54:4000/questions?groupId=",
-    ADDQUESTIONS: "http://192.168.200.54:4000/add/questions",
+    ADDQUESTIONS: "http://192.168.200.54:4000/questions/add",
     GETQUESTIONSBYLICENCE: "http://192.168.200.54:4000/questions/licence",
     GETUSERLICENCE: "http://192.168.200.54:4000/user/licence",
     GETQUESTIONBYID: "http://192.168.200.54:4000/questions/questionId",
