@@ -18,6 +18,17 @@ class DatabaseOperations {
     return this.databaseClient.connect();
   }
 
+  public async insertTitle(userEmail: string, title: string) {
+    try {
+      return await this.databaseClient
+        .db(process.env.DATABASENAME)
+        .collection(process.env.USERSCOLLECTION)
+        .updateOne({ email: userEmail }, { $set: { title: title } });
+    } catch (e) {
+      throw new Error("Something went wrong");
+    }
+  }
+
   public async uploadProfilePicture(
     userEmail: string,
     imageUrl: { imageUrl: string }

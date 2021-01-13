@@ -21,6 +21,7 @@ const updateQuestion = require("./routes/post/questions/updateQuestion");
 const deleteResult = require("./routes/post/results/deleteResults");
 const addQuestions = require("./routes/post/questions/addQuestions");
 const uploadProfilePicture = require("./routes/post/uploads/profilePicture");
+const addTitle = require("./routes/post/user/addTitle");
 
 const express = require("express");
 const path = require("path");
@@ -189,6 +190,13 @@ app.post("/user/handleInvite", async (req: any, res: any) => {
     req.body.invite,
     req.body.accepted
   );
+  res.send(response);
+});
+
+app.post("/user/addTitle", async (req: any, res: any) => {
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await addTitle(auth.getUserFromToken(), req.body.title);
   res.send(response);
 });
 
