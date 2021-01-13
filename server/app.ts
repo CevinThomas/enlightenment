@@ -198,16 +198,6 @@ app.get("/user/licence", async (req: any, res: any) => {
   res.send(response);
 });
 
-app.get("/questions/group", async (req: any, res: any) => {
-  const auth = new Authentication(req.headers["authorization"]);
-  auth.validateToken();
-  const response = await GetRoutes.getQuestionsByGroupName(
-    req.query,
-    auth.getUserFromToken()
-  );
-  res.send(response);
-});
-
 app.get("/questions/groupId", async (req: any, res: any) => {
   const response = await GetRoutes.getQuestionsByGroupId(req.query.group);
   res.send(response);

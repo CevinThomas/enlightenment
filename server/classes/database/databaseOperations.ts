@@ -204,21 +204,6 @@ class DatabaseOperations {
     }
   }
 
-  public async gatherGroupIdByGroupName(groupName: string) {
-    try {
-      return await this.databaseClient
-        .db(process.env.DATABASENAME)
-        .collection(process.env.QUESTIONSCOLLECTION)
-        .findOne(
-          { groupName: groupName },
-          { projection: { groupId: 1, _id: 0 } }
-        );
-    } catch (e) {
-      console.log(e);
-      throw new Error("Something went wrong with Gathering Questions Query");
-    }
-  }
-
   public async gatherQuestionsByCategory(
     category: string,
     licenceId: string,
@@ -237,18 +222,6 @@ class DatabaseOperations {
     } catch (e) {
       console.log(e);
       throw new Error("Something went wrong with Gathering Questions Query");
-    }
-  }
-
-  public async gatherQuestionById(id: string) {
-    const idToFilterBy = ObjectID(id);
-    try {
-      return await this.databaseClient
-        .db(process.env.DATABASENAME)
-        .collection(process.env.QUESTIONSCOLLECTION)
-        .findOne({ _id: idToFilterBy });
-    } catch (e) {
-      throw new Error("Something went wrong with Gathering the question.");
     }
   }
 
@@ -283,17 +256,6 @@ class DatabaseOperations {
         );
     } catch (e) {
       throw new Error("Something went wrong with Updateing the question.");
-    }
-  }
-
-  public async gatherQuestionsByGroupName(value: string, licenceId: string) {
-    try {
-      return await this.databaseClient
-        .db(process.env.DATABASENAME)
-        .collection(process.env.QUESTIONSCOLLECTION)
-        .find({ groupName: value, licenceGroup: licenceId });
-    } catch (e) {
-      throw new Error("Something went wrong with Gathering Questions Query");
     }
   }
 
