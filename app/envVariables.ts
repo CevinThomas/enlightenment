@@ -18,7 +18,7 @@ const EnvVariables = {
     SAVERESULTS: "http://192.168.200.54:4000/results/save",
     GETINVITES: "http://192.168.200.54:4000/invites/get",
     HANDLEINVITES: "http://192.168.200.54:4000/user/handleInvite",
-    GETRESULTS: "http://192.168.200.54:4000/results/getResults",
+    GETRESULTS: "http://192.168.200.54:4000/results/get",
     DELETERESULTS: "http://192.168.200.54:4000/results/delete",
     GETGROUPINFO: "http://192.168.200.54:4000/groups/getGroupInfo",
   },
