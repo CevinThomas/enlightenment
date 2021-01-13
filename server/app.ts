@@ -20,6 +20,7 @@ const deleteQuestion = require("./routes/post/questions/deleteQuestion");
 const updateQuestion = require("./routes/post/questions/updateQuestion");
 const deleteResult = require("./routes/post/results/deleteResults");
 const addQuestions = require("./routes/post/questions/addQuestions");
+const uploadProfilePicture = require("./routes/post/uploads/profilePicture");
 
 const express = require("express");
 const path = require("path");
@@ -210,6 +211,13 @@ app.post("/invite/user", async (req: any, res: any) => {
     req.body.emailToInvite,
     auth.getUserFromToken()
   );
+  return res.send(response);
+});
+
+app.post("/uploads/profilePicture", async (req: any, res: any) => {
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await uploadProfilePicture();
   return res.send(response);
 });
 
