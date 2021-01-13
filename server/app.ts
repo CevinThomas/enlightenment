@@ -1,7 +1,16 @@
 import Authentication from "./auth/Authentication";
-import GetRoutes from "./classes/routes/getRoutes";
 import PostRoutes from "./classes/routes/postRoutes";
 import RouteResponseClass from "./classes/routes/routeResponseClass";
+
+const getAreasByLicence = require("./routes/get/areas/getAreasByLicence");
+const getCategoriesBySubject = require("./routes/get/categories/getCategoriesBySubject");
+const getResults = require("./routes/get/results/getResults");
+const getInvites = require("./routes/get/invites/getInvites");
+const getUserLicence = require("./routes/get/user/getUserLicence");
+const getSubjectsByArea = require("./routes/get/subjects/getSubjectsByArea");
+const getGroupsByCategory = require("./routes/get/groups/getGroupsByCategory");
+const getGroupInfo = require("./routes/get/groups/getGroupInfo");
+const getQuestionsByGroupId = require("./routes/get/questions/getQuestionsByGroupId");
 
 const express = require("express");
 const path = require("path");
@@ -96,8 +105,15 @@ app.post("/questions/delete", async (req: any, res: any) => {
   res.send(response);
 });
 
-app.get("/groups/group", async (req: any, res: any) => {
-  const response = await GetRoutes.getGroupInfo(req.query.group);
+app.get("/areas/getAreasByLicence", async (req: any, res: any) => {
+  const auth = new Authentication(req.headers["authorization"]);
+  auth.validateToken();
+  const response = await getAreasByLicence(auth.getUserFromToken());
+  res.send(response);
+});
+
+app.get("/groups/getGroupInfo", async (req: any, res: any) => {
+  const response = await getGroupInfo(req.query.group);
   res.send(response);
 });
 
@@ -138,51 +154,34 @@ app.post("/questions/deleteresult", async (req: any, res: any) => {
   res.send(response);
 });
 
-app.get("/questions/getresults", async (req: any, res: any) => {
+app.get("/results/getResults", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await GetRoutes.getResults(auth.getUserFromToken());
+  const response = await getResults(auth.getUserFromToken());
   res.send(response);
 });
 
 app.get("/invites/get", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await GetRoutes.getInvites(auth.getUserFromToken());
+  const response = await getInvites(auth.getUserFromToken());
   res.send(response);
 });
 
-app.get("/questions/questionId", async (req: any, res: any) => {
-  const response = await GetRoutes.getQuestionById(req.query.questionId);
-  res.send(response);
-});
-
-app.get("/questions/allCategories", async (req: any, res: any) => {
-  const response = await GetRoutes.getAllCategories();
-  res.send(response);
-});
-
-app.get("/questions/allCategoriesBySubject", async (req: any, res: any) => {
+app.get("/categories/getCategoriesBySubject", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await GetRoutes.getCategoriesBySubject(
+  const response = await getCategoriesBySubject(
     auth.getUserFromToken(),
     req.query.subject
   );
   res.send(response);
 });
 
-app.get("/questions/allAreasByLicence", async (req: any, res: any) => {
-  const auth = new Authentication(req.headers["authorization"]);
-  auth.validateToken();
-  const response = await GetRoutes.getAreasByLicence(auth.getUserFromToken());
-  res.send(response);
-});
-
 app.get("/questions/allSubjectsByArea", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await GetRoutes.getSubjectsByArea(
+  const response = await getSubjectsByArea(
     req.query.subject,
     auth.getUserFromToken()
   );
@@ -194,24 +193,19 @@ app.get("/user/licence", async (req: any, res: any) => {
   auth.validateToken();
   if (auth.getValidateMessage() !== "Success")
     return res.send(auth.getValidateMessage());
-  const response = await GetRoutes.getUserLicence(auth.getUserFromToken());
+  const response = await getUserLicence(auth.getUserFromToken());
   res.send(response);
 });
 
 app.get("/questions/groupId", async (req: any, res: any) => {
-  const response = await GetRoutes.getQuestionsByGroupId(req.query.group);
+  const response = await getQuestionsByGroupId(req.query.group);
   res.send(response);
 });
 
-/*app.get("/questions/category", async (req: any, res: any) => {
-  const response = await GetRoutes.getQuestionsByCategory(req.query);
-  res.send(response);
-});*/
-
-app.get("/questions/categoryGroup", async (req: any, res: any) => {
+app.get("/groups/getGroupsByCategory", async (req: any, res: any) => {
   const auth = new Authentication(req.headers["authorization"]);
   auth.validateToken();
-  const response = await GetRoutes.getGroupsForCategory(
+  const response = await getGroupsByCategory(
     req.query.group,
     auth.getUserFromToken(),
     req.query.subject

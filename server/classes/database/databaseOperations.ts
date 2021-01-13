@@ -317,19 +317,6 @@ class DatabaseOperations {
     }
   }
 
-  public async gatherAllCategories() {
-    try {
-      const projection = { category: 1, _id: 0 };
-      return await this.databaseClient
-        .db(process.env.DATABASENAME)
-        .collection(process.env.QUESTIONSCOLLECTION)
-        .find()
-        .project(projection);
-    } catch (e) {
-      throw new Error("Something went wrong with Gathering qustions Query");
-    }
-  }
-
   public async terminateConnection() {
     return this.databaseClient.close();
   }
