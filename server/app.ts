@@ -27,6 +27,8 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const app = express();
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const upload = multer();
 
 const cors = require("cors");
 app.use(
@@ -214,12 +216,17 @@ app.post("/invite/user", async (req: any, res: any) => {
   return res.send(response);
 });
 
-app.post("/uploads/profilePicture", async (req: any, res: any) => {
-  const auth = new Authentication(req.headers["authorization"]);
-  auth.validateToken();
-  const response = await uploadProfilePicture();
-  return res.send(response);
-});
+app.post(
+  "/uploads/profilePicture",
+  upload.single("avatar"),
+  async (req: any, res: any) => {
+    console.log(req.file);
+    const auth = new Authentication(req.headers["authorization"]);
+    auth.validateToken();
+    const response = await uploadProfilePicture();
+    return res.send(response);
+  }
+);
 
 process.on("uncaughtException", (err) => {
   console.error("There was an uncaught error", err);
