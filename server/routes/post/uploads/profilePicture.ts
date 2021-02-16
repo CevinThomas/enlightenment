@@ -5,7 +5,7 @@ async function uploadProfilePicture(
   s3Params: any,
   s3: any,
   userEmail: string
-): Promise<RouteResponseClass> {
+) {
   const database = new DatabaseOperations();
   await database.initiateConnection();
 
